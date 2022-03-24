@@ -1,3 +1,4 @@
+import axios from "axios";
 export const fetcher = async (url: string): Promise<any> => {
   const res = await fetch(url);
 
@@ -16,3 +17,18 @@ export const fetcher = async (url: string): Promise<any> => {
 
   return res.json();
 };
+
+const urlBase =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:3004/api"
+    : "https://solarity.muhash.com/api";
+
+export const apiCaller = axios.create({
+  baseURL: urlBase,
+  headers: {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "*",
+  },
+  withCredentials: true,
+});

@@ -37,11 +37,11 @@ export const SelectAndConnectWalletButton: FC<Props> = ({
 
   return (
     <button
-      className="btn btn-primary btn-lg"
+      className="gap-3 font-normal normal-case btn rounded-3xl btn-secondary"
       onClick={handleWalletClick}
       disabled={connecting}
     >
-      {publicKey ? <div>Use Wallet Address</div> : <div>Connect Wallet</div>}
+      {publicKey ? <div>Login With Wallet</div> : <div>Connect Wallet</div>}
     </button>
   );
 };

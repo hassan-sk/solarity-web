@@ -1,20 +1,37 @@
 import React from "react";
 import { Disclosure, Transition } from "@headlessui/react";
 import { CaretDown } from "components/Icons";
-import Image from "next/image";
-import AavatartPlaceholder from "assets/images/placeholder/avatar.png";
+import placeholder from "assets/images/placeholder/avatar.png";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
+import { logout } from "redux/slices/authSlice";
 
 const DisclosureButton = () => {
+  const dispatch = useDispatch();
+
+  const { profileData, logged } = useSelector((state: RootStateOrAny) => ({
+    profileData: state.profile.data,
+    logged: state.auth.logged,
+  }));
+
+  if (!logged) return <div></div>;
+
   return (
     <div className="flex flex-col">
       <Disclosure>
         {({ open }) => (
           <>
             <Disclosure.Button className="flex items-center justify-center gap-4 bg-[#151719] border-none btn normal-case">
-              <Image src={AavatartPlaceholder} alt="user avatar" />
+              <img
+                style={{ height: 40, outline: "3px solid white" }}
+                className="rounded-full"
+                src={profileData.profileImageLink || placeholder.src}
+                alt="user avatar"
+              />
               <div className="flex flex-col items-start">
-                  <span className="font-bold text-md">Kamil Kalkan</span>
-                  <span className="text-[#8899A6]">@kamilklkn</span>
+                <span className="font-bold text-md">
+                  {profileData.username}
+                </span>
+                <span className="text-[#8899A6]">@{profileData.username}</span>
               </div>
               <CaretDown className={`${open ? "transform rotate-180" : ""}`} />
             </Disclosure.Button>
@@ -27,7 +44,14 @@ const DisclosureButton = () => {
               leaveFrom="transform scale-100 opacity-100"
               leaveTo="transform scale-95 opacity-0"
             >
-              <Disclosure.Panel className="mx-4 mt-4">Sample Content</Disclosure.Panel>
+              <Disclosure.Panel className="mx-4 mt-4">
+                <button
+                  className="btn btn-outline btn-sm"
+                  onClick={() => dispatch(logout())}
+                >
+                  Logout
+                </button>
+              </Disclosure.Panel>
             </Transition>
           </>
         )}
