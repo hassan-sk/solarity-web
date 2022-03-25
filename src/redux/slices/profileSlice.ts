@@ -1,11 +1,13 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import ACTIONS from "config/actions";
+import { apiCaller } from "utils/fetcher";
 
 const initialState = {
   data: {},
   nfts: [],
   nftsLoaded: false,
 };
+
 export const profileSlice = createSlice({
   name: "profile",
   initialState,

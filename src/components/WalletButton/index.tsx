@@ -17,7 +17,6 @@ const ButtonWallet = () => {
     logged: state.auth.logged,
     profileData: state.profile.data,
   }));
-  console.log(profileData);
 
   const { publicKey, signMessage } = useWallet();
 
@@ -32,14 +31,15 @@ const ButtonWallet = () => {
   }
 
   return (
-    <Link href="/profile" passHref>
+    <Link href={`/users/${profileData.username}`} passHref>
       <a className="gap-3 pr-1 font-normal normal-case btn rounded-3xl btn-secondary ">
         <span>{profileData.shortPublicAddress}</span>
         <div className="w-[1px]  h-2/3 bg-[#5153F0]" />
         <img
-          height="40"
-          width="40"
+          height="34"
+          width="34"
           className="rounded-full"
+          style={{ outline: "2px solid white" }}
           src={profileData.profileImageLink || placeholder.src}
           alt="user avatar"
         />

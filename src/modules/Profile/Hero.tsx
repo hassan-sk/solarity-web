@@ -1,8 +1,36 @@
-import React from "react";
+import React, { FC } from "react";
 import Banner from "components/Banner";
-import Link from 'components/Link'
+import Link from "components/Link";
 import { AiFillGithub, AiOutlineTwitter } from "react-icons/ai";
-import { FaDiscord } from "react-icons/fa";import { MENU_LINKS } from "data/profile";const Hero = () => {
+import { FaDiscord } from "react-icons/fa";
+import { MENU_LINKS } from "data/profile";
+import { RootStateOrAny, useSelector } from "react-redux";
+import { useRouter } from "next/router";
+
+type HeroProps = {
+  user: Object;
+};
+
+type User = {
+  profileImageLink: string;
+  username: string;
+  followerCount: number;
+  bio: string;
+};
+
+const Hero: FC<HeroProps> = ({ user }) => {
+  let userData = user as User;
+  const router = useRouter();
+  const profileData = useSelector(
+    (state: RootStateOrAny) => state.profile.data
+  );
+  let self = false;
+  if (profileData) {
+    self = userData.username === profileData.username;
+  }
+
+  const toggleFollow = () => {};
+
   return (
     <div>
       <Banner
@@ -11,15 +39,21 @@ import { FaDiscord } from "react-icons/fa";import { MENU_LINKS } from "data/prof
           imageUrl: "/images/placeholder/post/post_one.png",
           price: "5",
         }}
-        smallImage="/images/placeholder/profile/moneyboysss.png"
+        smallImage={
+          userData.profileImageLink ||
+          "/images/placeholder/profile/moneyboysss.png"
+        }
       />
       <div className="flex justify-end">
-        <button className="mr-5 -mt-10 rounded-full btn btn-secondary">
-          Follow
+        <button
+          onClick={() => (self ? router.push("/profile") : toggleFollow())}
+          className="mr-5 -mt-10 rounded-full btn btn-secondary"
+        >
+          {self ? "Edit Profile" : "Follow"}
         </button>
       </div>
       <div className="flex justify-center">
-        <span className="text-lg font-bold ">tMΞTA</span>
+        <span className="text-lg font-bold ">{userData.username}</span>
       </div>
       <div className="flex justify-center gap-4 mt-4">
         <button className="gap-2 text-sm normal-case rounded-full btn btn-primary">
@@ -36,29 +70,25 @@ import { FaDiscord } from "react-icons/fa";import { MENU_LINKS } from "data/prof
 "
             />
           </svg>
-          22.5K Followers
+          {userData.followerCount} Followers
         </button>
         <button className="bg-white btn btn-circle">
           <AiFillGithub size={22} color="#000" />
-        </button>{" "}
-        <button className="bg-white btn btn-circle">
-          <AiOutlineTwitter size={22} color="#55ACEE
-" />
         </button>
         <button className="bg-white btn btn-circle">
-          <FaDiscord size={22} color="#7289D9
-" />
+          <AiOutlineTwitter size={22} color="#55ACEE" />
+        </button>
+        <button className="bg-white btn btn-circle">
+          <FaDiscord size={22} color="#7289D9" />
         </button>
       </div>
       <div className="flex justify-center mt-6">
         <span className="max-w-[750px] text-sm text-center text-gray-950">
-          Just a common bee trying to contribute as much as possible to the human hive mind.<br></br>
-          And make sure that that the concept of decetrnalization, 
-          creator's economy and web3.0 are proudly represented.
+          {userData.bio}
         </span>
       </div>
       <div className="flex justify-center gap-8 mt-8">
-        {MENU_LINKS.map(({ link, exact, title }, index) => (
+        {MENU_LINKS(userData.username).map(({ link, exact, title }, index) => (
           <Link
             href={link}
             key={link}
@@ -71,7 +101,9 @@ import { FaDiscord } from "react-icons/fa";import { MENU_LINKS } from "data/prof
           </Link>
         ))}
       </div>
-      <div className="border-b border-brandblack"/>
+      <div className="border-b border-brandblack" />
     </div>
   );
-};export default Hero;
+};
+
+export default Hero;
