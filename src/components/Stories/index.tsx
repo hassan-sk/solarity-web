@@ -41,6 +41,7 @@ const Index = () => {
             src={image}
             className="rounded-md"
             alt="stories image"
+            priority={true}
             layout="fill"
           />
 
