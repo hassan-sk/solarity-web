@@ -46,7 +46,6 @@ export const login = createAsyncThunk(
         return true;
       } else {
         return false;
-        throw new Error("Unable to sign the nonce");
       }
     } catch (err) {
       return false;
