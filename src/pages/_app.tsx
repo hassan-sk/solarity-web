@@ -4,13 +4,19 @@ import dynamic from "next/dynamic";
 import { ConnectionProvider } from "@solana/wallet-adapter-react";
 
 // For redux
-import { Provider, useDispatch } from "react-redux";
+import {
+  Provider,
+  RootStateOrAny,
+  useDispatch,
+  useSelector,
+} from "react-redux";
 import store from "../redux/store";
 
 import "tailwindcss/tailwind.css";
 import "../styles/globals.css";
 import "../styles/App.css";
 import { checkSession } from "redux/slices/authSlice";
+import { useRouter } from "next/router";
 
 // set custom RPC server endpoint for the final website
 // const endpoint = "https://explorer-api.devnet.solana.com";
@@ -26,6 +32,18 @@ const WalletProvider = dynamic(
 
 function MyApp({ children }: any) {
   const dispatch = useDispatch();
+  const router = useRouter();
+
+  const { logged, profileData } = useSelector((state: RootStateOrAny) => ({
+    profileData: state.profile.data,
+    logged: state.auth.logged,
+  }));
+
+  useEffect(() => {
+    if (logged && !profileData.visible) {
+      router.push("/setup");
+    }
+  }, [logged, profileData]);
 
   useEffect(() => {
     dispatch(checkSession());

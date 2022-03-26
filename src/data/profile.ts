@@ -5,27 +5,27 @@ import { TransferTableProps1 } from "components/Tables/Transfer1";
 export const MENU_LINKS = (username: string) => [
   {
     title: "Profile",
-    link: `/users/${username}`,
+    link: `/${username}`,
     exact: true,
   },
   {
     title: "Art",
-    link: `/users/${username}/art`,
+    link: `/${username}/art`,
     exact: true,
   },
   {
     title: "Pay Roll",
-    link: `/users/${username}/payout`,
+    link: `/${username}/payout`,
     exact: true,
   },
   {
     title: "Staking",
-    link: `/users/${username}/group`,
+    link: `/${username}/group`,
     exact: true,
   },
   {
     title: "Assets",
-    link: `/users/${username}/assets`,
+    link: `/${username}/assets`,
     exact: true,
   },
 ];

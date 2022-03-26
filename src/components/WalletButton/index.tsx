@@ -31,7 +31,7 @@ const ButtonWallet = () => {
   }
 
   return (
-    <Link href={`/users/${profileData.username}`} passHref>
+    <Link href={`/${profileData.username}`} passHref>
       <a className="gap-3 pr-1 font-normal normal-case btn rounded-3xl btn-secondary ">
         <span>{profileData.shortPublicAddress}</span>
         <div className="w-[1px]  h-2/3 bg-[#5153F0]" />

@@ -1,14 +1,13 @@
 import React, { FC } from "react";
 import Layout from "components/Layout";
-import Hero from "modules/Profile/Hero";
-import PayOut from "modules/Profile/Payout";
-import RightSidebar from "modules/Profile/Sidebar/Home";
-import { UserPageProps, getServerSideProps } from "modules/Profile";
+import Hero from "modules/User/Hero";
+import PayOut from "modules/User/Payout";
+import RightSidebar from "modules/User/Sidebar/Home";
+import { UserPageProps, getServerSideProps } from "modules/User";
+import NoUserView from "modules/User/NoUserView";
 
 const ProfileIndex: FC<UserPageProps> = ({ user, success }) => {
-  if (!success) {
-    return <div>No User found</div>;
-  }
+  if (!success) return <NoUserView />;
   return (
     <Layout
       rightSidebar={<RightSidebar />}

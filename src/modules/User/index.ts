@@ -18,7 +18,7 @@ export const getServerSideProps = async (context: any) => {
       data: { user },
     } = await apiCaller.get(`/users/${username}`);
     return { props: { user, success: true } };
-  } catch {
+  } catch (err) {
     return { props: { success: false } };
   }
 };

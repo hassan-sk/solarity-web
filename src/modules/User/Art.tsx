@@ -101,7 +101,6 @@ const Art: FC<ArtProps> = ({ publicAddress }) => {
       publicAddress: "31W6QazPT8dSXvWLCg8yPktLga5nSg6cXysbwnuSQPPu",
       connection,
     });
-    console.log(nfts);
     setNfts(nfts);
   };
 
@@ -115,8 +114,8 @@ const Art: FC<ArtProps> = ({ publicAddress }) => {
         <Select title="All Collections" className="rounded-full font-[19px]" />
       </div>
       <div className="grid grid-cols-3 gap-3 my-4 ">
-        {nfts.map(({ data: { name, uri }, mint }) => (
-          <NftCard name={name} mint={mint} uri={uri} />
+        {nfts.map(({ data: { name, uri }, mint }, index) => (
+          <NftCard key={"nftCard-" + index} name={name} mint={mint} uri={uri} />
         ))}
       </div>
     </div>

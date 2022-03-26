@@ -1,12 +1,41 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import ACTIONS from "config/actions";
-import { apiCaller } from "utils/fetcher";
+import { apiCaller, getErrorMessage } from "utils/fetcher";
 
 const initialState = {
   data: {},
   nfts: [],
   nftsLoaded: false,
 };
+
+export const addInfo = createAsyncThunk(
+  "profile/addInfo",
+  async ({
+    data,
+    successFunction,
+    errorFunction,
+    finalFunction,
+  }: {
+    data: Object;
+    successFunction: () => void;
+    errorFunction: (error: string) => void;
+    finalFunction: () => void;
+  }) => {
+    let returnValue = null;
+    try {
+      const {
+        data: { profile },
+      } = await apiCaller.post("/profile/setup/info", data);
+      successFunction();
+      returnValue = profile;
+    } catch (err) {
+      errorFunction(getErrorMessage(err));
+      returnValue = false;
+    }
+    finalFunction();
+    return returnValue;
+  }
+);
 
 export const profileSlice = createSlice({
   name: "profile",
@@ -24,6 +53,13 @@ export const profileSlice = createSlice({
       state.data = action.payload;
     },
     loadNFTs() {},
+  },
+  extraReducers: (builder) => {
+    builder.addCase(addInfo.fulfilled, (state, action) => {
+      if (action.payload) {
+        state.data = action.payload;
+      }
+    });
   },
 });
 

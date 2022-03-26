@@ -1,14 +1,14 @@
 import React, { FC } from "react";
 import Layout from "components/Layout";
-import Hero from "modules/Profile/Hero";
-import Art from "modules/Profile/Art";
+import Hero from "modules/User/Hero";
+import Art from "modules/User/Art";
 
-import { getServerSideProps, UserPageProps } from "modules/Profile";
+import { getServerSideProps, UserPageProps } from "modules/User";
+import NoUserView from "modules/User/NoUserView";
 
 const ProfileIndex: FC<UserPageProps> = ({ user, success }) => {
-  if (!success) {
-    return <div>No User found</div>;
-  }
+  if (!success) return <NoUserView />;
+
   return (
     <Layout heroContent={<Hero user={user || {}} />}>
       <Art publicAddress={(user && user.publicAddress) || ""} />

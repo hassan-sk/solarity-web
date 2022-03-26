@@ -15,11 +15,15 @@ type User = {
   profileImageLink: string;
   username: string;
   followerCount: number;
-  bio: string;
+  bio?: string;
+  githubUsername?: string;
+  twitterUsername?: string;
+  discordHandle?: string;
 };
 
 const Hero: FC<HeroProps> = ({ user }) => {
   let userData = user as User;
+
   const router = useRouter();
   const profileData = useSelector(
     (state: RootStateOrAny) => state.profile.data
@@ -72,19 +76,45 @@ const Hero: FC<HeroProps> = ({ user }) => {
           </svg>
           {userData.followerCount} Followers
         </button>
-        <button className="bg-white btn btn-circle">
-          <AiFillGithub size={22} color="#000" />
-        </button>
-        <button className="bg-white btn btn-circle">
-          <AiOutlineTwitter size={22} color="#55ACEE" />
-        </button>
-        <button className="bg-white btn btn-circle">
-          <FaDiscord size={22} color="#7289D9" />
-        </button>
+        {userData.githubUsername && (
+          <a
+            className="bg-white btn btn-circle"
+            target={"__blank"}
+            href={`https://github.com/${userData.githubUsername}`}
+          >
+            <AiFillGithub size={22} color="#000" />
+          </a>
+        )}
+        {userData.twitterUsername && (
+          <a
+            className="bg-white btn btn-circle"
+            target={"__blank"}
+            href={`https://twitter.com/${userData.twitterUsername}`}
+          >
+            <AiOutlineTwitter size={22} color="#55ACEE" />
+          </a>
+        )}
+        {userData.discordHandle && (
+          <a
+            className="bg-white btn btn-circle"
+            target={"__blank"}
+            href={`https://discord.com/${userData.discordHandle}`}
+          >
+            <FaDiscord size={22} color="#7289D9" />
+          </a>
+        )}
       </div>
       <div className="flex justify-center mt-6">
         <span className="max-w-[750px] text-sm text-center text-gray-950">
-          {userData.bio}
+          {self ? (
+            userData.bio ? (
+              userData.bio
+            ) : (
+              <div className="badge badge-xl">Your profile is missing bio</div>
+            )
+          ) : (
+            userData.bio
+          )}
         </span>
       </div>
       <div className="flex justify-center gap-8 mt-8">

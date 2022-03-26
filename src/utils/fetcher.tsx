@@ -32,3 +32,13 @@ export const apiCaller = axios.create({
   },
   withCredentials: true,
 });
+
+export const getErrorMessage = (err: any) => {
+  let message = "";
+  try {
+    message = err.response.data.message;
+  } catch {
+    message = "Something went wrong!";
+  }
+  return message;
+};
