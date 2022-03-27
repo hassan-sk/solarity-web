@@ -1,14 +1,70 @@
-import React from "react";
+import React, { FC, useState } from "react";
 import {
   Button,
   Container,
   FormikInput,
-  Input,
+  FormikTextArea,
   Stack,
 } from "components/FormComponents";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { Formik } from "formik";
 import { updateProfileInfo } from "redux/slices/profileSlice";
+import {
+  AiFillCheckCircle,
+  AiFillCloseCircle,
+  AiOutlineLoading3Quarters,
+} from "react-icons/ai";
+import { apiCaller, getErrorMessage } from "utils/fetcher";
+
+const UsernameInput: FC<{
+  sharedProps: any;
+  setFieldError: Function;
+  setLoading: (loading: Boolean) => void;
+}> = ({ sharedProps, setFieldError, setLoading }) => {
+  // status:
+  // 1 - Checked
+  // 2 - Checking
+  // 3 - Error
+  const [status, setStatus] = useState<1 | 2 | 3>(1);
+
+  const checkUsernameAvailability = () => {
+    const { username } = sharedProps.values;
+    setLoading(true);
+    setStatus(2);
+    apiCaller
+      .get(`profile/usernameAvailability/${username}`)
+      .then(() => {
+        setStatus(1);
+        setFieldError("username", undefined);
+      })
+      .catch((err) => {
+        const message = getErrorMessage(err);
+        setFieldError("username", message);
+        setStatus(3);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  return (
+    <FormikInput
+      name="username"
+      {...sharedProps}
+      onStopTypingInterval={800}
+      onStopTyping={checkUsernameAvailability}
+      absoluteElement={
+        <div className="absolute top-[50%] right-4 translate-y-[-50%]">
+          {status == 1 && <AiFillCheckCircle color="green" />}
+          {status == 2 && (
+            <AiOutlineLoading3Quarters className="animate-spin" />
+          )}
+          {status == 3 && <AiFillCloseCircle color="red" />}
+        </div>
+      }
+    />
+  );
+};
 
 const Form = () => {
   const dispatch = useDispatch();
@@ -19,6 +75,7 @@ const Form = () => {
   const initialValues = {
     username,
     bio,
+    githubUsername: "Helllo",
   };
 
   return (
@@ -45,10 +102,12 @@ const Form = () => {
       {({
         values,
         errors,
+        status,
         isSubmitting: loading,
+        setStatus,
         handleChange,
         handleBlur,
-        resetForm,
+        setFieldError,
         handleSubmit,
       }) => {
         const sharedProps = {
@@ -61,11 +120,18 @@ const Form = () => {
         return (
           <Container onSubmit={handleSubmit}>
             <Stack spacing={3}>
-              <FormikInput name="username" {...sharedProps} />
+              <UsernameInput
+                sharedProps={sharedProps}
+                setFieldError={setFieldError}
+                setLoading={(loading) =>
+                  setStatus(loading ? "checkingUsername" : undefined)
+                }
+              />
               {/* <FormikInput name="twitterUsername" {...sharedProps} />
               <FormikInput name="discordHandle" {...sharedProps} />
-              <FormikInput name="githubUsername" {...sharedProps} /> */}
-              <FormikInput type="textarea" name="bio" {...sharedProps} />
+            */}
+              <FormikInput name="githubUsername" {...sharedProps} />
+              <FormikTextArea name="bio" {...sharedProps} />
               {/* <Error
                 onClick={() => setTopLevelError("")}
                 show={Boolean(topLevelError)}
@@ -76,6 +142,7 @@ const Form = () => {
                   type="submit"
                   variant="secondary"
                   loading={loading}
+                  disabled={status === "checkingUsername"}
                   disableOnLoading
                 >
                   Update

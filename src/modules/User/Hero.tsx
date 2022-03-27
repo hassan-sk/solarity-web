@@ -13,9 +13,7 @@ type HeroProps = {
 };
 
 type User = {
-  profileImage: {
-    link: string;
-  };
+  profileImageLink?: string;
   username: string;
   followerCount: number;
   bio?: string;
@@ -45,10 +43,7 @@ const Hero: FC<HeroProps> = ({ user }) => {
           imageUrl: "/images/placeholder/post/post_one.png",
           price: "5",
         }}
-        smallImage={
-          (userData.profileImage && userData.profileImage.link) ||
-          placeholder.src
-        }
+        smallImage={userData.profileImageLink || placeholder.src}
       />
       <div className="flex justify-end">
         <button

@@ -1,7 +1,7 @@
 import React from "react";
 
 const UpdateProfilePicView = () => {
-  return <div>Hello world asdas</div>;
+  return <div>Coming soon</div>;
 };
 
 export default UpdateProfilePicView;
