@@ -3,18 +3,18 @@ import Base from "components/Widget/Base";
 import LiveRoomComp from "components/LiveRoom";
 import CreateRoomModal from "components/Modals/CreateRoomModal";
 
-import { LiveRoomType } from 'modal/experience';
+import { LiveRoomType } from "modal/experience";
 
 interface IProps {
   rows: LiveRoomType[];
 }
 
 const LiveRooms: FC<IProps> = ({ rows: rooms }) => {
-  const  [createModalOpen,setCreateModalOpen] = useState(false)
+  const [createModalOpen, setCreateModalOpen] = useState(false);
 
   const handleCreateModalToggle = () => {
-    setCreateModalOpen(!createModalOpen)
-  }
+    setCreateModalOpen(!createModalOpen);
+  };
   return (
     <div className="mx-3 -mt-5">
       <div className="justify-between bg-brandblack rounded-3xl">
@@ -32,7 +32,10 @@ const LiveRooms: FC<IProps> = ({ rows: rooms }) => {
           </div>
         </div>
       </div>
-      <CreateRoomModal open={createModalOpen} onClose={handleCreateModalToggle} />
+      <CreateRoomModal
+        open={createModalOpen}
+        onClose={handleCreateModalToggle}
+      />
     </div>
   );
 };

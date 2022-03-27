@@ -11,14 +11,15 @@ interface ButtonProps {
     | "success"
     | "warning"
     | "error";
-  outline?: boolean;
-  loading?: boolean;
+  outline?: Boolean;
+  loading?: Boolean;
   size?: "lg" | "md" | "sm" | "xs";
-  disabled?: boolean;
-  wrap?: boolean;
-  wide?: boolean;
-  disableOnLoading?: boolean;
+  disabled?: Boolean;
+  wrap?: Boolean;
+  wide?: Boolean;
+  disableOnLoading?: Boolean;
   onClick?: () => void;
+  className?: string;
 }
 
 export const Button: FC<ButtonProps> = ({
@@ -32,9 +33,10 @@ export const Button: FC<ButtonProps> = ({
   disableOnLoading = true,
   outline = false,
   type = "button",
+  className = "",
   onClick = () => {},
 }) => {
-  let className = `rounded-full btn btn-${variant} btn-${size} ${
+  className += ` rounded-full btn px-6 btn-${variant} btn-${size} ${
     loading && "loading"
   }
   ${outline && "btn-outline"}

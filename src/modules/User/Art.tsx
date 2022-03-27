@@ -11,7 +11,7 @@ export type NftCardProps = {
   name: string;
   mint: string;
   uri: string;
-  onClick?: Function;
+  onClick?: (mintAddress: string) => void;
   selected?: boolean;
 };
 
@@ -36,12 +36,15 @@ export const NftCard: FC<NftCardProps> = ({
   useEffect(() => {
     getDetails();
   }, []);
+  const clickable = Boolean(onClick);
   return (
     <div
       className={`flex flex-col gap-2 p-4 ${
         selected ? "bg-secondary" : "bg-brandblack"
-      } rounded-3xl`}
-      onClick={() => onClick && onClick()}
+      } rounded-3xl ${!selected && "hover:bg-black"} ${
+        clickable && "cursor-pointer"
+      } `}
+      onClick={() => onClick && onClick(mint)}
     >
       <div className="flex justify-center rounded-xl overflow-hidden">
         {details.image && (
@@ -60,7 +63,11 @@ export const NftCard: FC<NftCardProps> = ({
       <div className="flex justify-between">
         <div className="flex flex-col">
           <span>{name}</span>
-          <span className="flex items-center gap-2 text-secondary">
+          <span
+            className={`flex items-center gap-2 text-${
+              selected ? "white" : "secondary"
+            }`}
+          >
             {(details.collection && details.collection.name) || "loading..."}
             <svg
               width="20"
@@ -71,13 +78,13 @@ export const NftCard: FC<NftCardProps> = ({
             >
               <path
                 d="M9.99935 18.3334C14.5827 18.3334 18.3327 14.5834 18.3327 10C18.3327 5.41669 14.5827 1.66669 9.99935 1.66669C5.41602 1.66669 1.66602 5.41669 1.66602 10C1.66602 14.5834 5.41602 18.3334 9.99935 18.3334Z"
-                stroke="#6163FF"
+                stroke={selected ? "white" : "#6163FF"}
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
               <path
                 d="M6.45898 10L8.81732 12.3583L13.5423 7.64166"
-                stroke="#6163FF"
+                stroke={selected ? "white" : "#6163FF"}
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />

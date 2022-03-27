@@ -17,6 +17,7 @@ const ButtonWallet = () => {
     logged: state.auth.logged,
     profileData: state.profile.data,
   }));
+  console.log(profileData);
 
   const { publicKey, signMessage } = useWallet();
 

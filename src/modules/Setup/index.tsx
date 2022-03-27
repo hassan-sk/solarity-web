@@ -5,6 +5,7 @@ import Logo from "../../assets/images/logo.png";
 import Image from "next/image";
 import bgImage from "../../assets/images/setup-page-bg.png";
 import hoverImages from "../../assets/images/setup-page-images.png";
+import ProfilePicView from "./ProfilePicView";
 
 const Branding = () => {
   return (
@@ -34,14 +35,23 @@ type SetupProps = {
   stepsCompleted: {
     daoClaimed: boolean;
     infoAdded: boolean;
+    profilePicUpdated: boolean;
   };
 };
 
 const Setup: FC<SetupProps> = ({
-  stepsCompleted: { daoClaimed, infoAdded },
+  stepsCompleted: { daoClaimed, infoAdded, profilePicUpdated },
 }) => {
   const showInfoView = !infoAdded;
   const showDaoView = !daoClaimed && infoAdded;
+  const showProfilePicView = !profilePicUpdated && infoAdded && daoClaimed;
+  if (showProfilePicView) {
+    return (
+      <div className="h-screen overflow-auto">
+        <ProfilePicView />
+      </div>
+    );
+  }
   return (
     <div className="flex flex-row h-screen overflow-auto">
       <Branding />
