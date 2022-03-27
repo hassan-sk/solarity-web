@@ -21,11 +21,14 @@ const TokenBalance: FC<TokenBalancesProps> = ({ title, tokens }) => {
       <div className="flex flex-col gap-8 py-8 bg-brandblack">
         <div className="flex items-center justify-between px-8">
           <span className="text-lg font-bold">{title}</span>
-          <button className="rounded-full btn btn-secondary" onClick={toogleModal}>
+          <button
+            className="rounded-full btn btn-secondary"
+            onClick={toogleModal}
+          >
             Create Contract
           </button>
         </div>
-        <div className="flex gap-4 pb-5 pl-8 overflow-x-auto scrollbar-thin scrollbar-thumb-black scrollbar-track-white">
+        <div className="flex gap-4 pb-5 pl-8 overflow-x-auto scrollbar-thin scrollbar-thumb-black track-white">
           {tokens.map((item, index) => (
             <TokenBalanceItem key={index} {...item} />
           ))}

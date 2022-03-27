@@ -17,7 +17,6 @@ const ButtonWallet = () => {
     logged: state.auth.logged,
     profileData: state.profile.data,
   }));
-  console.log(profileData);
 
   const { publicKey, signMessage } = useWallet();
 
@@ -41,7 +40,7 @@ const ButtonWallet = () => {
           width="34"
           className="rounded-full"
           style={{ outline: "2px solid white" }}
-          src={profileData.profileImageLink || placeholder.src}
+          src={profileData.profileImage.link || placeholder.src}
           alt="user avatar"
         />
       </a>

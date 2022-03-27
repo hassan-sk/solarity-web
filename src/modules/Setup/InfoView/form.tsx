@@ -9,6 +9,7 @@ import {
   Input,
   Stack,
   Error,
+  FormikInput,
 } from "components/FormComponents";
 import { addInfo } from "redux/slices/profileSlice";
 
@@ -62,38 +63,16 @@ export const Form = () => {
           onChange: handleChange,
           onBlur: handleBlur,
           disabled: loading,
+          values,
+          errors,
         };
         return (
           <Container onSubmit={handleSubmit}>
             <Stack spacing={3}>
-              <Input
-                name="username"
-                value={values.username}
-                error={Boolean(errors.discordHandle)}
-                helperText={errors.discordHandle}
-                {...sharedProps}
-              />
-              <Input
-                name="twitterUsername"
-                value={values.twitterUsername}
-                error={Boolean(errors.discordHandle)}
-                helperText={errors.discordHandle}
-                {...sharedProps}
-              />
-              <Input
-                name="discordHandle"
-                value={values.discordHandle}
-                error={Boolean(errors.discordHandle)}
-                helperText={errors.discordHandle}
-                {...sharedProps}
-              />
-              <Input
-                name="githubUsername"
-                value={values.githubUsername}
-                error={Boolean(errors.discordHandle)}
-                helperText={errors.discordHandle}
-                {...sharedProps}
-              />
+              <FormikInput name="username" {...sharedProps} />
+              <FormikInput name="twitterUsername" {...sharedProps} />
+              <FormikInput name="discordHandle" {...sharedProps} />
+              <FormikInput name="githubUsername" {...sharedProps} />
               <Error
                 onClick={() => setTopLevelError("")}
                 show={Boolean(topLevelError)}

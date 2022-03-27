@@ -16,6 +16,11 @@ interface InputProps {
   value?: string;
 }
 
+interface FormikInputProps extends InputProps {
+  errors: any;
+  values: any;
+}
+
 export const Input: FC<InputProps> = ({
   name,
   value = "",
@@ -73,5 +78,22 @@ export const Input: FC<InputProps> = ({
         </label>
       )}
     </div>
+  );
+};
+
+export const FormikInput: FC<FormikInputProps> = ({
+  name,
+  errors,
+  values,
+  ...rest
+}) => {
+  return (
+    <Input
+      {...rest}
+      name={name}
+      value={values[name]}
+      error={Boolean(errors[name])}
+      helperText={errors[name]}
+    />
   );
 };

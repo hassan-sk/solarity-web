@@ -3,7 +3,7 @@ import { getNfts } from "hooks";
 import { NftCard } from "modules/User/Art";
 import { useState } from "react";
 import { FC } from "react";
-import { useSelector, RootStateOrAny, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setProfilePic } from "redux/slices/profileSlice";
 
 interface NftCardsProps {

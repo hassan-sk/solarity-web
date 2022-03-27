@@ -12,7 +12,9 @@ type HeroProps = {
 };
 
 type User = {
-  profileImageLink: string;
+  profileImage: {
+    link: string;
+  };
   username: string;
   followerCount: number;
   bio?: string;
@@ -23,7 +25,6 @@ type User = {
 
 const Hero: FC<HeroProps> = ({ user }) => {
   let userData = user as User;
-
   const router = useRouter();
   const profileData = useSelector(
     (state: RootStateOrAny) => state.profile.data
@@ -44,7 +45,7 @@ const Hero: FC<HeroProps> = ({ user }) => {
           price: "5",
         }}
         smallImage={
-          userData.profileImageLink ||
+          userData.profileImage.link ||
           "/images/placeholder/profile/moneyboysss.png"
         }
       />
@@ -53,7 +54,7 @@ const Hero: FC<HeroProps> = ({ user }) => {
           onClick={() => (self ? router.push("/profile") : toggleFollow())}
           className="mr-5 -mt-10 rounded-full btn btn-secondary"
         >
-          {self ? "Edit Profile" : "Follow"}
+          {self ? "Update Profile" : "Follow"}
         </button>
       </div>
       <div className="flex justify-center">

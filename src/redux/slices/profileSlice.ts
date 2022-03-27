@@ -95,6 +95,35 @@ export const setProfilePic = createAsyncThunk(
   }
 );
 
+export const updateProfileInfo = createAsyncThunk(
+  "profile/updateProfileInfo",
+  async ({
+    data,
+    successFunction,
+    errorFunction,
+    finalFunction,
+  }: {
+    data: Object;
+    successFunction: () => void;
+    errorFunction: (error: string) => void;
+    finalFunction: () => void;
+  }) => {
+    let returnValue = null;
+    try {
+      const {
+        data: { profile },
+      } = await apiCaller.patch("/profile", data);
+      successFunction();
+      returnValue = profile;
+    } catch (err) {
+      errorFunction(getErrorMessage(err));
+      returnValue = false;
+    }
+    finalFunction();
+    return returnValue;
+  }
+);
+
 export const profileSlice = createSlice({
   name: "profile",
   initialState,
@@ -124,6 +153,11 @@ export const profileSlice = createSlice({
       }
     });
     builder.addCase(setProfilePic.fulfilled, (state, action) => {
+      if (action.payload) {
+        profileSlice.caseReducers.setProfile(state, action);
+      }
+    });
+    builder.addCase(updateProfileInfo.fulfilled, (state, action) => {
       if (action.payload) {
         profileSlice.caseReducers.setProfile(state, action);
       }

@@ -40,8 +40,12 @@ function MyApp({ children }: any) {
   }));
 
   useEffect(() => {
+    const currentRoute = router.pathname;
     if (logged && !profileData.visible) {
       router.push("/setup");
+    }
+    if (currentRoute === "/profile" && !logged) {
+      router.push("/");
     }
   }, [logged, profileData]);
 
