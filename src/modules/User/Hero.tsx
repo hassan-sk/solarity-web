@@ -6,6 +6,7 @@ import { FaDiscord } from "react-icons/fa";
 import { MENU_LINKS } from "data/profile";
 import { RootStateOrAny, useSelector } from "react-redux";
 import { useRouter } from "next/router";
+import placeholder from "assets/images/placeholder/avatar.png";
 
 type HeroProps = {
   user: Object;
@@ -46,7 +47,7 @@ const Hero: FC<HeroProps> = ({ user }) => {
         }}
         smallImage={
           (userData.profileImage && userData.profileImage.link) ||
-          "/images/placeholder/profile/moneyboysss.png"
+          placeholder.src
         }
       />
       <div className="flex justify-end">

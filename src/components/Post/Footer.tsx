@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import AavatartPlaceholder from "assets/images/placeholder/avatar_small.png";
+import AavatartPlaceholder from "assets/images/placeholder/avatar.png";
 import Image from "next/image";
 import { Download, Love, Calendar, Share } from "components/Icons";
 
