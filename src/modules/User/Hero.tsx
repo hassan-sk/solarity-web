@@ -45,7 +45,7 @@ const Hero: FC<HeroProps> = ({ user }) => {
           price: "5",
         }}
         smallImage={
-          userData.profileImage.link ||
+          (userData.profileImage && userData.profileImage.link) ||
           "/images/placeholder/profile/moneyboysss.png"
         }
       />

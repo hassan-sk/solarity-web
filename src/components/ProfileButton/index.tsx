@@ -24,7 +24,10 @@ const DisclosureButton = () => {
               <img
                 style={{ height: 40, outline: "3px solid white" }}
                 className="rounded-full"
-                src={profileData.profileImage.link || placeholder.src}
+                src={
+                  (profileData.profileImage && profileData.profileImage.link) ||
+                  placeholder.src
+                }
                 alt="user avatar"
               />
               <div className="flex flex-col items-start">
