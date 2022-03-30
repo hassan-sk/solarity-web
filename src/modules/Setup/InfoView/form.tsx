@@ -12,6 +12,7 @@ import {
   FormikInput,
 } from "components/FormComponents";
 import { addInfo } from "redux/slices/profileSlice";
+import { ProfileFields } from "modules/Profile/UpdateInfoView";
 
 export const Form = () => {
   const dispatch = useDispatch();
@@ -58,6 +59,8 @@ export const Form = () => {
         handleBlur,
         resetForm,
         handleSubmit,
+        setFieldError,
+        setStatus,
       }) => {
         const sharedProps = {
           onChange: handleChange,
@@ -68,17 +71,20 @@ export const Form = () => {
         };
         return (
           <Container onSubmit={handleSubmit}>
-            <Stack spacing={3}>
-              <FormikInput name="username" {...sharedProps} />
-              <FormikInput name="twitterUsername" {...sharedProps} />
-              <FormikInput name="discordHandle" {...sharedProps} />
-              <FormikInput name="githubUsername" {...sharedProps} />
+            <Stack spacing={2}>
+              <ProfileFields
+                sharedProps={sharedProps}
+                setFieldError={setFieldError}
+                setStatus={setStatus}
+                ignoreBio={true}
+              />
               <Error
+                className="mt-5"
                 onClick={() => setTopLevelError("")}
                 show={Boolean(topLevelError)}
                 description={topLevelError}
               />
-              <Stack direction="row" spacing={3} className="pt-2 ml-auto">
+              <Stack direction="row" spacing={3} className="pt-5 ml-auto">
                 <Button
                   variant="accent"
                   outline

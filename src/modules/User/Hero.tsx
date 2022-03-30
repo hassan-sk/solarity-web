@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import Banner from "components/Banner";
 import Link from "components/Link";
 import { AiFillGithub, AiOutlineTwitter } from "react-icons/ai";
@@ -7,6 +7,8 @@ import { MENU_LINKS } from "data/profile";
 import { RootStateOrAny, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import placeholder from "assets/images/placeholder/avatar.png";
+import { Button } from "components/FormComponents";
+import { apiCaller } from "utils/fetcher";
 
 type HeroProps = {
   user: Object;
@@ -22,19 +24,58 @@ type User = {
   discordHandle?: string;
 };
 
-const Hero: FC<HeroProps> = ({ user }) => {
-  let userData = user as User;
-  const router = useRouter();
-  const profileData = useSelector(
-    (state: RootStateOrAny) => state.profile.data
+const FollowButton: FC<{
+  username: string;
+  updateFollowingCount: (change: number) => void;
+}> = ({ username, updateFollowingCount }) => {
+  const [following, setFollowing] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  const checkIfFollowing = async () => {
+    try {
+      const {
+        data: { following },
+      } = await apiCaller(`/users/${username}/follow`);
+      setFollowing(following);
+    } catch {}
+    setLoading(false);
+  };
+
+  const toggleFollow = async () => {
+    setLoading(true);
+    try {
+      await apiCaller.post(
+        `/users/${username}/${following ? "unfollow" : "follow"}`
+      );
+      setFollowing(!following);
+      updateFollowingCount(following ? -1 : 1);
+    } catch {}
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    checkIfFollowing();
+  }, []);
+
+  return (
+    <Button disableOnLoading loading={loading} onClick={toggleFollow}>
+      {following ? "Following" : "Follow"}
+    </Button>
   );
+};
+
+const Hero: FC<HeroProps> = ({ user }) => {
+  const [profile, setProfile] = useState<User>(user as User);
+  const router = useRouter();
+  const { profileData, logged } = useSelector((state: RootStateOrAny) => ({
+    profileData: state.profile.data,
+    logged: state.auth.logged,
+  }));
   let self = false;
-  if (profileData) {
-    self = userData.username === profileData.username;
+  if (logged && profileData) {
+    self = profile.username === profileData.username;
   }
-
-  const toggleFollow = () => {};
-
+  //hide follow if not logged
   return (
     <div>
       <Banner
@@ -43,18 +84,28 @@ const Hero: FC<HeroProps> = ({ user }) => {
           imageUrl: "/images/placeholder/post/post_one.png",
           price: "5",
         }}
-        smallImage={userData.profileImageLink || placeholder.src}
+        smallImage={profile.profileImageLink || placeholder.src}
       />
       <div className="flex justify-end">
-        <button
-          onClick={() => (self ? router.push("/profile") : toggleFollow())}
-          className="mr-5 -mt-10 rounded-full btn btn-secondary"
-        >
-          {self ? "Update Profile" : "Follow"}
-        </button>
+        {logged &&
+          (self ? (
+            <Button onClick={() => router.push("/profile")}>
+              Update Profile
+            </Button>
+          ) : (
+            <FollowButton
+              username={profile.username}
+              updateFollowingCount={(number) => {
+                setProfile({
+                  ...profile,
+                  followerCount: profile.followerCount + number,
+                });
+              }}
+            />
+          ))}
       </div>
       <div className="flex justify-center">
-        <span className="text-lg font-bold ">{userData.username}</span>
+        <span className="text-lg font-bold ">{profile.username}</span>
       </div>
       <div className="flex justify-center gap-4 mt-4">
         <button className="gap-2 text-sm normal-case rounded-full btn btn-primary">
@@ -71,31 +122,31 @@ const Hero: FC<HeroProps> = ({ user }) => {
 "
             />
           </svg>
-          {userData.followerCount} Followers
+          {profile.followerCount} Followers
         </button>
-        {userData.githubUsername && (
+        {profile.githubUsername && (
           <a
             className="bg-white btn btn-circle"
             target={"__blank"}
-            href={`https://github.com/${userData.githubUsername}`}
+            href={`https://github.com/${profile.githubUsername}`}
           >
             <AiFillGithub size={22} color="#000" />
           </a>
         )}
-        {userData.twitterUsername && (
+        {profile.twitterUsername && (
           <a
             className="bg-white btn btn-circle"
             target={"__blank"}
-            href={`https://twitter.com/${userData.twitterUsername}`}
+            href={`https://twitter.com/${profile.twitterUsername}`}
           >
             <AiOutlineTwitter size={22} color="#55ACEE" />
           </a>
         )}
-        {userData.discordHandle && (
+        {profile.discordHandle && (
           <a
             className="bg-white btn btn-circle"
             target={"__blank"}
-            href={`https://discord.com/${userData.discordHandle}`}
+            href={`https://discord.com/${profile.discordHandle}`}
           >
             <FaDiscord size={22} color="#7289D9" />
           </a>
@@ -104,18 +155,18 @@ const Hero: FC<HeroProps> = ({ user }) => {
       <div className="flex justify-center mt-6">
         <span className="max-w-[750px] text-sm text-center text-gray-950">
           {self ? (
-            userData.bio ? (
-              userData.bio
+            profile.bio ? (
+              profile.bio
             ) : (
               <div className="badge badge-xl">Your profile is missing bio</div>
             )
           ) : (
-            userData.bio
+            profile.bio
           )}
         </span>
       </div>
       <div className="flex justify-center gap-8 mt-8">
-        {MENU_LINKS(userData.username).map(({ link, exact, title }, index) => (
+        {MENU_LINKS(profile.username).map(({ link, exact, title }, index) => (
           <Link
             href={link}
             key={link}

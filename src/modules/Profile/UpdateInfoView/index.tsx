@@ -66,16 +66,42 @@ const UsernameInput: FC<{
   );
 };
 
+export const ProfileFields: FC<{
+  sharedProps: any;
+  setFieldError: Function;
+  setStatus: Function;
+  ignoreBio?: Boolean;
+}> = ({ sharedProps, setFieldError, setStatus, ignoreBio = false }) => {
+  return (
+    <>
+      <UsernameInput
+        sharedProps={sharedProps}
+        setFieldError={setFieldError}
+        setLoading={(loading) =>
+          setStatus(loading ? "checkingUsername" : undefined)
+        }
+      />
+      <FormikInput name="twitterUsername" {...sharedProps} />
+      <FormikInput name="discordHandle" {...sharedProps} />
+      <FormikInput name="githubUsername" {...sharedProps} />
+      {!ignoreBio && <FormikTextArea name="bio" {...sharedProps} />}
+    </>
+  );
+};
+
 const Form = () => {
   const dispatch = useDispatch();
   const profileData = useSelector(
     (state: RootStateOrAny) => state.profile.data
   );
-  const { username, bio } = profileData;
+  const { username, bio, githubUsername, twitterUsername, discordHandle } =
+    profileData;
   const initialValues = {
     username,
     bio,
-    githubUsername: "Helllo",
+    githubUsername,
+    twitterUsername,
+    discordHandle,
   };
 
   return (
@@ -120,18 +146,12 @@ const Form = () => {
         return (
           <Container onSubmit={handleSubmit}>
             <Stack spacing={3}>
-              <UsernameInput
+              <ProfileFields
                 sharedProps={sharedProps}
                 setFieldError={setFieldError}
-                setLoading={(loading) =>
-                  setStatus(loading ? "checkingUsername" : undefined)
-                }
+                setStatus={setStatus}
               />
-              {/* <FormikInput name="twitterUsername" {...sharedProps} />
-              <FormikInput name="discordHandle" {...sharedProps} />
-            */}
-              <FormikInput name="githubUsername" {...sharedProps} />
-              <FormikTextArea name="bio" {...sharedProps} />
+
               {/* <Error
                 onClick={() => setTopLevelError("")}
                 show={Boolean(topLevelError)}
