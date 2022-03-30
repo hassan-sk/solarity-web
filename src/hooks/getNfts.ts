@@ -1,9 +1,14 @@
-import { Connection, clusterApiUrl } from "@solana/web3.js";
-import { getParsedNftAccountsByOwner } from "@nfteyez/sol-rayz";
+import { Connection, clusterApiUrl, PublicKey } from "@solana/web3.js";
+import {
+  getParsedAccountByMint,
+  getParsedNftAccountsByOwner,
+} from "@nfteyez/sol-rayz";
 import { RootStateOrAny, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
-export const getNfts = (publicAddress?: string): [any[], Boolean, Boolean] => {
+export const getNfts = (
+  publicAddress?: string
+): [nfts: any[], loading: Boolean, error: Boolean] => {
   const [nfts, setNfts] = <any[]>useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -22,7 +27,7 @@ export const getNfts = (publicAddress?: string): [any[], Boolean, Boolean] => {
       if (publicAddress) {
         const connection = new Connection(clusterApiUrl("mainnet-beta"));
         getParsedNftAccountsByOwner({
-          publicAddress: "31W6QazPT8dSXvWLCg8yPktLga5nSg6cXysbwnuSQPPu",
+          publicAddress,
           connection,
         })
           .then((nfts) => {

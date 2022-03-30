@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 import { Connection, clusterApiUrl } from "@solana/web3.js";
 import { getParsedNftAccountsByOwner } from "@nfteyez/sol-rayz";
 import Select from "components/SelectInput";
+import { getNfts } from "hooks";
 
 type ArtProps = {
   publicAddress: string;
@@ -97,23 +98,31 @@ export const NftCard: FC<NftCardProps> = ({
 };
 
 const Art: FC<ArtProps> = ({ publicAddress }) => {
-  const [nfts, setNfts] = useState<
-    { mint: string; data: { name: string; uri: string } }[]
-  >([]);
+  const [nfts, loading, error] = getNfts();
 
-  const getNfts = async () => {
-    const connection = new Connection(clusterApiUrl("mainnet-beta"));
-    const nfts = await getParsedNftAccountsByOwner({
-      // testing
-      publicAddress: "31W6QazPT8dSXvWLCg8yPktLga5nSg6cXysbwnuSQPPu",
-      connection,
-    });
-    setNfts(nfts);
-  };
+  if (loading) {
+    return (
+      <div className="alert alert-warning shadow-lg w-full mb-5">
+        <span>Loading NFTs...</span>
+      </div>
+    );
+  }
 
-  useEffect(() => {
-    getNfts();
-  }, []);
+  if (error) {
+    return (
+      <div className="alert alert-error shadow-lg w-full mb-5">
+        <span>Error Loading NFTs...</span>
+      </div>
+    );
+  }
+
+  if (!loading && nfts.length == 0) {
+    return (
+      <div className="alert alert-info shadow-lg w-full mb-5">
+        <span>You don't own any NFTs...</span>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col">

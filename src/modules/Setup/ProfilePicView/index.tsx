@@ -117,7 +117,7 @@ const ProfilePicView = () => {
       <div className="flex flex-1 container justify-center pt-20">
         <div className="flex-1 max-w-lg ">
           <div className="alert alert-info shadow-lg">
-            <span>Error loading the setup page</span>
+            <span>Error loading the profile image selector</span>
           </div>
         </div>
       </div>

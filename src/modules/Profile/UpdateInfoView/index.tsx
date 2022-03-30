@@ -179,7 +179,7 @@ const Form = () => {
 const UpdateInfoView = () => {
   return (
     <div>
-      <h3 className="font-bold text-2xl pb-5">Edit Profile</h3>
+      <h3 className="font-bold text-2xl pb-5">Update Profile</h3>
       <Form />
     </div>
   );

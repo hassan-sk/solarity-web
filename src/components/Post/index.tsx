@@ -18,7 +18,25 @@ import AframeComp8 from "components/AframeComp8";
 import AframeComp9 from "components/AframeComp9";
 
 const index = ({
-  data: { title, subtitle, likes, vr, vr1, vr2, vr3, vr4, vr5, vr6, vr7, vr8, vr9, type, tags, progress, user },
+  data: {
+    title,
+    subtitle,
+    likes,
+    vr,
+    vr1,
+    vr2,
+    vr3,
+    vr4,
+    vr5,
+    vr6,
+    vr7,
+    vr8,
+    vr9,
+    type,
+    tags,
+    progress,
+    user,
+  },
 }: {
   data: Post;
 }) => {
@@ -83,245 +101,229 @@ const index = ({
             </div>
           )}
           {vr && (
-          <div className="relative w-full h-[229px] rounded-2xl mt-4">
-            {/* <Image
+            <div className="relative w-full h-[229px] rounded-2xl mt-4">
+              {/* <Image
               src={vr.imageUrl}
               alt={title}
               layout="fill"
               objectFit="cover"
               className="rounded-2xl"
             /> */}
-            {/* <iframe 
+              {/* <iframe 
             > */}
-            <AframeComp />
-            {/* </iframe> */}
-            {/*{vr && (
+              <AframeComp />
+              {/* </iframe> */}
+              {/*{vr && (
               <button className="absolute gap-3 text-lg font-bold btn rounded-3xl bottom-2 right-2 bg-transparentwhite">
                 <VR />
                 VR
               </button>
             )}*/}
-          </div>
-
-        
-        )}
-        {vr1 && (
-          <div className="relative w-full h-[229px] rounded-2xl mt-4">
-            {/* <Image
+            </div>
+          )}
+          {vr1 && (
+            <div className="relative w-full h-[229px] rounded-2xl mt-4">
+              {/* <Image
               src={vr.imageUrl}
               alt={title}
               layout="fill"
               objectFit="cover"
               className="rounded-2xl"
             /> */}
-            {/* <iframe 
+              {/* <iframe 
             > */}
-            <AframeComp1 />
-            {/* </iframe> */}
-            {vr1.price && (
-              <button className="absolute text-sm font-bold bg-white rounded-full btn top-2 right-2 text-secondary">
-                {vr1.price} $VRS
-              </button>
-            )}
-            {/*{vr && (
+              <AframeComp1 />
+              {/* </iframe> */}
+              {vr1.price && (
+                <button className="absolute text-sm font-bold bg-white rounded-full btn top-2 right-2 text-secondary">
+                  {vr1.price} $VRS
+                </button>
+              )}
+              {/*{vr && (
               <button className="absolute gap-3 text-lg font-bold btn rounded-3xl bottom-2 right-2 bg-transparentwhite">
                 <VR />
                 VR
               </button>
             )}*/}
-          </div>
-
-        
-        )}
-        {vr2 && (
-          <div className="relative w-full h-[229px] rounded-2xl mt-4">
-            {/* <Image
+            </div>
+          )}
+          {vr2 && (
+            <div className="relative w-full h-[229px] rounded-2xl mt-4">
+              {/* <Image
               src={vr.imageUrl}
               alt={title}
               layout="fill"
               objectFit="cover"
               className="rounded-2xl"
             /> */}
-            {/* <iframe 
+              {/* <iframe 
             > */}
-            <AframeComp2 />
-            {/* </iframe> */}
-            {vr2.price && (
-              <button className="absolute text-sm font-bold bg-white rounded-full btn top-2 right-2 text-secondary">
-                {vr2.price} $VRS
-              </button>
-            )}
-            {/*{vr && (
+              <AframeComp2 />
+              {/* </iframe> */}
+              {vr2.price && (
+                <button className="absolute text-sm font-bold bg-white rounded-full btn top-2 right-2 text-secondary">
+                  {vr2.price} $VRS
+                </button>
+              )}
+              {/*{vr && (
               <button className="absolute gap-3 text-lg font-bold btn rounded-3xl bottom-2 right-2 bg-transparentwhite">
                 <VR />
                 VR
               </button>
             )}*/}
-          </div>
-
-        
-        )}
-        {vr3 && (
-          <div className="relative w-full h-[229px] rounded-2xl mt-4">
-            {/* <Image
+            </div>
+          )}
+          {vr3 && (
+            <div className="relative w-full h-[229px] rounded-2xl mt-4">
+              {/* <Image
               src={vr.imageUrl}
               alt={title}
               layout="fill"
               objectFit="cover"
               className="rounded-2xl"
             /> */}
-            {/* <iframe 
+              {/* <iframe 
             > */}
-            <AframeComp3 />
-            {/* </iframe> */}
-            {vr3.price && (
-              <button className="absolute text-sm font-bold bg-white rounded-full btn top-2 right-2 text-secondary">
-                {vr3.price} $VRS
-              </button>
-            )}
-            {/*{vr && (
+              <AframeComp3 />
+              {/* </iframe> */}
+              {vr3.price && (
+                <button className="absolute text-sm font-bold bg-white rounded-full btn top-2 right-2 text-secondary">
+                  {vr3.price} $VRS
+                </button>
+              )}
+              {/*{vr && (
               <button className="absolute gap-3 text-lg font-bold btn rounded-3xl bottom-2 right-2 bg-transparentwhite">
                 <VR />
                 VR
               </button>
             )}*/}
-          </div>
-        )}
-        {vr4 && (
-          <div className="relative w-full h-[229px] rounded-2xl mt-4">
-            {/* <Image
+            </div>
+          )}
+          {vr4 && (
+            <div className="relative w-full h-[229px] rounded-2xl mt-4">
+              {/* <Image
               src={vr.imageUrl}
               alt={title}
               layout="fill"
               objectFit="cover"
               className="rounded-2xl"
             /> */}
-            {/* <iframe 
+              {/* <iframe 
             > */}
-            <AframeComp4 />
-            {/* </iframe> */}
-            {/*{vr && (
+              <AframeComp4 />
+              {/* </iframe> */}
+              {/*{vr && (
               <button className="absolute gap-3 text-lg font-bold btn rounded-3xl bottom-2 right-2 bg-transparentwhite">
                 <VR />
                 VR
               </button>
             )}*/}
-          </div>
-
-        
-        )}
-        {vr5 && (
-          <div className="relative w-full h-[229px] rounded-2xl mt-4">
-            {/* <Image
+            </div>
+          )}
+          {vr5 && (
+            <div className="relative w-full h-[229px] rounded-2xl mt-4">
+              {/* <Image
               src={vr.imageUrl}
               alt={title}
               layout="fill"
               objectFit="cover"
               className="rounded-2xl"
             /> */}
-            {/* <iframe 
+              {/* <iframe 
             > */}
-            <AframeComp5 />
-            {/* </iframe> */}
-            {vr5.price && (
-              <button className="absolute text-sm font-bold bg-white rounded-full btn top-2 right-2 text-secondary">
-                {vr5.price} $VRS
-              </button>
-            )}
-            {/*{vr && (
+              <AframeComp5 />
+              {/* </iframe> */}
+              {vr5.price && (
+                <button className="absolute text-sm font-bold bg-white rounded-full btn top-2 right-2 text-secondary">
+                  {vr5.price} $VRS
+                </button>
+              )}
+              {/*{vr && (
               <button className="absolute gap-3 text-lg font-bold btn rounded-3xl bottom-2 right-2 bg-transparentwhite">
                 <VR />
                 VR
               </button>
             )}*/}
-          </div>
-
-        
-        )}
-        {vr7 && (
-          <div className="relative w-full h-[229px] rounded-2xl mt-4">
-            {/* <Image
+            </div>
+          )}
+          {vr7 && (
+            <div className="relative w-full h-[229px] rounded-2xl mt-4">
+              {/* <Image
               src={vr.imageUrl}
               alt={title}
               layout="fill"
               objectFit="cover"
               className="rounded-2xl"
             /> */}
-            {/* <iframe 
+              {/* <iframe 
             > */}
-            <AframeComp7 />
-            {/* </iframe> */}
-            {vr7.price && (
-              <button className="absolute text-sm font-bold bg-white rounded-full btn top-2 right-2 text-secondary">
-                {vr7.price} $VRS
-              </button>
-            )}
-            {/*{vr && (
+              <AframeComp7 />
+              {/* </iframe> */}
+              {vr7.price && (
+                <button className="absolute text-sm font-bold bg-white rounded-full btn top-2 right-2 text-secondary">
+                  {vr7.price} $VRS
+                </button>
+              )}
+              {/*{vr && (
               <button className="absolute gap-3 text-lg font-bold btn rounded-3xl bottom-2 right-2 bg-transparentwhite">
                 <VR />
                 VR
               </button>
             )}*/}
-          </div>
-
-        
-        )}
-        {vr8 && (
-          <div className="relative w-full h-[229px] rounded-2xl mt-4">
-            {/* <Image
+            </div>
+          )}
+          {vr8 && (
+            <div className="relative w-full h-[229px] rounded-2xl mt-4">
+              {/* <Image
               src={vr.imageUrl}
               alt={title}
               layout="fill"
               objectFit="cover"
               className="rounded-2xl"
             /> */}
-            {/* <iframe 
+              {/* <iframe 
             > */}
-            <AframeComp8 />
-            {/* </iframe> */}
-            {vr8.price && (
-              <button className="absolute text-sm font-bold bg-white rounded-full btn top-2 right-2 text-secondary">
-                {vr8.price} $VRS
-              </button>
-            )}
-            {/*{vr && (
+              <AframeComp8 />
+              {/* </iframe> */}
+              {vr8.price && (
+                <button className="absolute text-sm font-bold bg-white rounded-full btn top-2 right-2 text-secondary">
+                  {vr8.price} $VRS
+                </button>
+              )}
+              {/*{vr && (
               <button className="absolute gap-3 text-lg font-bold btn rounded-3xl bottom-2 right-2 bg-transparentwhite">
                 <VR />
                 VR
               </button>
             )}*/}
-          </div>
-
-        
-        )}
-                {vr9 && (
-          <div className="relative w-full h-[229px] rounded-2xl mt-4">
-            {/* <Image
+            </div>
+          )}
+          {vr9 && (
+            <div className="relative w-full h-[229px] rounded-2xl mt-4">
+              {/* <Image
               src={vr.imageUrl}
               alt={title}
               layout="fill"
               objectFit="cover"
               className="rounded-2xl"
             /> */}
-            {/* <iframe 
+              {/* <iframe 
             > */}
-            <AframeComp9 />
-            {/* </iframe> */}
-            {vr9.price && (
-              <button className="absolute text-sm font-bold bg-white rounded-full btn top-2 right-2 text-secondary">
-                {vr9.price} $VRS
-              </button>
-            )}
-            {/*{vr && (
+              <AframeComp9 />
+              {/* </iframe> */}
+              {vr9.price && (
+                <button className="absolute text-sm font-bold bg-white rounded-full btn top-2 right-2 text-secondary">
+                  {vr9.price} $VRS
+                </button>
+              )}
+              {/*{vr && (
               <button className="absolute gap-3 text-lg font-bold btn rounded-3xl bottom-2 right-2 bg-transparentwhite">
                 <VR />
                 VR
               </button>
             )}*/}
-          </div>
-
-        
-        )}
+            </div>
+          )}
         </div>
       </div>
       <Footer type={type} />

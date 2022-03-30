@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import AavatartPlaceholder from "assets/images/placeholder/avatar.png";
+import avatar from "assets/images/placeholder/avatar.png";
 import Image from "next/image";
 import { Download, Love, Calendar, Share } from "components/Icons";
 
@@ -15,7 +15,13 @@ const Footer = ({ type }: { type: PostType }) => {
           <div className="flex items-center">
             <Link href="/users/123" passHref>
               <a className="flex flex-row">
-                <Image src={AavatartPlaceholder} alt="user avatar" />
+                <Image
+                  src={avatar}
+                  alt="user avatar"
+                  height={35}
+                  width={35}
+                  className="rounded-full"
+                />
               </a>
             </Link>
             <div className="ml-1 text-sm text-secondary">u/rayvtoriq_</div>
