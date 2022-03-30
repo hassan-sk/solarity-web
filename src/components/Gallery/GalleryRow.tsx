@@ -4,7 +4,12 @@ import GalleryItem from "components/Gallery/GalleryItem";
 
 import { GalleryRow } from "modal/Gallery";
 
-const GalleryRow: FC<GalleryRow> = ({ title, items, detail, itemsPerRow }) => {
+const GalleryRowComponent: FC<GalleryRow> = ({
+  title,
+  items,
+  detail,
+  itemsPerRow,
+}) => {
   return (
     <div className="flex flex-col">
       <GalleryRowHeader title={title} detail={detail} />
@@ -21,4 +26,4 @@ const GalleryRow: FC<GalleryRow> = ({ title, items, detail, itemsPerRow }) => {
   );
 };
 
-export default GalleryRow;
+export default GalleryRowComponent;

@@ -4,7 +4,7 @@ import Image from "next/image";
 import { TickCircle, Bid } from "components/Icons";
 import { GalleryItem } from "modal/Gallery";
 
-const GalleryItem: FC<GalleryItem> = ({
+const GalleryItemComponent: FC<GalleryItem> = ({
   title,
   collection,
   imageUrl,
@@ -12,7 +12,7 @@ const GalleryItem: FC<GalleryItem> = ({
   endingIn,
   subtitle,
   type = "bid",
-  applicationNumber
+  applicationNumber,
 }) => {
   return (
     <div className="flex flex-col group ">
@@ -182,4 +182,4 @@ const GalleryItem: FC<GalleryItem> = ({
   );
 };
 
-export default GalleryItem;
+export default GalleryItemComponent;
