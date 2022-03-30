@@ -55,7 +55,6 @@ const FollowButton: FC<{
 
   useEffect(() => {
     checkIfFollowing();
-    console.log("Checking if following the user");
   }, []);
 
   return (
