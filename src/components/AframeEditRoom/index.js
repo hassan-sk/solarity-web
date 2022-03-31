@@ -25,7 +25,7 @@ export default function AframeEditRoom ({picNo, setPicNo, chooseFlag, setChooseF
   }, [])
 
   useEffect(() => {
-    if(chooseFlag) {alert('chooseFlag');
+    if(chooseFlag) {
       var frameEl = document.querySelector(`.picno${picNo}`);
       var frame_imageEL = document.createElement('a-image');
       frameEl.appendChild(frame_imageEL);

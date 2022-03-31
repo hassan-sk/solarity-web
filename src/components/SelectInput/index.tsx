@@ -3,6 +3,7 @@ import { Popover } from "@headlessui/react";
 import { CaretDown } from "components/Icons";
 import classNames from "classnames";
 import { overrideTailwindClasses } from "tailwind-override";
+import Link from "next/link";
 
 const SelectInput = ({
   title,
@@ -26,10 +27,10 @@ const SelectInput = ({
       </Popover.Button>
       <Popover.Panel className="absolute z-10 rounded-lg bg-brandblack">
         <div className="flex flex-col p-5">
-          <a href="/analytics">Analytics</a>
-          <a href="/engagement">Engagement</a>
-          <a href="/security">Security</a>
-          <a href="/integrations">Integrations</a>
+          <Link href="/analytics">Analytics</Link>
+          <Link href="/engagement">Engagement</Link>
+          <Link href="/security">Security</Link>
+          <Link href="/integrations">Integrations</Link>
         </div>
       </Popover.Panel>
     </Popover>

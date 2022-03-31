@@ -40,10 +40,7 @@ const ButtonWallet = () => {
           width="34"
           className="rounded-full"
           style={{ outline: "2px solid white" }}
-          src={
-            (profileData.profileImage && profileData.profileImage.link) ||
-            placeholder.src
-          }
+          src={profileData.profileImageLink || placeholder.src}
           alt="user avatar"
         />
       </a>

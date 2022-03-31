@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const withPlugins = require("next-compose-plugins");
-const webpack = require('webpack')
+const webpack = require("webpack");
 
 /** eslint-disable @typescript-eslint/no-var-requires */
 const withTM = require("next-transpile-modules")([
@@ -42,18 +42,18 @@ const plugins = [
 ];
 
 const env = Object.keys(process.env).reduce(function (o, k) {
-  o['process.env.' + k] = JSON.stringify(process.env[k])
-  return o
-}, {})
+  o["process.env." + k] = JSON.stringify(process.env[k]);
+  return o;
+}, {});
 
 const nextConfig = {
   distDir: "build",
-  swcMinify: true,
+  swcMinify: false,
   typescript: {
     ignoreBuildErrors: true,
   },
   images: {
-    domains: ['i.pravatar.cc'],
+    domains: ["i.pravatar.cc"],
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {
@@ -63,9 +63,7 @@ const nextConfig = {
       // minimization brakes Public Key names
       config.optimization.minimize = false;
     }
-    config.plugins.push(
-      new webpack.DefinePlugin(env)
-    )
+    config.plugins.push(new webpack.DefinePlugin(env));
     return config;
   },
 };

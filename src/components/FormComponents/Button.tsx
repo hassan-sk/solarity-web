@@ -2,7 +2,7 @@ import React, { FC } from "react";
 
 interface ButtonProps {
   type?: "button" | "submit";
-  children: string | number;
+  children: React.ReactNode;
   variant?:
     | "primary"
     | "secondary"

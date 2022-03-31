@@ -14,7 +14,6 @@ const DisclosureButton = () => {
   }));
 
   if (!logged) return <div></div>;
-
   return (
     <div className="flex flex-col">
       <Disclosure>
@@ -24,10 +23,7 @@ const DisclosureButton = () => {
               <img
                 style={{ height: 40, outline: "3px solid white" }}
                 className="rounded-full"
-                src={
-                  (profileData.profileImage && profileData.profileImage.link) ||
-                  placeholder.src
-                }
+                src={profileData.profileImageLink || placeholder.src}
                 alt="user avatar"
               />
               <div className="flex flex-col items-start">
