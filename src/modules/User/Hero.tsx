@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, Fragment, useEffect, useState } from "react";
 import Banner from "components/Banner";
 import Link from "components/Link";
 import { AiFillGithub, AiOutlineTwitter } from "react-icons/ai";
@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import placeholder from "assets/images/placeholder/avatar.png";
 import { Button } from "components/FormComponents";
 import { apiCaller } from "utils/fetcher";
+import { FollowerList } from "./FollowerList";
 
 type HeroProps = {
   user: Object;
@@ -67,6 +68,7 @@ const FollowButton: FC<{
 
 const Hero: FC<HeroProps> = ({ user }) => {
   const [profile, setProfile] = useState<User>(user as User);
+  const [showFollowers, setShowFollowers] = useState(false);
   const router = useRouter();
   const { profileData, logged } = useSelector((state: RootStateOrAny) => ({
     profileData: state.profile.data,
@@ -76,9 +78,19 @@ const Hero: FC<HeroProps> = ({ user }) => {
   if (logged && profileData) {
     self = profile.username === profileData.username;
   }
+
+  useEffect(() => {
+    if (!showFollowers) return;
+  }, [showFollowers]);
+
   //hide follow if not logged
   return (
     <div>
+      <FollowerList
+        username={profile.username}
+        open={showFollowers}
+        onClose={() => setShowFollowers(false)}
+      />
       <Banner
         vrprofile={{
           featured: true,
@@ -109,7 +121,10 @@ const Hero: FC<HeroProps> = ({ user }) => {
         <span className="text-lg font-bold ">{profile.username}</span>
       </div>
       <div className="flex justify-center gap-4 mt-4">
-        <button className="gap-2 text-sm normal-case rounded-full btn btn-primary">
+        <button
+          className="gap-2 text-sm normal-case rounded-full btn btn-primary"
+          onClick={() => setShowFollowers(true)}
+        >
           <svg
             width="24"
             height="24"
