@@ -98,7 +98,7 @@ export const NftCard: FC<NftCardProps> = ({
 };
 
 const Art: FC<ArtProps> = ({ publicAddress }) => {
-  const [nfts, loading, error] = getNfts();
+  const [nfts, loading, error] = getNfts(publicAddress);
 
   if (loading) {
     return (
@@ -119,7 +119,7 @@ const Art: FC<ArtProps> = ({ publicAddress }) => {
   if (!loading && nfts.length == 0) {
     return (
       <div className="alert alert-info shadow-lg w-full mb-5">
-        <span>You don't own any NFTs...</span>
+        <span>This user doesn't own any NFTs...</span>
       </div>
     );
   }
