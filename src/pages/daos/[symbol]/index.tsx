@@ -6,7 +6,6 @@ import Hero from "modules/DAOS/Hero";
 import { getServerSideProps } from "modules/DAOS";
 
 const Index: FC<{ dao: any; success: Boolean }> = ({ dao, success }) => {
-  console.log(success);
   if (!success) {
     return <div>404 DAO not found</div>;
   }

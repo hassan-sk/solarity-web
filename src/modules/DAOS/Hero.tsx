@@ -1,13 +1,56 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import Banner from "components/Banner";
 import { AiFillGithub, AiOutlineTwitter } from "react-icons/ai";
 import { FaDiscord } from "react-icons/fa";
 import placeholder from "../../assets/images/placeholder/avatar.png";
 import { RootStateOrAny, useSelector } from "react-redux";
 import Link from "next/link";
+import { apiCaller } from "utils/fetcher";
+import { Button } from "../../components/FormComponents";
 
-const Hero: FC<{ dao: any }> = ({ dao }) => {
+const FollowButton: FC<{
+  symbol: string;
+  updateFollowingCount: (change: number) => void;
+}> = ({ symbol, updateFollowingCount }) => {
+  const [following, setFollowing] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  const checkIfFollowing = async () => {
+    try {
+      const {
+        data: { following },
+      } = await apiCaller(`/daos/${symbol}/follow`);
+      setFollowing(following);
+    } catch {}
+    setLoading(false);
+  };
+
+  const toggleFollow = async () => {
+    setLoading(true);
+    try {
+      await apiCaller.post(
+        `/daos/${symbol}/${following ? "unfollow" : "follow"}`
+      );
+      setFollowing(!following);
+      updateFollowingCount(following ? -1 : 1);
+    } catch {}
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    checkIfFollowing();
+  }, []);
+
+  return (
+    <Button disableOnLoading loading={loading} onClick={toggleFollow}>
+      {following ? "Following" : "Follow"}
+    </Button>
+  );
+};
+
+const Hero: FC<{ dao: any }> = ({ dao: initialDao }) => {
   const logged = useSelector((state: RootStateOrAny) => state.auth.logged);
+  const [dao, setDao] = useState(initialDao);
   return (
     <div className="mb-10">
       <Banner
@@ -20,9 +63,12 @@ const Hero: FC<{ dao: any }> = ({ dao }) => {
       />
       {logged && (
         <div className="flex justify-end">
-          <button className="mr-5 -mt-10 rounded-full btn btn-secondary">
-            Follow
-          </button>
+          <FollowButton
+            symbol={dao.symbol}
+            updateFollowingCount={(number) => {
+              setDao({ ...dao, followerCount: dao.followerCount + number });
+            }}
+          />
         </div>
       )}
       <div className="pt-2 flex flex-col justify-center items-center">
