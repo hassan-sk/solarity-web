@@ -39,8 +39,9 @@ export const InputWrapper: FC<InputWrapperProps> = ({
     }
   }, [String(value)]);
   const normalizedName = name
+    ?.toString()
     .replace(/([A-Z])/g, " $1")
-    .replace(/^./, function (str) {
+    .replace(/^./, function (str: string) {
       return str.toUpperCase();
     });
   if (!label) label = normalizedName;
