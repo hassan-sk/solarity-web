@@ -155,13 +155,13 @@ export default function AframeEditRoom ({picNo, setPicNo, chooseFlag, setChooseF
                   </a-plane>
                 )
               }
-              <a-image width="1.5" height="2" class="clickable nocollision" simple-link="href: ../hub/hub.html"
+              {/* <a-image width="1.5" height="2" class="clickable nocollision" simple-link="href: ../hub/hub.html"
                       src="#hub-img" position="-1.9 1.1 2.9" rotation="0 0 0" material=" shader: liquid-portal">
                   <a-box color="black" width="1.5" position="0 -1 0" height="0.1" depth="0.1"></a-box>
                   <a-box color="black" width="1.5" position="0 1 0" height="0.1" depth="0.1"></a-box>
                   <a-box color="black" width="0.1" position="0.7 0 0" height="1.9" depth="0.1"></a-box>
                   <a-box color="black" width="0.1" position="-0.7 0 0" height="1.9" depth="0.1"></a-box>
-              </a-image>
+              </a-image> */}
               <a-sky src="#sky-img"></a-sky>
           </a-scene>
       )
