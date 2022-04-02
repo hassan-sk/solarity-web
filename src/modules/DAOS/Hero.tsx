@@ -1,12 +1,13 @@
-import React from "react";
+import React, { FC } from "react";
 import Banner from "components/Banner";
-import Link from 'components/Link'
 import { AiFillGithub, AiOutlineTwitter } from "react-icons/ai";
 import { FaDiscord } from "react-icons/fa";
+import placeholder from "../../assets/images/placeholder/avatar.png";
+import { RootStateOrAny, useSelector } from "react-redux";
+import Link from "next/link";
 
-import { MENU_LINKS } from "data/profile";
-
-const Hero = () => {
+const Hero: FC<{ dao: any }> = ({ dao }) => {
+  const logged = useSelector((state: RootStateOrAny) => state.auth.logged);
   return (
     <div className="mb-10">
       <Banner
@@ -15,15 +16,18 @@ const Hero = () => {
           imageUrl: "/images/placeholder/post/post_one.png",
           price: "5",
         }}
-        smallImage="/gid.gif"
+        smallImage={dao.profileImageLink || placeholder.src}
       />
-      <div className="flex justify-end">
-        <button className="mr-5 -mt-10 rounded-full btn btn-secondary">
-          Follow
-        </button>
-      </div>
-      <div className="flex justify-center">
-        <span className="text-lg font-bold ">Solana Money Boys</span>
+      {logged && (
+        <div className="flex justify-end">
+          <button className="mr-5 -mt-10 rounded-full btn btn-secondary">
+            Follow
+          </button>
+        </div>
+      )}
+      <div className="pt-2 flex flex-col justify-center items-center">
+        <span className="text-lg font-bold ">{dao.name}</span>
+        <span className="text-sm text-gray-500">@{dao.symbol}</span>
       </div>
       <div className="flex justify-center gap-4 mt-4">
         <button className="gap-2 text-sm normal-case rounded-full btn btn-primary">
@@ -39,22 +43,39 @@ const Hero = () => {
               fill="#6163FF"
             />
           </svg>
-          22.5K Followers
+          {dao.followerCount} Followers
         </button>
-        <button className="bg-white btn btn-circle">
-          <AiFillGithub size={22} color="#000" />
-        </button>{" "}
-        <button className="bg-white btn btn-circle">
-          <AiOutlineTwitter size={22} color="#55ACEE" />
-        </button>
-        <button className="bg-white btn btn-circle">
-          <FaDiscord size={22} color="#7289d9" />
-        </button>
+        {dao.githubUsername && (
+          <a
+            className="bg-white btn btn-circle"
+            target="__blank"
+            href={`https://github.com/${dao.githubUsername}`}
+          >
+            <AiFillGithub size={22} color="#000" />
+          </a>
+        )}
+        {dao.twitterUsername && (
+          <a
+            className="bg-white btn btn-circle"
+            target="__blank"
+            href={`https://twitter.com/${dao.twitterUsername}`}
+          >
+            <AiOutlineTwitter size={22} color="#55ACEE" />
+          </a>
+        )}
+        {dao.discordHandle && (
+          <a
+            className="bg-white btn btn-circle"
+            target="__blank"
+            href={`https://discord.com/${dao.discordHandle}`}
+          >
+            <FaDiscord size={22} color="#7289d9" />
+          </a>
+        )}
       </div>
       <div className="flex justify-center mt-6">
         <span className="max-w-[750px] text-sm text-center text-gray-950">
-        4,444 Money Boys Building the metaverse. For the best insights and NFT analytic tools visit our platform.
- 
+          {dao.description}
         </span>
       </div>
     </div>

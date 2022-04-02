@@ -1,10 +1,10 @@
-import React from "react";
+import React, { FC } from "react";
 import { Twitter, Discord } from "components/Icons";
 import GalleryItem from "components/GalleryLand/GalleryItem";
 
 import { WORLD_GALLERY } from "data/daos";
 
-const Home = () => {
+const Home: FC<{ dao: any }> = ({ dao }) => {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-8 py-8 mt-8 border divide-y rounded-3xl border-brandblack divide-[#1F2125]">
@@ -12,15 +12,13 @@ const Home = () => {
           <span className="text-lg font-bold ">Price Filter</span>
           <div className="grid grid-cols-2 text-[15px] gap-4">
             <span className="font-semibold">Supply</span>
-            <span className="text-right">4444</span>
+            <span className="text-right">{dao.supply}</span>
             <span className="font-semibold">Token: </span>
-            <span className="text-sm text-right">
-              $MBC
-            </span>
+            <span className="text-sm text-right">{dao.token}</span>
             <span className="font-semibold ">Staking rewards:</span>
-            <span className="text-right">130% APY</span>
+            <span className="text-right">{dao.stackingRewards}% APY</span>
             <span className="font-semibold ">Floor price</span>
-            <span className="text-right">20 SOL</span>
+            <span className="text-right">{dao.floorPrice} SOL</span>
           </div>
           <div className="flex gap-4">
             <button className="gap-2 text-xs normal-case rounded-full btn btn-primary">

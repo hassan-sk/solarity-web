@@ -1,10 +1,15 @@
-import React from "react";
+import React, { FC } from "react";
 
-const SearchInput = () => {
+const SearchInput: FC<{
+  value: string;
+  onChange: (e: any) => void;
+  onSubmit: () => void;
+}> = ({ value, onChange, onSubmit }) => {
   return (
-    <div className="relative w-full text-gray-600 focus-within:text-gray-400">
+    <div className="relative w-full max-w-md text-gray-600 focus-within:text-gray-400">
       <span className="absolute inset-y-0 flex items-center pl-2 left-2 ">
         <button
+          onClick={onSubmit}
           type="submit"
           className="p-1 focus:outline-none focus:shadow-outline"
         >
@@ -23,9 +28,11 @@ const SearchInput = () => {
       </span>
       <input
         type="search"
-        className="w-full py-4 pl-12 text-[15px] text-white rounded-full bg-primary focus:outline-none focus:bg-black focus:text-white placeholder:text-gray-950Í"
+        className="w-full py-3 pl-12 text-[15px] text-white rounded-full bg-primary focus:outline-none focus:bg-black focus:text-white placeholder:text-gray-950Í"
         placeholder="Search"
         autoComplete="off"
+        onChange={onChange}
+        value={value}
       />
     </div>
   );
