@@ -11,10 +11,10 @@ const Dao: FC<DaoCardProps> = ({ name, symbol, profileImageLink, pageURL }) => {
   return (
     <div className="flex flex-col items-center justify-start gap-6 p-8 transition-all ease-in border cursor-pointer b bg-brandblack rounded-3xl hover:bg-base-100 border-brandblack">
       <Link href={`/daos/${symbol}`} passHref>
-        <a>
+        <a className="flex flex-col items-center">
           <img
             src={profileImageLink}
-            className="max-w-77 max-h-77 rounded-full"
+            className="w-[120px] rounded-full"
             alt={name}
           />
           <p className="pt-2 text-md font-bold text-center leading-tight">
