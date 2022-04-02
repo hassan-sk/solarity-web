@@ -24,7 +24,6 @@ const Banner: FC<BannerProps> = ({ vrprofile, vrdao, smallImage }) => {
       {vrprofile && (
         <div className="relative w-full h-[400px] rounded-2xl -mt-5">
           <AframeComp2 />
-          {/* </iframe> */}
           {vrprofile.price && (
             <Link
               href={
