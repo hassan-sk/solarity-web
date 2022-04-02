@@ -143,12 +143,12 @@ const Yours: FC<{ daos: any }> = ({ daos }) => {
 
   return (
     <div className="flex flex-col mb-10 -mt-4 gap-7">
-      {logged && (
+      {/* {logged && (
         <>
           <YourDaos />
           <YourUnions />
         </>
-      )}
+      )} */}
       <AllDaos initialDaos={daos} />
     </div>
   );
