@@ -32,8 +32,7 @@ export default function AframeComp2() {
   useEffect(() => {
     require("aframe/dist/aframe-master.js");
     setMounted(true);
-    console.log(rooms);
-    if (rooms.length == 0) {
+    if (!rooms || (rooms && rooms.length == 0)) {
       setPermition(false);
     }
   }, []);
