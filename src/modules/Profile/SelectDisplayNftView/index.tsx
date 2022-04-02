@@ -1,11 +1,15 @@
 import { Button, Input, Stack } from "components/FormComponents";
 import React, { useEffect, useState } from "react";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import AframeEditRoom from "components/AframeEditRoom";
 import { getNfts } from "hooks";
 import { NftCardSelect } from "modules/User/NftCardSelect";
-const SelectDisplayNftView = () => {
+import { updateNftCard } from "redux/slices/profileSlice";
 
-  const [nfts, nftLoading, nftError] = getNfts();
+const SelectDisplayNftView = () => {
+  const dispatch = useDispatch();
+
+  const [nfts, nftLoading, nftError] = getNfts('EFgDpKoNqVCerHjDR7G4bAUFQERkr1jwjw2dtVUtosrG');
   const [loading, setLoading] = useState<Boolean>(false);
   const [selected, setSelected] = useState<string>();
   const [imageUrl, setImageUrl] = useState<string>();
@@ -37,6 +41,19 @@ const SelectDisplayNftView = () => {
     );
   }
   var chooseNft = () => {
+    dispatch(
+      updateNftCard({
+        data: {
+          roomId: 0, 
+          picNo: picNo,
+          mintAddress: selected, 
+          link: imageUrl
+        },
+        successFunction: () => {},
+        errorFunction: () => {},
+        finalFunction: () => {},
+      })
+    );
     setChooseFlag(true);
   }
 
@@ -68,13 +85,10 @@ const SelectDisplayNftView = () => {
           </div>
           <div className="mt-2">
             { picNo != '0' ? (
-              <div className="float-left">
+              <div className="float-right">
                 <Button wrap onClick={chooseNft}>Choose</Button>
               </div>) : (<div></div>)
             }
-            <div className="float-right">
-              <Button wrap>Update</Button>
-            </div>
           </div>
         </div>
       </Stack>

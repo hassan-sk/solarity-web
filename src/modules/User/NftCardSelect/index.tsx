@@ -20,12 +20,17 @@ export const NftCardSelect: FC<NftCardProps> = ({
     collection?: { name: string };
     image?: string;
   }>({});
-  const getDetails = async () => {
-    const details = await fetch(uri, {
+  const getDetails = () => {
+    fetch(uri, {
       mode: "cors",
       credentials: "omit",
-    });
-    setDetails(await details.json());
+    })
+    .then(details1 => {
+      if(!details1)
+        return;
+      details1.json().then(res => {setDetails(res)});
+    })
+    .catch(error => console.error('Error: ', error));
   };
   useEffect(() => {
     getDetails();

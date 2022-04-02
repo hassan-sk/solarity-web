@@ -124,6 +124,35 @@ export const updateProfileInfo = createAsyncThunk(
   }
 );
 
+export const updateNftCard = createAsyncThunk(
+  "profile/updateNftCard",
+  async ({
+    data,
+    successFunction,
+    errorFunction,
+    finalFunction,
+  }: {
+    data: Object;
+    successFunction: () => void;
+    errorFunction: (error: string) => void;
+    finalFunction: () => void;
+  }) => {
+    let returnValue = null;
+    try {
+      const {
+        data: { profile },
+      } = await apiCaller.post("/profile/selectNftsForRoom", data);
+      successFunction();
+      returnValue = profile;
+    } catch (err) {
+      errorFunction(getErrorMessage(err));
+      returnValue = false;
+    }
+    finalFunction();
+    return returnValue;
+  }
+);
+
 export const profileSlice = createSlice({
   name: "profile",
   initialState,
@@ -158,6 +187,11 @@ export const profileSlice = createSlice({
       }
     });
     builder.addCase(updateProfileInfo.fulfilled, (state, action) => {
+      if (action.payload) {
+        profileSlice.caseReducers.setProfile(state, action);
+      }
+    });
+    builder.addCase(updateNftCard.fulfilled, (state, action) => {
       if (action.payload) {
         profileSlice.caseReducers.setProfile(state, action);
       }
