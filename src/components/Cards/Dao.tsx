@@ -14,7 +14,7 @@ const Dao: FC<DaoCardProps> = ({ name, symbol, profileImageLink, pageURL }) => {
         <a>
           <img
             src={profileImageLink}
-            className="min-w-77 min-h-77 rounded-full"
+            className="max-w-77 max-h-77 rounded-full"
             alt={name}
           />
           <p className="pt-2 text-md font-bold text-center leading-tight">
