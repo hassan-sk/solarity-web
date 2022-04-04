@@ -63,7 +63,7 @@ export default function AframeEditRoom({
     require("aframe/dist/aframe-master.js");
     setMounted(true);
     if (!rooms || (rooms && rooms.length == 0)) {
-      setPermition(false);
+      setPermition(true);
     }
   }, []);
 
@@ -228,7 +228,38 @@ export default function AframeEditRoom({
             visible="false"
             position="0 0 0"
           ></a-entity>
+              <a-gltf-model shadow="cast: true; receive: true" class="model" src="#room-gltf" position="0 0 0"
+                            scale="1 1 1"></a-gltf-model>
+              <a-gltf-model shadow="cast: true; receive: true" class="model" src="#arcade-gltf" position="0 0 0"
+                            scale="1 1 1"></a-gltf-model>
+              <a-gltf-model shadow="cast: true; receive: true" class="model" src="#atm-gltf" position="0 0 0"
+                            scale="1 1 1"></a-gltf-model>
+              <a-gltf-model shadow="cast: true; receive: true" class="model" src="#chair-gltf" position="0 0 0"
+                            scale="1 1 1"></a-gltf-model>
+              <a-gltf-model shadow="cast: true; receive: true" class="model clickable nocollision" src="#vr-gltf"
+                            simple-link="href: ../solarity-build-v-3/dist/index.html" position="0.4 1 -2.6" scale="1 1 1">
+              </a-gltf-model>
+              <a-entity id="navmesh" class="model" gltf-model="/assets/models/navmesh.gltf" visible="false" position="0 0 0"></a-entity>
 
+              <a-entity position="0 2 0" rotation="0 0 0"
+                        light="type: point; intensity:  5; distance: 10; decay: 1; color:  #FFFFFF; cast-shadow: false; shadowCameraVisible: false;">
+              </a-entity>
+              <a-entity position="2.7 1 -0.35" rotation="-30 110 0"
+                        light="type: spot; intensity:  0.2; distance:0.6; penumbra: 0.5; decay: 1; color:  #FFFFFF; cast-shadow: true; shadow-map-height: 1024; shadow-map-width: 1024; shadowCameraVisible: false;">
+              </a-entity>
+              <a-entity light="type: ambient; intensity: 0.2; color:  #FFFFFF; shadowCameraVisible: false;"></a-entity>
+              {
+                assets.map((asset, index) => 
+                  <a-plane class = {`frame picno${index + 1} clickable`} cursor-listen={`picno: ${index + 1}`} position={asset.pos} width="1.1" height="1.1" rotation={asset.rot} material="shader:standard;" color="#111122">
+                  {
+                    !!rooms[0] && !!rooms[0].nftStates && rooms[0].nftStates.map((nft, index1) => {
+                      if (index + 1 == nft.no) 
+                        return (<a-image src={nft.link} width="1.1" height="1.1" position="" material="" geometry=""></a-image>)
+                    })
+                  }
+                  </a-plane>
+                )
+              }
           <a-entity
             position="0 2 0"
             rotation="0 0 0"

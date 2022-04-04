@@ -33,7 +33,7 @@ export default function AframeComp2() {
     require("aframe/dist/aframe-master.js");
     setMounted(true);
     if (!rooms || (rooms && rooms.length == 0)) {
-      setPermition(false);
+      setPermition(true);
     }
   }, []);
   if (permition) {
