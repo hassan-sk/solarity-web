@@ -22,16 +22,15 @@ export const HERO_DATA: HeroProps = {
   },
 };
 
-
 export const HOME_POSTS: Post[] = [
   {
     title: "&#128264; Announcements: Weekly Pay Roll",
     subtitle: `4,444 Money Boys Building the metaverse. For the best insights and NFT analytic tools visit our platform`,
     likes: 19,
     type: "announcement",
-    user:{
-      avatar:'/images/placeholder/avatars/one.png',
-      name:'Leonora 🔆'
+    user: {
+      avatar: "/images/placeholder/avatars/one.png",
+      name: "Leonora 🔆",
     },
     tags: [
       {
@@ -48,9 +47,9 @@ export const HOME_POSTS: Post[] = [
     title: "Yoo I'm gonna be broker, we just addes slots! ",
     subtitle: `Building the metaverse block by block with the open framework of webXR. <br/>Let's revoultionize web3XR together!`,
     likes: 19,
-    user:{
-      avatar:'/images/placeholder/avatars/two.png',
-      name:'Amari 🔆'
+    user: {
+      avatar: "/images/placeholder/avatars/two.png",
+      name: "Amari 🔆",
     },
     type: "featured",
     vr: {
@@ -65,9 +64,9 @@ export const HOME_POSTS: Post[] = [
     Quickly restore accurate metrics through corporate customer service. Energistically synthesize enterprise outsourcing rather than competitive infrastructures. Appropriately target timely e-business through covalent alignments. `,
     likes: 19,
     type: "normal",
-    user:{
-      avatar:'/images/placeholder/avatars/one.png',
-      name:'GRP 🔆'
+    user: {
+      avatar: "/images/placeholder/avatars/one.png",
+      name: "GRP 🔆",
     },
     tags: [
       {
@@ -81,14 +80,15 @@ export const HOME_POSTS: Post[] = [
     ],
   },
   {
-    title: "Should we switch to <span class='text-secondary'> Minecraft</span> skins?",
+    title:
+      "Should we switch to <span class='text-secondary'> Minecraft</span> skins?",
     subtitle: `Exploring the launchpad section I found this guy who reproduced Minecraft in VR with just JS. With a few clicks we could have those textures.
     <br>Pretty sure it is just a matter of APIs to get Sol running inside of it, pumped!  `,
     likes: 19,
     type: "normal",
-    user:{
-      avatar:'/images/placeholder/avatars/one.png',
-      name:'GRP 🔆'
+    user: {
+      avatar: "/images/placeholder/avatars/one.png",
+      name: "GRP 🔆",
     },
     vr7: {
       featured: true,
@@ -112,33 +112,28 @@ export const TAGS: TagsLinkCollectionProps = {
   tags: [
     {
       label: "Home",
-      link: "/daos/moneyboys",
+      link: (symbol: string) => `/daos/${symbol}`,
     },
     {
       label: "Marketplace",
-      link: "/daos/moneyboys/market",
+      link: (symbol: string) => `/daos/${symbol}/market`,
     },
     {
       label: "Voting",
-      link: "/daos/moneyboys/voting",
+      link: (symbol: string) => `/daos/${symbol}/voting`,
     },
     {
       label: "Members",
-      link: "/daos/moneyboys/members",
+      link: (symbol: string) => `/daos/${symbol}/members`,
     },
     {
       label: "Vault",
-      link: "/daos/moneyboys/vault",
+      link: (symbol: string) => `/daos/${symbol}/vault`,
     },
     {
       label: "Infra",
-      link: "/daos/moneyboys/infra",
+      link: (symbol: string) => `/daos/${symbol}/infra`,
     },
-    {
-      label: "Marketplace",
-      link: "/daos/moneyboys/market",
-    },
-
   ],
 };
 
@@ -233,11 +228,11 @@ export const POSTS: Post[] = [
     likes: 19,
     type: "announcement",
     progress: 85,
-    user:{
-      avatar:'/images/placeholder/avatars/boh.png',
-      name:'0x'
+    user: {
+      avatar: "/images/placeholder/avatars/boh.png",
+      name: "0x",
     },
-    
+
     tags: [
       {
         title: "Core",
@@ -255,11 +250,11 @@ export const POSTS: Post[] = [
     likes: 19,
     type: "announcement",
     progress: 85,
-    user:{
-      avatar:'/images/placeholder/avatars/solboys.png',
-      name:'tMETA 🔆'
+    user: {
+      avatar: "/images/placeholder/avatars/solboys.png",
+      name: "tMETA 🔆",
     },
-    
+
     tags: [
       {
         title: "Core",
@@ -277,11 +272,11 @@ export const POSTS: Post[] = [
     likes: 19,
     type: "announcement",
     progress: 85,
-    user:{
-      avatar:'/images/placeholder/avatars/metro.png',
-      name:'Young Metro'
+    user: {
+      avatar: "/images/placeholder/avatars/metro.png",
+      name: "Young Metro",
     },
-    
+
     tags: [
       {
         title: "Core",
@@ -299,11 +294,11 @@ export const POSTS: Post[] = [
     likes: 19,
     type: "announcement",
     progress: 85,
-    user:{
-      avatar:'/images/placeholder/avatars/boh.png',
-      name:'Briggs'
+    user: {
+      avatar: "/images/placeholder/avatars/boh.png",
+      name: "Briggs",
     },
-    
+
     tags: [
       {
         title: "Core",
@@ -321,11 +316,11 @@ export const POSTS: Post[] = [
     likes: 19,
     type: "announcement",
     progress: 85,
-    user:{
-      avatar:'/images/placeholder/avatars/boh.png',
-      name:'GRP 🔆'
+    user: {
+      avatar: "/images/placeholder/avatars/boh.png",
+      name: "GRP 🔆",
     },
-    
+
     tags: [
       {
         title: "Core",
@@ -343,11 +338,11 @@ export const POSTS: Post[] = [
     likes: 19,
     type: "announcement",
     progress: 85,
-    user:{
-      avatar:'/images/placeholder/avatars/solboys.png',
-      name:'Briggs '
+    user: {
+      avatar: "/images/placeholder/avatars/solboys.png",
+      name: "Briggs ",
     },
-    
+
     tags: [
       {
         title: "Core",
@@ -437,7 +432,7 @@ export const Members: MembersListProps[] = [
         points: "+ 145",
         votes: "100",
         voteColor: "warning",
-      }, 
+      },
     ],
   },
 ];
@@ -454,14 +449,14 @@ export const WORLD_GALLERY: GalleryLand = {
           invites: 420,
           imageUrl: "/images/placeholder/daos/world/one.png",
         },
-        
       ],
     },
   ],
 };
 
 export const TOKEN_BALANCES: TokenBalancesProps = {
-  title: "Treasury Token Balances \xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0  124414414 USD",
+  title:
+    "Treasury Token Balances \xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0  124414414 USD",
   tokens: [
     {
       title: "SOL",
@@ -609,158 +604,157 @@ export const YOUR_DAO: DaoCardProps[] = [
   {
     title: "Money Boys",
     imageURL: "/images/placeholder/your-dao/moneyboys.png",
-    pageURL: "/daos/moneyboys"
+    pageURL: "/daos/moneyboys",
   },
   {
     title: "SolGods",
     imageURL: "/images/placeholder/your-dao/solgods.png",
-    pageURL: "/daos/SolGods"
+    pageURL: "/daos/SolGods",
   },
   {
     title: "DeDAO",
-    imageURL:'/images/placeholder/your-dao/degods.png',
-    pageURL: "/daos/deDAO"
+    imageURL: "/images/placeholder/your-dao/degods.png",
+    pageURL: "/daos/deDAO",
   },
   {
     title: "MonkeDAO",
-    imageURL:'/images/placeholder/avatars/monkeround.png',
-    pageURL: "/daos/MonkeDAO"
+    imageURL: "/images/placeholder/avatars/monkeround.png",
+    pageURL: "/daos/MonkeDAO",
   },
   {
     title: "DegenDAO",
-    imageURL:'/images/placeholder/avatars/degencircle.png',
-    pageURL: "/daos/DegenDAO"
-  }
+    imageURL: "/images/placeholder/avatars/degencircle.png",
+    pageURL: "/daos/DegenDAO",
+  },
 ];
 
 export const YOUR_UNIONS: DaoCardProps[] = [
   {
     title: "WebXR Union",
     imageURL: "/images/placeholder/your-dao/webxr.png",
-    pageURL: ""
+    pageURL: "",
   },
   {
     title: "Sol Devs Union",
     imageURL: "/images/icons/tokens/solana.png",
-    pageURL: ""
+    pageURL: "",
   },
   {
     title: "Sol Devs Union",
-    imageURL:'/images/placeholder/daos/rust-modified.png',
-    pageURL: ""
+    imageURL: "/images/placeholder/daos/rust-modified.png",
+    pageURL: "",
   },
   {
     title: "3D Union",
-    imageURL:'/images/placeholder/daos/diocane-modified.png',
-    pageURL: ""
+    imageURL: "/images/placeholder/daos/diocane-modified.png",
+    pageURL: "",
   },
   {
     title: "Gov Union",
-    imageURL:'/images/placeholder/daos/yours/five.png',
-    pageURL: ""
-  }
+    imageURL: "/images/placeholder/daos/yours/five.png",
+    pageURL: "",
+  },
 ];
-
 
 export const DISCOVER: DaoCardProps[] = [
   {
     title: "Yield Farming",
     imageURL: "/images/placeholder/daos/yours/discover/1.png",
-    pageURL: ""
+    pageURL: "",
   },
   {
     title: "SCTF1",
     imageURL: "/images/placeholder/daos/yours/discover/2.png",
-    pageURL: ""
+    pageURL: "",
   },
   {
     title: "SERUM",
-    imageURL:'/images/placeholder/daos/yours/discover/3.png',
-    pageURL: ""
+    imageURL: "/images/placeholder/daos/yours/discover/3.png",
+    pageURL: "",
   },
   {
     title: "Off My Head",
-    imageURL:'/images/placeholder/daos/yours/discover/4.png',
-    pageURL: ""
+    imageURL: "/images/placeholder/daos/yours/discover/4.png",
+    pageURL: "",
   },
   {
     title: "Soltato",
-    imageURL:'/images/placeholder/daos/yours/discover/5.png',
-    pageURL: ""
+    imageURL: "/images/placeholder/daos/yours/discover/5.png",
+    pageURL: "",
   },
   {
     title: "Metaplex Foundation",
     imageURL: "/images/placeholder/daos/yours/discover/6.png",
-    pageURL: ""
+    pageURL: "",
   },
   {
     title: "21DAO",
     imageURL: "/images/placeholder/daos/yours/discover/7.png",
-    pageURL: ""
+    pageURL: "",
   },
   {
     title: "Cardinal",
-    imageURL:'/images/placeholder/daos/yours/discover/8.png',
-    pageURL: ""
+    imageURL: "/images/placeholder/daos/yours/discover/8.png",
+    pageURL: "",
   },
   {
     title: "21DAO",
-    imageURL:'/images/placeholder/daos/yours/discover/9.png',
-    pageURL: ""
+    imageURL: "/images/placeholder/daos/yours/discover/9.png",
+    pageURL: "",
   },
   {
     title: "OVERNANCE DAO",
-    imageURL:'/images/placeholder/daos/yours/discover/10.png',
-    pageURL: ""
+    imageURL: "/images/placeholder/daos/yours/discover/10.png",
+    pageURL: "",
   },
   {
     title: "Friends and Family DAO",
     imageURL: "/images/placeholder/daos/yours/discover/11.png",
-    pageURL: ""
+    pageURL: "",
   },
   {
     title: "The Sanctuary",
     imageURL: "/images/placeholder/daos/yours/discover/12.png",
-    pageURL: ""
+    pageURL: "",
   },
   {
     title: "Phantasia",
-    imageURL:'/images/placeholder/daos/yours/discover/13.png',
-    pageURL: ""
+    imageURL: "/images/placeholder/daos/yours/discover/13.png",
+    pageURL: "",
   },
   {
     title: "Strangemood Foundation",
-    imageURL:'/images/placeholder/daos/yours/discover/14.png',
-    pageURL: ""
+    imageURL: "/images/placeholder/daos/yours/discover/14.png",
+    pageURL: "",
   },
   {
     title: "GRAPE",
-    imageURL:'/images/placeholder/daos/yours/discover/15.png',
-    pageURL: ""
+    imageURL: "/images/placeholder/daos/yours/discover/15.png",
+    pageURL: "",
   },
   {
     title: "MonkeDAO",
     imageURL: "/images/placeholder/daos/yours/discover/16.png",
-    pageURL: ""
+    pageURL: "",
   },
   {
     title: "MonkOG DAO",
     imageURL: "/images/placeholder/daos/yours/discover/17.png",
-    pageURL: ""
+    pageURL: "",
   },
   {
     title: "NoGoalDAO",
-    imageURL:'/images/placeholder/daos/yours/discover/18.png',
-    pageURL: ""
+    imageURL: "/images/placeholder/daos/yours/discover/18.png",
+    pageURL: "",
   },
   {
     title: "Marinade.Finance",
-    imageURL:'/images/placeholder/daos/yours/discover/19.png',
-    pageURL: ""
+    imageURL: "/images/placeholder/daos/yours/discover/19.png",
+    pageURL: "",
   },
   {
     title: "Chicken Tribe",
-    imageURL:'/images/placeholder/daos/yours/discover/20.png',
-    pageURL: ""
-  }
+    imageURL: "/images/placeholder/daos/yours/discover/20.png",
+    pageURL: "",
+  },
 ];
