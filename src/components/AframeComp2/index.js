@@ -158,7 +158,8 @@ export default function AframeComp2() {
               material="shader:standard;"
               color="#111122"
             >
-              {!!rooms[0] &&
+              {rooms &&
+                !!rooms[0] &&
                 !!rooms[0].nftStates &&
                 rooms[0].nftStates.map((nft, index1) => {
                   if (index + 1 == nft.no)

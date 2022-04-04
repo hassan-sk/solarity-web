@@ -10,13 +10,14 @@ const SelectDisplayNftView = () => {
   const dispatch = useDispatch();
   const { profileData } = useSelector((state: RootStateOrAny) => ({
     profileData: state.profile.data,
-  }));console.log(profileData);
+  }));
+  console.log(profileData);
   const [nfts, nftLoading, nftError] = getNfts(profileData.publicAddress);
   const [loading, setLoading] = useState<Boolean>(false);
   const [selected, setSelected] = useState<string>();
   const [imageUrl, setImageUrl] = useState<string>();
   const [error, setError] = useState<string | Boolean>(false);
-  const [picNo, setPicNo] = useState<string>('0');
+  const [picNo, setPicNo] = useState<string>("0");
   const [chooseFlag, setChooseFlag] = useState<string | Boolean>(false);
 
   if (loading) {
@@ -37,7 +38,7 @@ const SelectDisplayNftView = () => {
     return (
       <div className="alert alert-info shadow-lg w-full">
         <span>
-          You don't own any NFTs so you will not be able to set your profile pic
+          You don't own any NFTs so you will not be able to buy a room
         </span>
       </div>
     );
@@ -46,10 +47,10 @@ const SelectDisplayNftView = () => {
     dispatch(
       updateNftCard({
         data: {
-          roomId: 0, 
+          roomId: 0,
           picNo: picNo,
-          mintAddress: selected, 
-          link: imageUrl
+          mintAddress: selected,
+          link: imageUrl,
         },
         successFunction: () => {},
         errorFunction: () => {},
@@ -57,40 +58,49 @@ const SelectDisplayNftView = () => {
       })
     );
     setChooseFlag(true);
-  }
+  };
 
   return (
     <div>
-      <span className="font-bold text-2xl">Select NFTs to Display in Room.</span>
+      <span className="font-bold text-2xl">
+        Select NFTs to Display in Room.
+      </span>
       <Stack spacing={3}>
         <div className="relative w-full h-[229px] rounded-2xl mt-4">
-          <AframeEditRoom 
-            chooseFlag={chooseFlag} 
-            setChooseFlag={setChooseFlag} 
-            picNo={picNo} 
+          <AframeEditRoom
+            chooseFlag={chooseFlag}
+            setChooseFlag={setChooseFlag}
+            picNo={picNo}
             setPicNo={setPicNo}
             imageUrl={imageUrl}
           />
         </div>
         <div className="p-2">
           <div className="h-[110px] rounded-xl border border-brandblack flex flex-wrap items-center overflow-x-auto scrollbar-thin scrollbar-thumb-black scrollbar-track-white">
-          {nfts.map(({ mint, data: { name, uri } }, index) => (
-            <NftCardSelect
-              mint={mint}
-              uri={uri}
-              name={name}
-              key={index}
-              selected={mint == selected}
-              onClick={(mint: any, uri: any) => {setSelected(mint);setImageUrl(uri)}}
-            />
-          ))}
+            {nfts.map(({ mint, data: { name, uri } }, index) => (
+              <NftCardSelect
+                mint={mint}
+                uri={uri}
+                name={name}
+                key={index}
+                selected={mint == selected}
+                onClick={(mint: any, uri: any) => {
+                  setSelected(mint);
+                  setImageUrl(uri);
+                }}
+              />
+            ))}
           </div>
           <div className="mt-2">
-            { picNo != '0' ? (
+            {picNo != "0" ? (
               <div className="float-right">
-                <Button wrap onClick={chooseNft}>Choose</Button>
-              </div>) : (<div></div>)
-            }
+                <Button wrap onClick={chooseNft}>
+                  Choose
+                </Button>
+              </div>
+            ) : (
+              <div></div>
+            )}
           </div>
         </div>
       </Stack>
