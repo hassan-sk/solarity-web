@@ -13,7 +13,7 @@ const ProfileIndex: FC<UserPageProps> = ({ user, success }) => {
       rightSidebar={<RightSidebar />}
       heroContent={<Hero user={user || {}} />}
     >
-      <Home />
+      <Home user={user} />
     </Layout>
   );
 };

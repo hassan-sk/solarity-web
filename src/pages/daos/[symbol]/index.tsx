@@ -14,7 +14,7 @@ const Index: FC<{ dao: any; success: Boolean }> = ({ dao, success }) => {
       rightSidebar={<RightSidebar dao={dao} />}
       heroContent={<Hero dao={dao} />}
     >
-      <Home />
+      <Home dao={dao} />
     </Layout>
   );
 };

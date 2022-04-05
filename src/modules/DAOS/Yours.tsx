@@ -36,16 +36,61 @@ const fetchDaos = async ({
 };
 
 const YourDaos = () => {
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [daos, setDaos] = useState<any>([]);
+  const fetchFunction = () =>
+    fetchDaos({
+      member: true,
+      onSuccess: (daos) => setDaos(daos),
+      onError: () => setError(true),
+      onFinally: () => setLoading(false),
+    });
+
+  useEffect(() => {
+    fetchFunction();
+  }, []);
+
+  const Header = () => (
+    <GalleryRowHeader
+      title="Your DAOs"
+      detail="In a goldberg Polyhedron there are 12 pentagons, those will be the community leaders, so choose carefully! They can be single members, or other DAOs"
+    />
+  );
+
+  if (loading) {
+    return (
+      <>
+        <Header />
+        <div className="alert alert-info">Loading Your DAOs...</div>
+      </>
+    );
+  }
+
+  if (error) {
+    return (
+      <>
+        <Header />
+        <div className="alert alert-error">Error Loading Your DAOs</div>
+      </>
+    );
+  }
+
+  if (daos.length == 0) {
+    return (
+      <>
+        <Header />
+        <div className="alert alert-warning">You are not part of any DAOs</div>
+      </>
+    );
+  }
+
   return (
     <>
-      <GalleryRowHeader
-        title="Your DAOs"
-        detail="In a goldberg Polyhedron there are 12 pentagons, those will be the community leaders, so choose carefully! They can be single members, or other DAOs"
-      />
+      <Header />
       <div className="grid grid-cols-5 gap-3">
-        {YOUR_DAO.map((dao, index) => (
-          <DaoCard key={index} {...dao} />
-        ))}
+        {daos.length > 0 &&
+          daos.map((dao, index) => <DaoCard key={index} {...dao} />)}
       </div>
     </>
   );
@@ -143,12 +188,12 @@ const Yours: FC<{ daos: any }> = ({ daos }) => {
 
   return (
     <div className="flex flex-col mb-10 -mt-4 gap-7">
-      {/* {logged && (
+      {logged && (
         <>
           <YourDaos />
-          <YourUnions />
+          {/* <YourUnions /> */}
         </>
-      )} */}
+      )}
       <AllDaos initialDaos={daos} />
     </div>
   );

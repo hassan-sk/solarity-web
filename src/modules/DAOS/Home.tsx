@@ -1,13 +1,11 @@
-import React from "react";
+import React, { FC } from "react";
 import Base from "modules/DAOS/Base";
 import Posts from "modules/Home/Posts";
 
-import { HOME_POSTS } from "data/daos";
-
-const Home = () => {
+const Home: FC<{ dao: any }> = ({ dao }) => {
   return (
     <Base>
-        <Posts posts={HOME_POSTS} />
+      <Posts accountType="dao" dao={dao} />
     </Base>
   );
 };
