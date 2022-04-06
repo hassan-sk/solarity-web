@@ -1,33 +1,71 @@
 import React from "react";
 import Link from "next/link";
-import avatar from "assets/images/placeholder/avatar.png";
+import avatarPlaceholder from "assets/images/placeholder/avatar.png";
 import Image from "next/image";
 import { Download, Love, Calendar, Share } from "components/Icons";
 
-import { PostType } from "modal/post";
+import { AccountType, PostType } from "modal/post";
+import { minifyNumber } from "utils";
 
-const Footer = ({ type }: { type: PostType }) => {
+const Footer = ({
+  type,
+  accountType,
+  user,
+  likes,
+  retweets,
+}: {
+  type: PostType;
+  accountType: AccountType;
+  likes?: number;
+  retweets?: number;
+  user: {
+    name: string;
+    avatar: string;
+  };
+}) => {
   return (
     <div className="border-t justify-between  border-[hsl(210,9%,9%)] flex px-10 py-5 bg-[#1F2125] border-l border-r border-l-darkcharcoal border-r-darkcharcoal w-full">
       <div className="flex gap-6">
         <div className="flex items-center justify-center gap-3">
           <span className="text-xs text-gray-950">Posted by</span>
           <div className="flex items-center">
-            <Link href="/users/123" passHref>
+            <Link
+              href={`${accountType === "dao" ? "/dao" : ""}/${user.name}`}
+              passHref
+            >
               <a className="flex flex-row">
-                <Image
-                  src={avatar}
+                <img
+                  src={user.avatar || avatarPlaceholder}
                   alt="user avatar"
-                  height={35}
-                  width={35}
-                  className="rounded-full"
+                  className="rounded-full h-[35px] w-[35px]"
                 />
               </a>
             </Link>
-            <div className="ml-1 text-sm text-secondary">u/rayvtoriq_</div>
+            <div className="ml-1 text-sm text-secondary">{user.name}</div>
           </div>
         </div>
-        {type !== "announcement" && (
+        {type === "tweet" && (
+          <>
+            {retweets && (
+              <div className="flex items-center justify-center gap-3">
+                <Share />
+                <span className="text-xs text-gray-950">
+                  {minifyNumber(retweets)} Retweets
+                </span>
+              </div>
+            )}
+            {likes !== 0 && (
+              <div className="flex items-center justify-center gap-3">
+                <Love />
+                <span className="text-xs text-gray-950">
+                  {minifyNumber(likes || 0)} Favorites
+                </span>
+              </div>
+            )}
+          </>
+        )}
+
+        {!["announcement", "tweet"].includes(type) && (
           <>
             <div className="flex items-center justify-center gap-3">
               <Download />

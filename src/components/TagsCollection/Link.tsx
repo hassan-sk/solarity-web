@@ -2,18 +2,20 @@ import React, { FC } from "react";
 import Link from "components/Link";
 
 export interface TagsLinkCollectionProps {
+  symbol: string;
   tags: {
     label: string;
-    link: string;
+    link: (symbol: string) => string;
   }[];
 }
 
-const TagsCollection: FC<TagsLinkCollectionProps> = ({ tags }) => {
+const TagsCollection: FC<TagsLinkCollectionProps> = ({ tags, symbol }) => {
+  console.log(symbol);
   return (
     <div className="flex flex-wrap gap-2 ">
       {tags.map((tag, index) => (
         <Link
-          href={tag.link}
+          href={tag.link(symbol)}
           key={index}
           exact
           className="text-sm font-normal normal-case rounded-full btn btn-sm h-7"

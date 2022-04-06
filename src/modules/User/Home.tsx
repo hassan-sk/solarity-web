@@ -1,11 +1,11 @@
-import React from "react";
+import React, { FC } from "react";
 import { PROFILE_POSTS } from "data/profile";
 
 import Posts from "modules/Home/Posts";
-const Home = () => {
+const Home: FC<{ user: any }> = ({ user }) => {
   return (
     <div>
-      <Posts posts={PROFILE_POSTS} />
+      <Posts user={user} accountType={"user"} />
     </div>
   );
 };

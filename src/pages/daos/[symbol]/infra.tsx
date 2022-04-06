@@ -1,3 +1,4 @@
+import Infra from "modules/DAOS/Infra";
 import React, { FC } from "react";
 import Layout from "components/Layout";
 import Home from "modules/DAOS/Home";
@@ -14,7 +15,7 @@ const Index: FC<{ dao: any; success: Boolean }> = ({ dao, success }) => {
       rightSidebar={<RightSidebar dao={dao} />}
       heroContent={<Hero dao={dao} />}
     >
-      <Home dao={dao} />
+      <Infra />
     </Layout>
   );
 };

@@ -2,9 +2,10 @@ import React from "react";
 import Image from "next/image";
 import classnames from "classnames";
 import Tags from "components/Post/Tags";
-import { Post } from "modal/post";
+import { AccountType, Post } from "modal/post";
 import Footer from "components/Post/Footer";
 import { VR } from "components/Icons";
+import { minifyNumber } from "utils";
 
 import AframeComp from "components/AframeComp";
 import AframeComp1 from "components/AframeComp1";
@@ -18,10 +19,13 @@ import AframeComp8 from "components/AframeComp8";
 import AframeComp9 from "components/AframeComp9";
 
 const index = ({
+  accountType,
   data: {
     title,
     subtitle,
     likes,
+    retweets,
+    time,
     vr,
     vr1,
     vr2,
@@ -39,18 +43,14 @@ const index = ({
   },
 }: {
   data: Post;
+  accountType: AccountType;
 }) => {
   return (
     <div>
       <div className="flex gap-4  bg-[#1F2125] px-5 py-3 border-l border-darkcharcoal border-r ">
         <div className="flex">
           <div className="relative mt-3 w-14 h-14">
-            <Image
-              src={user.avatar}
-              alt={title}
-              layout="fill"
-              className="rounded-full"
-            />
+            <img src={user.avatar} alt={title} className="rounded-full" />
           </div>
         </div>
         <div className="flex flex-col w-full">
@@ -71,22 +71,24 @@ const index = ({
 
             {type !== "announcement" ? (
               <div className="flex flex-col items-end">
-                <span className="text-sm font-bold">{likes}</span>
+                <span className="text-sm font-bold">{minifyNumber(likes)}</span>
                 {type !== "featured" && (
-                  <span className="text-xs text-gray-950">9 hours ago</span>
+                  <span className="text-xs text-gray-950">{time}</span>
                 )}
               </div>
             ) : (
               <button className="rounded-full btn btn-primary">ACTIVE</button>
             )}
           </div>
-          {subtitle && (
+          {subtitle && typeof subtitle === "string" ? (
             <span
               className="mt-2 text-sm leading-5"
               dangerouslySetInnerHTML={{
                 __html: subtitle,
               }}
             />
+          ) : (
+            typeof subtitle === "function" && subtitle()
           )}
           {progress && (
             <div className="flex items-center justify-end w-full gap-6">
@@ -326,7 +328,13 @@ const index = ({
           )}
         </div>
       </div>
-      <Footer type={type} />
+      <Footer
+        user={user}
+        accountType={accountType}
+        type={type}
+        likes={likes}
+        retweets={retweets}
+      />
     </div>
   );
 };

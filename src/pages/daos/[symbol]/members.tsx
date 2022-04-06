@@ -1,6 +1,6 @@
+import Members from "modules/DAOS/Members";
 import React, { FC } from "react";
 import Layout from "components/Layout";
-import Home from "modules/DAOS/Home";
 import RightSidebar from "modules/DAOS/Sidebar/Home";
 import Hero from "modules/DAOS/Hero";
 import { getServerSideProps } from "modules/DAOS";
@@ -14,7 +14,7 @@ const Index: FC<{ dao: any; success: Boolean }> = ({ dao, success }) => {
       rightSidebar={<RightSidebar dao={dao} />}
       heroContent={<Hero dao={dao} />}
     >
-      <Home dao={dao} />
+      <Members />
     </Layout>
   );
 };

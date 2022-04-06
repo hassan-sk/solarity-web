@@ -1,20 +1,25 @@
+import React from "react";
 
-export type PostType = 'featured' | 'announcement' | 'normal'
+export type PostType = "featured" | "announcement" | "normal" | "tweet";
 
-export type TagType = 'secondary' | 'error' | 'info' | 'warning'
+export type AccountType = "user" | "dao" | "none";
+
+export type TagType = "secondary" | "error" | "info" | "warning";
 
 export type Tag = {
-  title: string
-  type: TagType
-}
-export type  Post = {
   title: string;
-  
-  subtitle?: string;
+  type: TagType;
+};
+export type Post = {
+  title: string;
+  image?: string;
+  time?: string;
+  retweets?: number;
+  subtitle?: Function | string;
   tags?: Tag[];
   likes: number;
   type: PostType;
-  progress?:number;
+  progress?: number;
   vr?: {
     imageUrl: string;
     featured: boolean;
@@ -70,8 +75,8 @@ export type  Post = {
     featured: boolean;
     price?: number;
   };
-  user:{
-    avatar:string;
-    name:string;
-  }
+  user: {
+    avatar: string;
+    name: string;
+  };
 };
