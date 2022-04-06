@@ -2,8 +2,8 @@ import React, { FC, useEffect, useState } from "react";
 import PostComp from "components/Post";
 import { useRouter } from "next/router";
 import { apiCaller } from "utils/fetcher";
-import { Post } from "modal/post";
-import { AccountType } from "modal/post";
+import { Post, AccountType } from "modal/post";
+import { POSTS } from "data/home";
 import ago from "s-ago";
 
 interface IProps {
@@ -16,7 +16,6 @@ const Posts: FC<IProps> = ({ accountType, user, dao }) => {
   const [tweets, setTweets] = useState<any>([]);
   const [loading, setLoading] = useState<Boolean>(false);
   const [error, setError] = useState<Boolean>(false);
-
   const router = useRouter();
   let id = "";
   let image = "";
@@ -81,7 +80,7 @@ const Posts: FC<IProps> = ({ accountType, user, dao }) => {
   };
   useEffect(() => {
     let queryString = "";
-    if (id && !loading) {
+    if (id && !loading && accountType !== "none") {
       queryString = `${accountType === "user" ? "username" : "symbol"}=${id}`;
       if (tweets.length == 0) {
         fetchTweets(queryString);
@@ -97,7 +96,7 @@ const Posts: FC<IProps> = ({ accountType, user, dao }) => {
     return <div className="alert alert-error">Error loading posts</div>;
   }
 
-  if (tweets.length == 0) {
+  if (accountType !== "none" && tweets.length == 0) {
     return (
       <div className="alert alert-warning">
         {accountType == "user" ? "User" : "DAO"} has not posts to show
@@ -105,9 +104,11 @@ const Posts: FC<IProps> = ({ accountType, user, dao }) => {
     );
   }
   try {
+    let posts = POSTS;
+    if (accountType !== "none") posts = tweets as Post[];
     return (
       <div className="flex flex-col gap-1 pb-5">
-        {(tweets as Post[]).map((post, index) => (
+        {posts.map((post, index) => (
           <PostComp key={index} data={post} accountType={accountType} />
         ))}
       </div>

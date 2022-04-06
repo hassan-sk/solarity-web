@@ -2,7 +2,7 @@ import React from "react";
 
 export type PostType = "featured" | "announcement" | "normal" | "tweet";
 
-export type AccountType = "user" | "dao";
+export type AccountType = "user" | "dao" | "none";
 
 export type TagType = "secondary" | "error" | "info" | "warning";
 
