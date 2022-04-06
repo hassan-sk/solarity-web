@@ -1,41 +1,71 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import Image from "next/image";
 import { VR } from "components/Icons";
+import { toast } from 'react-toastify';
 import RoomScene from 'components/BigRoom/RoomScene';
 import LiveRooms from "components/LiveRooms";
 import JoinRoomModal from "components/Modals/JoinRoomModal";
+import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 
 import { BigRoomType } from "modal/experience";
 import { LIVE_ROOM } from "data/experience";
 
+import ACTIONS from '../../config/actions';
+
 const BigRoom: FC<BigRoomType> = ({ scene, content }) => {
   const  [joinModalOpen,setJoinModalOpen] = useState(false)
+  const { rooms, selectedIndex } = useAppSelector(state => state.chat);
+  var data: any = {};
+  if(!!rooms && rooms.length !=0 && selectedIndex != -1) {
+    data = rooms[selectedIndex];
+  }
+  if(!data) {
+    data = {};
+  }
 
   const handleJoinModalToggle = () => {
-    setJoinModalOpen(!joinModalOpen)
+    if(selectedIndex != -1){
+      setJoinModalOpen(!joinModalOpen)
+    } else {
+      toast.error('please select a room', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
   }
+  useEffect(() => {
+    setTimeout(() => {
+      if(!!window.socket)
+        window.socket.emit(ACTIONS.ROOM_LIST, {});
+    }, 100);
+  }, []);
   return (
     <div className="grid grid-cols-3">
       <div className="col-span-1">
-        <LiveRooms rows={LIVE_ROOM.rows} />
+        <LiveRooms rows={rooms} />
       </div>
       <div className="col-span-2" >
-        <div className="relative w-full h-[314px] rounded-3xl -mt-5">
+        <div className="relative w-full h-[314px] min-h-[314px  ] rounded-3xl -mt-5">
           <RoomScene data={scene.bgImage} />
         </div>
 
         {content && (
           <div className="flex justify-between my-6">
             <div className="flex flex-col max-w-4xl ">
-              <span className="text-[15px] text-secondary">{content.title}</span>
+              <span className="text-[15px] text-secondary">{data.roomName}</span>
               <span className="mt-3 text-sm text-gray-950">
-                {content.description}
+                {data.roomName}
               </span>
             </div>
             <div>
               <div>
-                {!!content.avatars && content.avatars.map((avatar, index) => (
-                  <img key={index} src={avatar} width="25" height="25" />
+                {!!data.speakers && data.speakers.map((speaker: string, index: any) => (
+                  <img key={index} src="/images/icons/sol.png" alt={speaker} width="25" height="25" />
                 ))}
               </div>
               <button className="btn btn-secondary rounded-3xl" onClick={handleJoinModalToggle}>

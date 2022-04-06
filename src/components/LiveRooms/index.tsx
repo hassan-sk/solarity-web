@@ -3,10 +3,8 @@ import Base from "components/Widget/Base";
 import LiveRoomComp from "components/LiveRoom";
 import CreateRoomModal from "components/Modals/CreateRoomModal";
 
-import { LiveRoomType } from "modal/experience";
-
 interface IProps {
-  rows: LiveRoomType[];
+  rows: any[];
 }
 
 const LiveRooms: FC<IProps> = ({ rows: rooms }) => {
@@ -22,12 +20,12 @@ const LiveRooms: FC<IProps> = ({ rows: rooms }) => {
           <div className="flex flex-col p-5">
             <div className="flexfont-[19px] font-bold">Rooms</div>
           </div>
-          {/* <div className="pr-5 text-xs cursor-pointer text-secondary" onClick={handleCreateModalToggle}></div> */}
+          <div className="pr-5 text-xs cursor-pointer text-secondary" onClick={handleCreateModalToggle}>Creat a Room</div>
         </div>
         <div>
-          <div className="divide-y divide-borderwidget max-h-[42vh] overflow-y-auto scrollbar-thin scrollbar-thumb-black">
+          <div className="divide-y divide-borderwidget max-h-[42vh] min-h-[42vh] overflow-y-auto scrollbar-thin scrollbar-thumb-black">
             {rooms.map((room, index) => (
-              <LiveRoomComp key={index} data={room} />
+              <LiveRoomComp key={index} data={room} index={index} />
             ))}
           </div>
         </div>
