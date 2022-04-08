@@ -33,15 +33,16 @@ function update_loading_screen(setLoaded) {
     if(loading_textEl)
         loading_textEl.innerHTML = "LOADING MODELS " + Math.round((models_loaded * 100) / models_number) + " %";
     var loading_bar_itemEL = document.createElement('div');
-    loading_barEl.appendChild(loading_bar_itemEL);
-    loading_bar_itemEL.style.maxWidth = 80 / models_number + "vw";
-    loading_bar_itemEL.classList.add("stacking_item");console.log(models_number, models_loaded);
+    if(!!loading_barEl){
+        loading_barEl.appendChild(loading_bar_itemEL);
+        loading_bar_itemEL.style.maxWidth = 80 / models_number + "vw";
+        loading_bar_itemEL.classList.add("stacking_item");
+    }console.log(models_number, models_loaded);
     if (models_loaded == models_number) {
         models_loaded = 0;
-        models=[];console.log(window.isReady1);
+        models=[];
         window.isReady1 = true;
         models_number = undefined;
-        console.log('window.isReady1', window.isReady1);
         setLoaded(true);
         scene_wrapperEl.removeAttribute("style");
         loading_screenEl.remove();
@@ -49,9 +50,10 @@ function update_loading_screen(setLoaded) {
 }
 //checks if model has loaded before building all of the dinamic content
 export function start_loading_screen_listeners(setLoaded) {
-    models = document.getElementsByClassName("model");console.log('models', models);
+    models = document.getElementsByClassName("model");
     models_number = models.length;
     for (var i = 0; i < models_number; i++) {
+        console.log(models[i].readyState);
         models[i].addEventListener("model-loaded", () => {
             update_loading_screen(setLoaded)
         })

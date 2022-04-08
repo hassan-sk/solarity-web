@@ -218,7 +218,7 @@ useEffect(() => {
                   />
               </a-assets>
 
-              {/* <a-entity id="player">
+              <a-entity id="player">
                   <a-entity simple-navmesh-constraint="navmesh:#navmesh;fall:0.5;height:1.65;" id="head"
                             camera="fov: 70; active: true" position="0 1.65 0" wasd-controls="acceleration: 20;"
                             look-controls="pointerLockEnabled: true; reverseMouseDrag: false">
@@ -245,7 +245,7 @@ useEffect(() => {
                             vive-focus-controls="hand: right" generic-tracked-controller-controls="hand: right"
                             raycaster="showLine: true; far: 10; interval: 0; objects: .clickable, a-link;"
                             line="color: lawngreen; opacity: 0.5" visible="true"></a-entity>
-              </a-entity> */}
+              </a-entity>
               <a-entity light="type: ambient; intensity: 0; color:  #FFFFFF; shadowCameraVisible: false;"></a-entity>
               <a-entity light="type:point; color:  #FFFFFF; intensity: 3; distance: 10; decay: 1;" position="3 3 0">
               </a-entity>
@@ -371,72 +371,40 @@ useEffect(() => {
 
               <a-entity position="9 0 4.8">
                   <a-gltf-model class="model" src="#table1" position="0 0 0" scale="1 1 1"></a-gltf-model>
-                  {/* <a-gltf-model seat="duration: 1; camera: #head; standUpPosition: 0 1.6 1"
-                                class="model clickable nocollision" src="#chair1" position="1 0 .96" scale="1 1 1"
-                                rotation="0 0 0"></a-gltf-model> */}
-                  {/* <a-gltf-model seat="duration: 1; camera: #head; standUpPosition: 0 1.6 -1"
-                                class="model clickable nocollision" src="#chair1" position="-.96 0 -1" scale="1 1 1"
-                                rotation="0 180 0;"></a-gltf-model>
-                  <a-gltf-model seat="duration: 1; camera: #head; standUpPosition: -1 1.6 0"
-                                class="model clickable nocollision" src="#chair1" position="-.96 0 1" scale="1 1 1"
-                                rotation="0 270 0"></a-gltf-model>
-                  <a-gltf-model seat="duration: 1; camera: #head; standUpPosition: 1 1.6 1"
-                                class="model clickable nocollision" src="#chair1" position=".96 0 -1" scale="1 1 1"
-                                rotation="0 90 0"></a-gltf-model> */}
+                  <a-gltf-model class="model clickable nocollision" src="#chair1" position="1 0 .96" scale="1 1 1" rotation="0 0 0"></a-gltf-model>
+                  <a-gltf-model class="model clickable nocollision" src="#chair1" position="-.96 0 -1" scale="1 1 1" rotation="0 180 0;"></a-gltf-model>
+                  <a-gltf-model class="model clickable nocollision" src="#chair1" position="-.96 0 1" scale="1 1 1" rotation="0 270 0"></a-gltf-model>
+                  <a-gltf-model class="model clickable nocollision" src="#chair1" position=".96 0 -1" scale="1 1 1" rotation="0 90 0"></a-gltf-model>
               </a-entity>
 
-              {/* <a-entity position="9 0 -4.8">
+              <a-entity position="9 0 -4.8">
                   <a-gltf-model class="model" src="#table1" position="0 0 0" scale="1 1 1"></a-gltf-model>
-                  <a-gltf-model seat="duration: 1; camera: #head; standUpPosition: 0 1.6 1"
-                                class="model clickable nocollision" src="#chair1" position="1 0 .96" scale="1 1 1"
-                                rotation="0 0 0"></a-gltf-model>
-                  <a-gltf-model seat="duration: 1; camera: #head; standUpPosition: 0 1.6 -1"
-                                class="model clickable nocollision" src="#chair1" position="-.96 0 -1" scale="1 1 1"
-                                rotation="0 180 0;"></a-gltf-model>
-                  <a-gltf-model seat="duration: 1; camera: #head; standUpPosition: -1 1.6 0"
-                                class="model clickable nocollision" src="#chair1" position="-.96 0 1" scale="1 1 1"
-                                rotation="0 270 0"></a-gltf-model>
-                  <a-gltf-model seat="duration: 1; camera: #head; standUpPosition: 1 1.6 1"
-                                class="model clickable nocollision" src="#chair1" position=".96 0 -1" scale="1 1 1"
-                                rotation="0 90 0"></a-gltf-model>
+                  <a-gltf-model class="model clickable nocollision" src="#chair1" position="1 0 .96" scale="1 1 1" rotation="0 0 0"></a-gltf-model>
+                  <a-gltf-model class="model clickable nocollision" src="#chair1" position="-.96 0 -1" scale="1 1 1" rotation="0 180 0;"></a-gltf-model>
+                  <a-gltf-model class="model clickable nocollision" src="#chair1" position="-.96 0 1" scale="1 1 1" rotation="0 270 0"></a-gltf-model>
+                  <a-gltf-model class="model clickable nocollision" src="#chair1" position=".96 0 -1" scale="1 1 1" rotation="0 90 0"></a-gltf-model>
               </a-entity>
 
               <a-entity position="-3 0 -4.8">
                   <a-gltf-model class="model" src="#table1" position="0 0 0" scale="1 1 1"></a-gltf-model>
-                  <a-gltf-model seat="duration: 1; camera: #head; standUpPosition: 0 1.6 1"
-                                class="model clickable nocollision" src="#chair1" position="1 0 .96" scale="1 1 1"
-                                rotation="0 0 0"></a-gltf-model>
-                  <a-gltf-model seat="duration: 1; camera: #head; standUpPosition: 0 1.6 -1"
-                                class="model clickable nocollision" src="#chair1" position="-.96 0 -1" scale="1 1 1"
-                                rotation="0 180 0;"></a-gltf-model>
-                  <a-gltf-model seat="duration: 1; camera: #head; standUpPosition: -1 1.6 0"
-                                class="model clickable nocollision" src="#chair1" position="-.96 0 1" scale="1 1 1"
-                                rotation="0 270 0"></a-gltf-model>
-                  <a-gltf-model seat="duration: 1; camera: #head; standUpPosition: 1 1.6 1"
-                                class="model clickable nocollision" src="#chair1" position=".96 0 -1" scale="1 1 1"
-                                rotation="0 90 0"></a-gltf-model>
+                  <a-gltf-model class="model clickable nocollision" src="#chair1" position="1 0 .96" scale="1 1 1" rotation="0 0 0"></a-gltf-model>
+                  <a-gltf-model class="model clickable nocollision" src="#chair1" position="-.96 0 -1" scale="1 1 1" rotation="0 180 0;"></a-gltf-model>
+                  <a-gltf-model class="model clickable nocollision" src="#chair1" position="-.96 0 1" scale="1 1 1" rotation="0 270 0"></a-gltf-model>
+                  <a-gltf-model class="model clickable nocollision" src="#chair1" position=".96 0 -1" scale="1 1 1" rotation="0 90 0"></a-gltf-model>
               </a-entity>
 
               <a-entity position="-3 0 4.8">
                   <a-gltf-model class="model" src="#table1" position="0 0 0" scale="1 1 1"></a-gltf-model>
-                  <a-gltf-model seat="duration: 1; camera: #head; standUpPosition: 0 1.6 1"
-                                class="model clickable nocollision" src="#chair1" position="1 0 .96" scale="1 1 1"
-                                rotation="0 0 0"></a-gltf-model>
-                  <a-gltf-model seat="duration: 1; camera: #head; standUpPosition: 0 1.6 -1"
-                                class="model clickable nocollision" src="#chair1" position="-.96 0 -1" scale="1 1 1"
-                                rotation="0 180 0;"></a-gltf-model>
-                  <a-gltf-model seat="duration: 1; camera: #head; standUpPosition: -1 1.6 0"
-                                class="model clickable nocollision" src="#chair1" position="-.96 0 1" scale="1 1 1"
-                                rotation="0 270 0"></a-gltf-model>
-                  <a-gltf-model seat="duration: 1; camera: #head; standUpPosition: 1 1.6 1"
-                                class="model clickable nocollision" src="#chair1" position=".96 0 -1" scale="1 1 1"
-                                rotation="0 90 0"></a-gltf-model>
-              </a-entity> */}
+                  <a-gltf-model class="model clickable nocollision" src="#chair1" position="1 0 .96" scale="1 1 1" rotation="0 0 0"></a-gltf-model>
+                  <a-gltf-model class="model clickable nocollision" src="#chair1" position="-.96 0 -1" scale="1 1 1" rotation="0 180 0;"></a-gltf-model>
+                  <a-gltf-model class="model clickable nocollision" src="#chair1" position="-.96 0 1" scale="1 1 1" rotation="0 270 0"></a-gltf-model>
+                  <a-gltf-model class="model clickable nocollision" src="#chair1" position=".96 0 -1" scale="1 1 1" rotation="0 90 0"></a-gltf-model>
+              </a-entity>
 
-              {/* <a-entity id="globe" class="model" gltf-model="/assets/models/hub/Hologram_sphere.glb"
+              <a-entity id="globe" class="model" gltf-model="/assets/models/hub/Hologram_sphere.glb"
                         material="roughness: 70; metalness: 0; shader: standard"
                         animation__spin="property: rotation; dur: 12000; loop: true; to: 0 360 0;" position="3 1.5 0">
-              </a-entity> */}
+              </a-entity>
               
               {/* <a-entity id="navmesh" class="model" gltf-model="/assets/models/hub/avatar1.glb" visible="true"></a-entity> */}
               <a-sky animation="property: rotation;
