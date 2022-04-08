@@ -81,7 +81,7 @@ export default function AframeEditRoom({
     }
   }, [chooseFlag]);
 
-  if (permition) {
+  // if (permition) {
     if (mounted) {
       return (
         <a-scene
@@ -398,11 +398,11 @@ export default function AframeEditRoom({
       );
     }
     return <div>load...</div>;
-  } else {
-    return (
-      <div className="pt-20 text-center">
-        {"You don't have any room please buy a room"}
-      </div>
-    );
-  }
+  // } else {
+  //   return (
+  //     <div className="pt-20 text-center">
+  //       {"You don't have any room please buy a room"}
+  //     </div>
+  //   );
+  // }
 }
