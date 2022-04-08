@@ -41,13 +41,14 @@ function update_loading_screen(setLoaded) {
         loading_barEl.appendChild(loading_bar_itemEL);
         loading_bar_itemEL.style.maxWidth = 80 / models_number + "vw";
         loading_bar_itemEL.classList.add("stacking_item");
-    }console.log(models_number, models_loaded);
+    }
     if (models_loaded == models_number) {
         models_loaded = 0;
         models=[];
         window.isReady1 = true;
         models_number = undefined;
         setLoaded(true);
+        if(!!scene_wrapperEl)
         scene_wrapperEl.removeAttribute("style");
         loading_screenEl.remove();
     };
