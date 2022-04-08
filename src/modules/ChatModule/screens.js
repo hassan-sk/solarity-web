@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { update_scrollbar, intersected, intersectedCleared } from './utils';
 const urlBase = "https://solarity.muhash.com/api";
 const apiCaller = axios.create({
     baseURL: urlBase,
@@ -19,8 +20,10 @@ apiCaller
 const TWITTER_TO_DISPLAY = 4;
 var twitter_start_index = 0;
 var twitter_itemEL_array = [];
-var twitter_containerEl = document.getElementById('twitter');
 function build_twitter() {
+    
+    var twitter_containerEl = document.getElementById('twitter');
+
     for (let twitter_item of twitter_array) {
         var twitter_itemEL = document.createElement('a-plane');
         twitter_containerEl.appendChild(twitter_itemEL);
@@ -73,6 +76,7 @@ function scroll_twitter_down() {
         update_scrollbar(twitter_start_index = 0, TWITTER_TO_DISPLAY, twitter_itemEL_array, { x: 0, y: 1.1 }, { x: 0, y: -0.8 });
     }
 }
+
 function build_twitter_listeners() {
     document.getElementById('scroll_twitter_up').addEventListener('click', scroll_twitter_up);
     document.getElementById('scroll_twitter_down').addEventListener('click', scroll_twitter_down);
@@ -83,18 +87,17 @@ function build_twitter_listeners() {
 }
 
 //nft
-var nft_containerEl = document.getElementById('nft');
 var nft;
 apiCaller
-    .get("/daos/solana_money_boys")
-    .then((data) => {
-        nft = data.data.dao;
-    })
-    .catch((err) => {
-        nft = { "floorPrice": "no data", "image": "assets/images/nft_placeholder.jpeg" };
-    });
+.get("/daos/solana_money_boys")
+.then((data) => {
+    nft = data.data.dao;
+})
+.catch((err) => {
+    nft = { "floorPrice": "no data", "image": "assets/images/nft_placeholder.jpeg" };
+});
 function build_nft() {
-
+    var nft_containerEl = document.getElementById('nft');
     var nft_item_amountEL = document.createElement('a-text');
     nft_containerEl.appendChild(nft_item_amountEL);
     nft_item_amountEL.setAttribute('value', nft.floorPrice);
@@ -133,7 +136,7 @@ function startGif() {
 export function start_screens() {
     build_twitter();
     build_nft();
-    var intervalId = window.setInterval(function () {
+    return window.setInterval(function () {
         startGif();
     }, 500);
 }

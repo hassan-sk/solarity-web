@@ -3,7 +3,7 @@ import { RootStateOrAny, useSelector } from "react-redux";
 
 export default function AframeComp2() {
   const [mounted, setMounted] = useState(false);
-  const [permition, setPermition] = useState(true);
+  // const [permition, setPermition] = useState(true);
   const assets = [
     {
       pos: "-2.25 1.65 -2.93",
@@ -32,11 +32,11 @@ export default function AframeComp2() {
   useEffect(() => {
     require("aframe/dist/aframe-master.js");
     setMounted(true);
-    if (!rooms || (rooms && rooms.length == 0)) {
-      setPermition(true);
-    }
+    // if (!rooms || (rooms && rooms.length == 0)) {
+    //   setPermition(true);
+    // }
   }, []);
-  if (permition) {
+  // if (permition) {
     if (mounted) {
       return (
         <a-scene
@@ -188,11 +188,11 @@ export default function AframeComp2() {
       );
     }
     return <div>load...</div>;
-  } else {
-    return (
-      <div className="pt-20 text-center">
-        {"You don't have any room please buy a room"}
-      </div>
-    );
-  }
+  // } else {
+  //   return (
+  //     <div className="pt-20 text-center">
+  //       {"You don't have any room please buy a room"}
+  //     </div>
+  //   );
+  // }
 }

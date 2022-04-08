@@ -9,7 +9,7 @@ import { setMsg } from '../../redux/slices/chatSlice';
 import ACTIONS from '../../config/actions';
 import styles from './chat.module.css';
 import {start_loading_screen_listeners, build_loading_screen} from './loading_screen'
-// import {start_screens} from './screens'
+import {start_screens} from './screens'
 import {choose_controls, pass_controls} from './utils'
 
 const ChatModule = () => {
@@ -21,6 +21,7 @@ const ChatModule = () => {
   const { clients, provideRef, handelMute } = useWebTRTC(rid, {name: userName});
   const [sendData, setSendData] = useState('');
   const [intervalId, setIntervalId] = useState('');
+  const [gifIntervalId, setGifIntervalId] = useState('');
   
   const [isMute, setMute] = useState(true);
   const [isLoaded, setLoaded] = useState(false);
@@ -55,7 +56,7 @@ useEffect(() => {
 }, [sceneEl, loading_textEl, loading_barEl, loading_screenEl])
   
   const start_scene = () => {
-      // start_screens();
+      // setGifIntervalId(start_screens())
       choose_controls();
       pass_controls();
   }
@@ -134,6 +135,7 @@ useEffect(() => {
 
   const handelManualLeave = () => {
     clearInterval(intervalId);
+    // clearInterval(gifIntervalId);
     window.isReady1 = false;
     window.positions = {};
     window.myPosition = {};
