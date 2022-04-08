@@ -23,7 +23,11 @@ function update_loading_screen(setLoaded) {
     var loading_textEl = document.getElementById('loading_text');
     var loading_barEl = document.getElementById('loading_bar');
     var loading_screenEl = document.getElementById('loading_screen');
-    setTimeout( function() { scene_wrapperEl.removeAttribute("style"); }, 10000);
+    setTimeout( function() { 
+        scene_wrapperEl.removeAttribute("style"); 
+        setLoaded(true);
+        window.isReady1 = true;
+    }, 10000);
     models_loaded++;
     if (models_loaded == 1) {
         //remove the old bar item when the first model is loaded
