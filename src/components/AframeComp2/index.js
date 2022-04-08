@@ -65,7 +65,7 @@ export default function AframeComp2() {
             ></a-asset-item>
             <a-asset-item
               id="chair-gltf"
-              src="/assets/models/chair.glb"
+              src="/assets/models/Chair.glb"
             ></a-asset-item>
 
             <a-asset-item
