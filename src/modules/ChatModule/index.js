@@ -149,7 +149,7 @@ useEffect(() => {
       document.querySelector('.ui-chat').scrollTop = document.querySelector('.ui-chat').scrollHeight
   }, [msgs])
 
-  if (mounted && models[modelIndex].modelUrl) {
+  if (mounted && models && models[modelIndex] && models[modelIndex].modelUrl) {
       return (
         <div>
           <video className={styles.background_video} id="background_video" autoPlay loop muted>
@@ -248,7 +248,7 @@ useEffect(() => {
                             raycaster="showLine: true; far: 10; interval: 0; objects: .clickable, a-link;"
                             line="color: lawngreen; opacity: 0.5" visible="true"></a-entity>
               </a-entity>
-              <a-entity light="type: ambient; intensity: 0; color:  #FFFFFF; shadowCameraVisible: false;"></a-entity>
+              {/* <a-entity light="type: ambient; intensity: 0; color:  #FFFFFF; shadowCameraVisible: false;"></a-entity>
               <a-entity light="type:point; color:  #FFFFFF; intensity: 3; distance: 10; decay: 1;" position="3 3 0">
               </a-entity>
               <a-entity light="type:point; color:  #FFFFFF; intensity: 3; distance: 10; castShadow: false; decay: 1"
@@ -333,7 +333,7 @@ useEffect(() => {
                   <a-box color="black" width="1.5" position="0 1 0" height="0.1" depth="0.1"></a-box>
                   <a-box color="black" width="0.1" position="0.7 0 0" height="1.9" depth="0.1"></a-box>
                   <a-box color="black" width="0.1" position="-0.7 0 0" height="1.9" depth="0.1"></a-box>
-              </a-image>
+              </a-image> */}
               {/* <a-plane class="clickable nocollision" simple-link="href: https://www.google.com" scale="1.5 2 1"
                       position="14.2 1.1 -2.5" rotation="0 -90 0"
                       material="background-color: #EE88FF; shader: portal; pano: /assets/images/japan.png"></a-plane> */}
@@ -371,7 +371,7 @@ useEffect(() => {
               <a-gltf-model class="model" src="#stairs" position="0 0 0" scale="1 1 1"></a-gltf-model>
               <a-gltf-model class="model" src="#stairsback" position="0 0 0" scale="1 1 1"></a-gltf-model>
 
-              <a-entity position="9 0 4.8">
+              {/* <a-entity position="9 0 4.8">
                   <a-gltf-model class="model" src="#table1" position="0 0 0" scale="1 1 1"></a-gltf-model>
                   <a-gltf-model class="model clickable nocollision" src="#chair1" position="1 0 .96" scale="1 1 1" rotation="0 0 0"></a-gltf-model>
                   <a-gltf-model class="model clickable nocollision" src="#chair1" position="-.96 0 -1" scale="1 1 1" rotation="0 180 0;"></a-gltf-model>
@@ -406,7 +406,7 @@ useEffect(() => {
               <a-entity id="globe" class="model" gltf-model="/assets/models/hub/Hologram_sphere.glb"
                         material="roughness: 70; metalness: 0; shader: standard"
                         animation__spin="property: rotation; dur: 12000; loop: true; to: 0 360 0;" position="3 1.5 0">
-              </a-entity>
+              </a-entity> */}
               
               {/* <a-entity id="navmesh" class="model" gltf-model="/assets/models/hub/avatar1.glb" visible="true"></a-entity> */}
               <a-sky animation="property: rotation;
