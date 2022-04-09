@@ -1,17 +1,20 @@
 import React, { FC } from "react";
 import SelectInput from "components/SelectInput";
+import { getWalletActivities } from "hooks";
+import moment from "moment";
+import { minifyAddress } from "utils";
 
 export interface TransferTableProps1 {
-  rows: {
-    date: string;
-    source: string;
-    reference: string;
-    amount: string;
-    type: "plus" | "minus";
-  }[];
+  // rows: {
+  //   date: string;
+  //   source: string;
+  //   reference: string;
+  //   amount: string;
+  //   type: "plus" | "minus";
+  // }[];
 }
 
-const Transfer1: FC<TransferTableProps1> = ({ rows }) => {
+const Transfer1: FC<{ publicAddress: string }> = ({ publicAddress }) => {
   return (
     <div className="flex flex-col gap-8 p-8 mb-10 bg-brandblack">
       <div className="flex justify-between">
@@ -48,41 +51,71 @@ const Transfer1: FC<TransferTableProps1> = ({ rows }) => {
           </button>
         </div>
       </div>
-      <div className="grid grid-cols-6 text-xs text-gray-950">
+      <div className="grid grid-cols-5 text-xs text-gray-950">
         <div> Date </div>
         <div> Source/Recipient </div>
         <div className="col-span-2 ">Reference</div>
         <div>Amount</div>
         <div></div>
       </div>
-      {rows.map((row, index) => (
-        <div key={index} className="grid grid-cols-6 text-sm">
+      <TransferDisplay publicAddress={publicAddress} />
+    </div>
+  );
+};
+
+const TransferDisplay: FC<{ publicAddress: string }> = ({ publicAddress }) => {
+  const [walletActivities, loading, error] = getWalletActivities(publicAddress);
+
+  const formattedWalletActivities = walletActivities.map(
+    ({ blockTime, price, type, buyer, tokenMint }) => {
+      let data = {
+        date: moment(blockTime * 1000).format("MM/DD/YYYY"),
+        amount: price > 0 ? price + " SOL" : "",
+        type,
+        source: minifyAddress(type == "buyNow" ? buyer : "-"),
+        reference: `${type}: address${minifyAddress(tokenMint)}`,
+      };
+      return data;
+    }
+  );
+
+  if (loading) {
+    return (
+      <div className="alert alert-info">Fetching your wallet activities</div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="alert alert-error">
+        Error fetching your wallet activities
+      </div>
+    );
+  }
+  if (!loading && walletActivities.length == 0) {
+    return (
+      <div className="alert alert-warning">
+        User doesn't have any wallet activities balance
+      </div>
+    );
+  }
+
+  return (
+    <>
+      {formattedWalletActivities.map((row, index) => (
+        <div key={index} className="grid grid-cols-5 text-sm">
           <div> {row.date} </div>
           <div> {row.source} </div>
           <div className="col-span-2 ">{row.reference}</div>
           <div
             className={
-              row.type === "plus" ? "text-[#11C278]" : "text-[#E0464D]"
+              row.type === "buyNow" ? "text-[#11C278]" : "text-[#FFFF00]"
             }
           >
             {row.amount}
           </div>
-          <div className="flex justify-center">
-            <svg
-              width="20"
-              height="4"
-              viewBox="0 0 20 4"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <circle cx="2" cy="2" r="2" fill="#8899A6" />
-              <circle cx="10" cy="2" r="2" fill="#8899A6" />
-              <circle cx="18" cy="2" r="2" fill="#8899A6" />
-            </svg>
-          </div>
         </div>
       ))}
-    </div>
+    </>
   );
 };
 
