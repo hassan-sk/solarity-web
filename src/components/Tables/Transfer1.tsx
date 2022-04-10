@@ -94,7 +94,7 @@ const TransferDisplay: FC<{ publicAddress: string }> = ({ publicAddress }) => {
   if (!loading && walletActivities.length == 0) {
     return (
       <div className="alert alert-warning">
-        User doesn't have any wallet activities balance
+        {"User doesn't have any wallet activities balance"}
       </div>
     );
   }

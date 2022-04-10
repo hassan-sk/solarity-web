@@ -56,7 +56,7 @@ const TokenBalanceDisplay: FC<{ publicAddress: string }> = ({
   if (!loading && tokenBalances.length == 0) {
     return (
       <div className="alert alert-warning">
-        User doesn't have any token balance
+        {"User doesn't have any token balance"}
       </div>
     );
   }
