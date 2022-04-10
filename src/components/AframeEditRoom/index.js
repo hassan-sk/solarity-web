@@ -48,6 +48,7 @@ export default function AframeEditRoom({
       init: function () {
         this.el.addEventListener("click", (e) => {
           setPicNo(this.attrValue.picno);
+          document.exitPointerLock();
         });
         this.el.addEventListener("mouseenter", (e) => {
           if (!!document.querySelector("#cursor"))
