@@ -5,6 +5,7 @@ import AframeEditRoom from "components/AframeEditRoom";
 import { getNfts } from "hooks";
 import { NftCardSelect } from "modules/User/NftCardSelect";
 import { updateNftCard } from "redux/slices/profileSlice";
+import { useRouter } from 'next/router'
 
 const SelectDisplayNftView = () => {
   const dispatch = useDispatch();
@@ -18,6 +19,7 @@ const SelectDisplayNftView = () => {
   const [error, setError] = useState<string | Boolean>(false);
   const [picNo, setPicNo] = useState<string>("0");
   const [chooseFlag, setChooseFlag] = useState<string | Boolean>(false);
+  const router = useRouter();
 
   if (loading) {
     return (
@@ -59,6 +61,10 @@ const SelectDisplayNftView = () => {
     setChooseFlag(true);
   };
 
+  var back = () => {
+    router.push(`/${profileData.username}`)
+  }
+
   return (
     <div>
       <span className="font-bold text-2xl">
@@ -92,7 +98,7 @@ const SelectDisplayNftView = () => {
           </div>
           <div className="mt-2">
             {picNo != "0" ? (
-              <div className="float-right">
+              <div className="float-left">
                 <Button wrap onClick={chooseNft}>
                   Choose
                 </Button>
@@ -100,6 +106,11 @@ const SelectDisplayNftView = () => {
             ) : (
               <div></div>
             )}
+            <div className="float-right">
+              <Button wrap onClick={back}>
+                Back to Profile
+              </Button>
+            </div>
           </div>
         </div>
       </Stack>

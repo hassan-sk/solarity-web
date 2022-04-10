@@ -9,6 +9,25 @@
     min-height: 100%;
 }
 
+.background_video_profile {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.loading_screen_profile {
+    padding-top: 30%;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,0);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: relative;
+}
+
 .loading_screen {
     padding-top: 30%;
     height: 100%;
@@ -44,6 +63,19 @@
     display: flex;
     padding: 2px;
     box-shadow: 0px 0px 20px #AA88FF;
+}
+
+.loading_bar_profile {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-sizing: content-box;
+    height: 14px;
+    width: 100%;
+    display: flex;
+    padding: 2px;
+    border: 1px solid white;
 }
 
 .loading_bar .stacking_item {

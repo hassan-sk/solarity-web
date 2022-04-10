@@ -23,6 +23,7 @@ function update_loading_screen(setLoaded) {
     var loading_textEl = document.getElementById('loading_text');
     var loading_barEl = document.getElementById('loading_bar');
     var loading_screenEl = document.getElementById('loading_screen');
+    // var loading_videoEl = document.getElementById('background_video');
     setTimeout( function() { 
         scene_wrapperEl.removeAttribute("style"); 
         setLoaded(true);
@@ -40,7 +41,13 @@ function update_loading_screen(setLoaded) {
     if(!!loading_barEl){
         loading_barEl.appendChild(loading_bar_itemEL);
         loading_bar_itemEL.style.maxWidth = 80 / models_number + "vw";
-        loading_bar_itemEL.classList.add("stacking_item");
+        loading_bar_itemEL.style.display="inline-block";
+        loading_bar_itemEL.style.height="14px";
+        loading_bar_itemEL.style.backgroundColor="#AA88FF";
+        loading_bar_itemEL.style.width="auto";
+        loading_bar_itemEL.style.display="flexbox";
+        loading_bar_itemEL.style.flexGrow=1;
+        loading_bar_itemEL.style.opacity=0.6;
     }
     if (models_loaded == models_number) {
         models_loaded = 0;
@@ -49,16 +56,16 @@ function update_loading_screen(setLoaded) {
         models_number = undefined;
         setLoaded(true);
         if(!!scene_wrapperEl)
-        scene_wrapperEl.removeAttribute("style");
+            scene_wrapperEl.removeAttribute("style");
         loading_screenEl.remove();
+        // loading_videoEl.remove();
     };
 }
 //checks if model has loaded before building all of the dinamic content
 export function start_loading_screen_listeners(setLoaded) {
-    models = document.getElementsByClassName("model");
+    models = document.getElementsByClassName("model");console.log(models)
     models_number = models.length;
     for (var i = 0; i < models_number; i++) {
-        console.log(models[i].readyState);
         models[i].addEventListener("model-loaded", () => {
             update_loading_screen(setLoaded)
         })
