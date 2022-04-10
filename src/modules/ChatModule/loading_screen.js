@@ -57,7 +57,8 @@ function update_loading_screen(setLoaded) {
         setLoaded(true);
         if(!!scene_wrapperEl)
             scene_wrapperEl.removeAttribute("style");
-        loading_screenEl.remove();
+        if(!!loading_screenEl)
+            loading_screenEl.remove();
         // loading_videoEl.remove();
     };
 }

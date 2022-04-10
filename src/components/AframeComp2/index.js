@@ -26,7 +26,7 @@ export default function AframeComp2() {
     },
     {
       pos: "2.97 2.33 2.15",
-      rot: "180 90 0",
+      rot: "180 90 180",
     },
   ];
   const { rooms } = useSelector((state) => ({
@@ -80,7 +80,7 @@ export default function AframeComp2() {
             maxCanvasWidth: 1920;
             maxCanvasHeight: 1920;" 
             id="scene_wrapper" 
-            style={{opacity: 0}}
+            style={{opacity: 0, position: "absolute", top: "0px", zIndex: 0}}
             loading-screen="enabled:false" 
           >
                 <a-assets timeout="100000">

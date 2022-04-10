@@ -32,7 +32,7 @@ export default function AframeEditRoom({
     },
     {
       pos: "2.97 2.33 2.15",
-      rot: "180 90 0",
+      rot: "180 90 180",
     },
   ];
   const { rooms } = useSelector((state) => ({
