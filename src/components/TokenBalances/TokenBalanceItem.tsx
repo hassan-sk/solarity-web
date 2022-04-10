@@ -4,14 +4,14 @@ import Image from "next/image";
 export interface TokenBalanceItemProps {
   token: string;
   balance: string;
-  amount?: string;
+  usdValue?: string;
   image: string;
 }
 
 const TokenBalanceItem: FC<TokenBalanceItemProps> = ({
   token,
   balance,
-  amount,
+  usdValue,
   image,
 }) => {
   return (
@@ -30,10 +30,10 @@ const TokenBalanceItem: FC<TokenBalanceItemProps> = ({
           <span className="text-lg ">.{balance.split(".")[1]}</span>
         )}
       </span>
-      {/* 
+
       <span className="text-xs text-gray-950">
-        {amount ? `${amount}` : "-"}
-      </span> */}
+        {usdValue ? `$${usdValue}` : "-"}
+      </span>
     </div>
   );
 };

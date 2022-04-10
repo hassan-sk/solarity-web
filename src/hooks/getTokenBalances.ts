@@ -4,6 +4,7 @@ import { RootStateOrAny, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { apiCaller } from "utils/fetcher";
 import solanaLogo from "../assets/images/solana-logo.png";
+import axios from "axios";
 
 export const getTokenBalances = (
   publicAddress?: string
@@ -30,34 +31,72 @@ export const getTokenBalances = (
     } = await apiCaller("/daos/tokenAddresses");
     const publicKey = new PublicKey(publicAddress);
     const tokenKeys = (<[{ tokenAddress: string }]>tokenAddresses).map(
-      ({ tokenAddress }) => new PublicKey(tokenAddress)
+      ({ tokenAddress }) => ({
+        tokenKey: new PublicKey(tokenAddress),
+        tokenAddress,
+      })
     );
     const connection = new Connection(clusterApiUrl("mainnet-beta"));
-    const results = await Promise.map(tokenKeys, async (tokenKey) => {
-      try {
-        const data = await connection.getParsedTokenAccountsByOwner(publicKey, {
-          mint: tokenKey,
-        });
-        const { value } = data;
-        return value[0].account.data.parsed.info.tokenAmount.uiAmountString;
-      } catch {
-        return 0;
-      }
-    });
-    const balances = (<[{ token: string; image: string }]>tokenAddresses).map(
-      ({ token, image }, index) => {
-        return {
-          token,
-          image,
-          balance: results[index],
-        };
+    const results = await Promise.map(
+      tokenKeys,
+      async ({ tokenKey, tokenAddress }) => {
+        try {
+          const info = await connection.getParsedTokenAccountsByOwner(
+            publicKey,
+            {
+              mint: tokenKey,
+            }
+          );
+          const { value } = info;
+          const balance =
+            value[0].account.data.parsed.info.tokenAmount.uiAmountString;
+          if (balance) {
+            const {
+              data: {
+                data: { value: price },
+              },
+            } = await axios.get(
+              "https://public-api.birdeye.so/public/price?address=" +
+                tokenAddress
+            );
+            return {
+              balance: balance.toString(),
+              usdValue: (price * balance).toFixed(4),
+            };
+          } else return { balance: "0" };
+        } catch {
+          return { balance: "0" };
+        }
       }
     );
+    const balances = (<
+      [{ token: string; image: string; tokenAddress?: string }]
+    >tokenAddresses).map(({ token, image, tokenAddress }, index) => {
+      return {
+        token,
+        image,
+        tokenAddress,
+        ...results[index],
+      };
+    });
     const solBalance = await connection.getBalance(
       new PublicKey(publicAddress)
     );
+    let solUsdValue;
+    if (solBalance > 0) {
+      let {
+        data: {
+          solana: { usd: price },
+        },
+      } = await axios.get(
+        "https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd"
+      );
+      solUsdValue = ((solBalance / 1000000000) * price).toFixed(4);
+    }
     balances.unshift({
       token: "SOL",
+      usdValue: solUsdValue,
+      tokenAddress: "",
       balance: (solBalance / 1000000000).toString(),
       image: solanaLogo.src,
     });
