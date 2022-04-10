@@ -18,6 +18,33 @@ export const BIG_ROOM: BigRoomType = {
   },
 };
 
+export const models: any[] = [
+  {
+    imageUrl: "images/placeholder/marketplace/gallery/SolGods.jpg",
+    modelUrl: "resource/models/sorrow_-_metaverse_avatars/scene.gltf",
+    name: 'SolGods',
+    position: "-120 -20 -80",
+    rotation: "0 210 0",
+    scale: "15 15 15",
+  },
+  {
+    imageUrl: "images/placeholder/marketplace/gallery/DeGods.png",
+    modelUrl: "resource/models/avatar1.glb",
+    name: 'DeGods',
+    position: "0 2 -10",
+    rotation: "0 0 0",
+    scale: "5 5 5",
+  },
+  {
+    imageUrl: "images/placeholder/marketplace/gallery/MoneyGirl.jpeg",
+    modelUrl: "resource/models/avatar2.glb",
+    name: 'MoneyGirl',
+    position: "0 -15 30",
+    rotation: "0 -90 0",
+    scale: "5 5 5",
+  },
+]
+
 export const ROOM: RoomsType = {
   rows: [
     {
@@ -83,26 +110,6 @@ export const LIVE_ROOM: LiveRoomsType = {
       title: 'Decentralart',
       creator: 'xxx',
       avatars: ['', '', ''],
-    },
-    {
-      title: 'Decentralart',
-      creator: 'xxx',
-      avatars: ['', '', '', ''],
-    },
-    {
-      title: 'Decentralart',
-      creator: 'xxx',
-      avatars: ['', ''],
-    },
-    {
-      title: 'Decentralart',
-      creator: 'xxx',
-      avatars: [],
-    },
-    {
-      title: 'Decentralart',
-      creator: 'xxx',
-      avatars: ['',],
     },
   ]
 };

@@ -11,7 +11,6 @@ const SelectDisplayNftView = () => {
   const { profileData } = useSelector((state: RootStateOrAny) => ({
     profileData: state.profile.data,
   }));
-  console.log(profileData);
   const [nfts, nftLoading, nftError] = getNfts(profileData.publicAddress);
   const [loading, setLoading] = useState<Boolean>(false);
   const [selected, setSelected] = useState<string>();

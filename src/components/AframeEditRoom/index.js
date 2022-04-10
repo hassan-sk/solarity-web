@@ -81,7 +81,7 @@ export default function AframeEditRoom({
     }
   }, [chooseFlag]);
 
-  if (permition) {
+  // if (permition) {
     if (mounted) {
       return (
         <a-scene
@@ -110,7 +110,7 @@ export default function AframeEditRoom({
             ></a-asset-item>
             <a-asset-item
               id="chair-gltf"
-              src="/assets/models/chair.glb"
+              src="/assets/models/Chair.glb"
             ></a-asset-item>
 
             <a-asset-item
@@ -398,11 +398,11 @@ export default function AframeEditRoom({
       );
     }
     return <div>load...</div>;
-  } else {
-    return (
-      <div className="pt-20 text-center">
-        {"You don't have any room please buy a room"}
-      </div>
-    );
-  }
+  // } else {
+  //   return (
+  //     <div className="pt-20 text-center">
+  //       {"You don't have any room please buy a room"}
+  //     </div>
+  //   );
+  // }
 }

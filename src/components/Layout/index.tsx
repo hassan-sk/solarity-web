@@ -2,6 +2,8 @@ import React, { FC } from "react";
 import Header from "components/Layout/Header";
 import Sidebar from "components/Layout/Sidebar";
 import Hot from "components/Widget/Hot";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface Props {
   children: React.ReactNode;
@@ -35,6 +37,19 @@ const Index: FC<Props> = ({ children, rightSidebar, heroContent }) => {
           )}
         </div>
       </main>
+      <ToastContainer
+        style={{position: "fixed",zIndex: "1000000"}}
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </div>
   );
 };

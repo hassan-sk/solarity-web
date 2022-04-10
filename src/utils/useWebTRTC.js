@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { useStateWithCalllback } from './useStateWithCalllback';
+import { useAppSelector, useAppDispatch } from "../redux/hooks";
 import ACTIONS from '../config/actions';
 import freeice from 'freeice';
 
@@ -7,6 +8,7 @@ export const useWebTRTC = (roomId, user) => {
     const [clients, setclients] = useStateWithCalllback([]);
     const audioElements = useRef({});
     const clientsRef = useRef([]);
+    const { roomName, userName, modelIndex } = useAppSelector(state => state.chat);
 
     const connections = useRef({});
     const localMediaStream = useRef({});
@@ -41,7 +43,12 @@ export const useWebTRTC = (roomId, user) => {
                     localAudioElement.srcObject = localMediaStream.current;
                 }
             });
-            window.socket.emit(ACTIONS.JOIN, { roomId, user });
+            var clearIts = setInterval(() => {
+                if(window.isReady1 != undefined && window.isReady1) {
+                    window.socket.emit(ACTIONS.JOIN, { roomId, user: {name: user.name, roomName: roomName, modelIndex: modelIndex} });
+                    clearInterval(clearIts);
+                }
+            }, 300);
         });
 
         return () => {
@@ -229,7 +236,7 @@ export const useWebTRTC = (roomId, user) => {
     const handelMute = (isMute, name) => {
         let settled = false;
         let interVel = setInterval(() => {
-            if (localMediaStream.current) {
+            if (!!localMediaStream.current && localMediaStream.current.getTracks) {
                 localMediaStream.current.getTracks()[0].enabled = !isMute;
                 if (isMute) {
                     window.socket.emit(ACTIONS.MUTE, { roomId, name });

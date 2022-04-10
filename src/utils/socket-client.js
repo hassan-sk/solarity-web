@@ -8,6 +8,10 @@ const  options = {
   rejectUnauthorized: false,
 }
 
-const socket = io.connect(process.env.SERVER_URL, options)
-
+const socket = () => {
+  return io.connect(
+  process.env.NODE_ENV === "development"
+  ? "http://localhost:3004"
+  : "https://solarity.muhash.com", options);
+}
 export default socket

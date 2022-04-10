@@ -3,6 +3,7 @@ import base58 from "bs58";
 import ACTIONS from "config/actions";
 import { apiCaller } from "utils/fetcher";
 import { setProfile } from "./profileSlice";
+import socket from "utils/socket-client";
 
 export interface CounterState {
   roomName: string;
@@ -66,6 +67,7 @@ export const checkSession = createAsyncThunk(
   "auth/checkSession",
   async (_, { dispatch }) => {
     try {
+      window.socket = socket();
       const { data } = await apiCaller.get("/auth/check");
       dispatch(setProfile(data.profile));
       return true;
