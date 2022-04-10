@@ -5,6 +5,7 @@ export const minifyNumber = (num: number): number | string => {
 };
 
 export const minifyAddress = (address: string): string => {
+  if (address == null) return "";
   if (address.length <= 5) return address;
   return (
     address.substring(0, 3) +
