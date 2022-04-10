@@ -2,30 +2,37 @@ import React, { FC } from "react";
 import Image from "next/image";
 
 export interface TokenBalanceItemProps {
-  title: string;
-  volume: string;
-  amount?: string;
-  imageUrl: string;
+  token: string;
+  balance: string;
+  usdValue?: string;
+  image: string;
 }
 
 const TokenBalanceItem: FC<TokenBalanceItemProps> = ({
-  title,
-  volume,
-  amount,
-  imageUrl,
+  token,
+  balance,
+  usdValue,
+  image,
 }) => {
   return (
     <div className="flex flex-col items-center px-8 py-4 border select-none border-base-100 rounded-3xl max-w-[158px]">
       <div>
-        <Image src={imageUrl} alt={`${title} logo`} height={42} width={42} />
+        <img
+          src={image}
+          alt={`${token} logo`}
+          className="rounded-full w-[42px] h-[42px]"
+        />
       </div>
-      <span className="mt-1 text-sm">{title}</span>
-      <span className="mt-3 text-2xl font-bold">
-        {volume.split(".")[0]}.
-        <span className="text-lg ">{volume.split(".")[1]}</span>
+      <span className="mt-1 text-sm">{token}</span>
+      <span className="mt-3 text-xl font-bold">
+        {balance.split(".")[0]}
+        {balance.split(".")[1] && (
+          <span className="text-lg ">.{balance.split(".")[1]}</span>
+        )}
       </span>
+
       <span className="text-xs text-gray-950">
-        {amount ? `${amount}` : "-"}
+        {usdValue ? `$${usdValue}` : "-"}
       </span>
     </div>
   );

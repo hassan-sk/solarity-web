@@ -1,17 +1,16 @@
-import React from "react";
+import React, { FC } from "react";
 import Base from "modules/DAOS/Base";
 import TokenBalance from "components/TokenBalances";
 import Transfer from "components/Tables/Transfer1";
 
-import { TOKEN_BALANCES, TRANSFER_TABLE_PROPS } from "data/profile";
-
-const Home = () => {
+const Payout: FC<{ user: any }> = ({ user }) => {
+  const { publicAddress } = user;
   return (
     <div className="flex flex-col gap-10">
-      <TokenBalance {...TOKEN_BALANCES} />
-      <Transfer {...TRANSFER_TABLE_PROPS} />
+      <TokenBalance publicAddress={publicAddress} />
+      <Transfer publicAddress={publicAddress} />
     </div>
   );
 };
 
-export default Home;
+export default Payout;

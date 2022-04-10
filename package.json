@@ -29,6 +29,7 @@
     "aframe-blink-controls": "^0.3.0",
     "aframe-liquid-portal-shader": "^1.0.1",
     "aframe-react": "^4.4.0",
+    "bluebird": "^3.7.2",
     "bs58": "^5.0.0",
     "classnames": "^2.3.1",
     "daisyui": "^1.16.2",
@@ -37,6 +38,7 @@
     "freeice": "^2.2.2",
     "jotai": "^1.6.1",
     "lodash.orderby": "^4.6.0",
+    "moment": "^2.29.2",
     "multiuser-aframe": "^0.1.0",
     "next": "12.1.0",
     "next-auth": "^4.3.1",
@@ -60,6 +62,7 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@types/bluebird": "^3.5.36",
     "@types/react": "17.0.34",
     "@types/react-alert": "^5.2.1",
     "autoprefixer": "^10.4.0",
