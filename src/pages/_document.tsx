@@ -26,10 +26,10 @@ class MyDocument extends Document {
             href="/favicon-16x16.png"
           /> */}
           {/* <link rel="manifest" href="/site.webmanifest" /> */}
-          <link
+          {/* <link
             href="http://fonts.cdnfonts.com/css/sf-pro-display"
             rel="stylesheet"
-          />
+          /> */}
         </Head>
         <body>
           <Main />

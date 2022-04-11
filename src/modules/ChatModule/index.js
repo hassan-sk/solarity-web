@@ -155,7 +155,7 @@ useEffect(() => {
           <video className={styles.background_video} id="background_video" autoPlay loop muted>
               <source src="/assets/video/loading_video.mp4" type="video/mp4"/>
           </video>
-          <div id="loading_screen" className={styles.loading_screen_profile}>
+          <div id="loading_screen" className={styles.loading_screen}>
               <div id="loading_text" className={styles.loading_text}>
               </div>
               <div id="loading_bar" className={styles.loading_bar}>
