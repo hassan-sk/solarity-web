@@ -22,7 +22,7 @@ const Banner: FC<BannerProps> = ({ vrprofile, vrdao, smallImage }) => {
   return (
     <div>
       {vrprofile && (
-        <div className="relative w-full h-[600px] rounded-2xl -mt-5">
+        <div className="relative w-full h-[400px] rounded-2xl -mt-5">
           <AframeComp2 />
           {vrprofile.price && (
             <Link

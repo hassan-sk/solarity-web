@@ -71,7 +71,7 @@ const SelectDisplayNftView = () => {
         Select NFTs to Display in Room.
       </span>
       <Stack spacing={3}>
-        <div className="relative w-full h-[270px] rounded-2xl mt-4">
+        <div className="relative w-full h-[250px] rounded-2xl mt-4">
           <AframeEditRoom
             chooseFlag={chooseFlag}
             setChooseFlag={setChooseFlag}
