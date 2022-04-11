@@ -58,13 +58,16 @@ export const chatSlice = createSlice({
     addMsg(state, action: PayloadAction<any>) {
       state.msgs.push(action.payload);
     },
-    removePeer(state, action: PayloadAction<any>) {
-      var peerindex = state.peers.findIndex((s: any) => s.name === action.payload.name)
+    removePeer(state, action: PayloadAction<any>) {console.log('removePeer-----------------');
+      var peerindex = state.peers.findIndex((s: any) => s.name === action.payload.name);console.log('peer index: ', peerindex);
       if(peerindex !== -1)
         state.peers.splice(peerindex, 1);
     },
     setMsg(state, action: PayloadAction<any>) {
       state.msgs = action.payload;
+    },
+    setPeers(state, action: PayloadAction<any>) {
+      state.peers = action.payload;
     },
     setRoomIndex(state, action: PayloadAction<any>) {
       state.selectedIndex = action.payload;
@@ -75,6 +78,6 @@ export const chatSlice = createSlice({
   },
 });
 
-export const { createRoom, setName, setSocket, addPeer, addRoom, setRooms, addMsg, removePeer, setMsg, setRoomIndex, setModel } = chatSlice.actions;
+export const { createRoom, setName, setSocket, addPeer, addRoom, setRooms, addMsg, removePeer, setMsg, setRoomIndex, setModel, setPeers } = chatSlice.actions;
 
 export default chatSlice.reducer;

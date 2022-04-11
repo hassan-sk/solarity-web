@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 import { useWebTRTC } from '../../utils/useWebTRTC';
 import { models } from '../../data/experience';
-import { setMsg } from '../../redux/slices/chatSlice';
+import { setMsg, setPeers } from '../../redux/slices/chatSlice';
 import ACTIONS from '../../config/actions';
 import styles from './chat.module.css';
 import {start_loading_screen_listeners, build_loading_screen} from './loading_screen'
@@ -141,6 +141,7 @@ useEffect(() => {
     window.myPosition = {};
     window.socket.emit(ACTIONS.LEAVE, { roomId: rid, user: {name: userName} } );
     dispatch(setMsg([]));
+    dispatch(setPeers([]));
     router.push('/experience');
   }
 
