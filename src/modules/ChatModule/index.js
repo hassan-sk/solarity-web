@@ -106,13 +106,13 @@ useEffect(() => {
         entity.setAttribute('networked', 'template:#avatar-template;attachTemplateToLocal:false;');
         entity.setAttribute('position', '0 1.6 0');
         sceneEl = null;
-        // window.NAF.schemas.add({
-        //   template: '#avatar-template',
-        //   components: [
-        //     'position',
-        //     'rotation',
-        //   ]
-        // });
+        window.NAF.schemas.add({
+          template: '#avatar-template',
+          components: [
+            'position',
+            'rotation',
+          ]
+        });
         setIntervalId(setInterval(updateVolume, 300));
       }
     }
@@ -359,14 +359,14 @@ useEffect(() => {
               <a-gltf-model class="model" src="#frontwall" position="0 0 0" scale="1 1 1"></a-gltf-model>
 
 
-              <a-gltf-model class="model" src="#walldeco" position="0 0 0" scale="1 1 1"></a-gltf-model>
+              {/* <a-gltf-model class="model" src="#walldeco" position="0 0 0" scale="1 1 1"></a-gltf-model> */}
               <a-gltf-model class="model" src="#text" position="0 0 0" scale="1 1 1"></a-gltf-model>
               <a-gltf-model class="model" src="#spotlights" position="0 0 0" scale="1 1 1"></a-gltf-model>
               <a-gltf-model class="model" src="#decoration" position="0 0 0" scale="1 1 1"></a-gltf-model>
 
               <a-gltf-model class="model" src="#curvedwall" position="0 0 0" scale="1 1 1"></a-gltf-model>
               <a-gltf-model class="model" src="#backwall" position="0 0 0" scale="1 1 1"></a-gltf-model>
-              <a-gltf-model class="model" src="#walldeconeon" position="0 0 0" scale="1 1 1"></a-gltf-model> 
+              {/* <a-gltf-model class="model" src="#walldeconeon" position="0 0 0" scale="1 1 1"></a-gltf-model>  */}
 
               <a-gltf-model class="model" src="#stairsh" position="0 0 0" scale="1 1 1"></a-gltf-model>
               <a-gltf-model class="model" src="#stairs" position="0 0 0" scale="1 1 1"></a-gltf-model>

@@ -9,11 +9,12 @@ const RoomScene = ({
     data: string;
 }) => {
   return (
-    <div>
+    <div className="relative w-full h-full">
         <Image
           src={bgImage}
           alt={"VR Image"}
           layout="fill"
+          priority={true}
           objectFit="cover"
           className="rounded-2xl"
         />
