@@ -3,13 +3,14 @@ import Image from "next/image";
 import AframeComp2 from "components/AframeComp2";
 import AframeComp6 from "components/AframeComp6";
 import Link from "next/link";
-
+import { User } from "modules/User/Hero";
 export interface BannerProps {
   vrprofile: {
     featured: boolean;
     imageUrl: string;
     price: string;
   };
+  user: User;
   vrdao: {
     featured: boolean;
     imageUrl: string;
@@ -18,12 +19,12 @@ export interface BannerProps {
   smallImage: string;
 }
 
-const Banner: FC<BannerProps> = ({ vrprofile, vrdao, smallImage }) => {
+const Banner: FC<BannerProps> = ({ vrprofile, user, vrdao, smallImage }) => {
   return (
     <div>
       {vrprofile && (
         <div className="relative w-full h-[400px] rounded-2xl -mt-5">
-          <AframeComp2 />
+          <AframeComp2 user={user}/>
           {vrprofile.price && (
             <Link
               href={

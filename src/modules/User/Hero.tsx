@@ -15,7 +15,7 @@ type HeroProps = {
   user: Object;
 };
 
-type User = {
+export type User = {
   profileImageLink?: string;
   username: string;
   followerCount: number;
@@ -81,7 +81,6 @@ const Hero: FC<HeroProps> = ({ user }) => {
   useEffect(() => {
     if (!showFollowers) return;
   }, [showFollowers]);
-
   //hide follow if not logged
   return (
     <div>
@@ -96,6 +95,7 @@ const Hero: FC<HeroProps> = ({ user }) => {
           imageUrl: "/images/placeholder/post/post_one.png",
           price: "5",
         }}
+        user={user}
         smallImage={profile.profileImageLink || placeholder.src}
       />
       <div className="flex justify-end">

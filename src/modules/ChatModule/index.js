@@ -221,7 +221,7 @@ useEffect(() => {
                   />
               </a-assets>
 
-              <a-entity id="player">
+              <a-entity>
                   <a-entity simple-navmesh-constraint="navmesh:#navmesh;fall:0.5;height:1.65;" id="head"
                             camera="fov: 70; active: true" position="0 1.65 0" wasd-controls="acceleration: 20;"
                             look-controls="pointerLockEnabled: true; reverseMouseDrag: false">
@@ -230,6 +230,7 @@ useEffect(() => {
                                 geometry="primitive: sphere; radius: 0.001">
                       </a-entity>
                   </a-entity>
+                      {/* <a-entity geometry="primitive: plane; width: 1; height: auto" material="color: blue" text="value: Super" position="1.9 2.8 0"></a-entity> */}
                   <a-entity id="leftHand" class="leftController controllerOnly"
                             hand-controls="hand: left; handModelStyle: lowPoly; color: #15ACCF"
                             laser-controls="hand: left" vive-controls="hand: left" oculus-touch-controls="hand: left"
@@ -440,15 +441,15 @@ useEffect(() => {
               }
             </div>
     
-            <div className="fixed top-[50px] right-[30px] bg-brandblack rounded-lg w-1/4">
-              <div className='w-full p-[20px]'>
+            <div className="fixed top-[5vh] h-[90vh] max-h-[90vh] right-[30px] min-w-[300px] bg-brandblack rounded-lg w-1/4">
+              <div className='w-full p-[20px] h-full flex flex-col gap-2'>
                 <div className='text-lg mb-4'>
                   Room Chat
                 </div>
-                <div className='ui-chat h-[555px] max-h-[555px] overflow-auto'>
+                <div className='ui-chat overflow-auto h-full'>
                   {
                     msgs && Array.from(msgs).map((ele, ind) => {
-                      return(
+                      return (
                         <div key={ind}>
                           {/* <img src="" alt="" width={40} height={40} /> */}
                           <p><span><b>{ele && ele.user}:</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>{ele && ele.msg}</p>
@@ -457,17 +458,16 @@ useEffect(() => {
                     })
                   }
                 </div>
-                <div>
+                <div className='flex'>
                   <input
                     type="text"
-                    className="w-full py-2 pl-6 text-[15px] font-light text-white border-transparent border rounded-md bg-primary focus:outline-none focus:border-gray-500 focus:border focus:text-white placeholder:text-gray-950Í"
+                    className="w-[80%] py-2 pl-6 text-[15px] font-light text-white border-transparent border rounded-md bg-primary focus:outline-none focus:border-gray-500 focus:border focus:text-white placeholder:text-gray-950Í"
                     value={sendData}
                     onKeyDown={handleKeyDown}
                     onChange={(e) => setSendData(e.target.value)}
-                    style={{width: "80%"}}
                     placeholder="Input a message please."
-                    />&nbsp;&nbsp;
-                  <button label="" style={{marginLeft: "15px"}} onClick={sendMsg} >send</button>
+                    />
+                  <button label="" style={{marginLeft: "20px"}} onClick={sendMsg} >send</button>
                 </div>
               </div>
     

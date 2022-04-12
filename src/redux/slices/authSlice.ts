@@ -43,6 +43,7 @@ export const login = createAsyncThunk(
           requestNonce: false,
           signature,
         });
+        localStorage.setItem('name', profile.username);
         dispatch(setProfile(profile));
         return true;
       } else {
