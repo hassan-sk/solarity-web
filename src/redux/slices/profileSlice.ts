@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import ACTIONS from "config/actions";
+import { showErrorToast, showSuccessToast } from "utils";
 import { apiCaller, getErrorMessage } from "utils/fetcher";
 
 const initialState = {
@@ -153,6 +154,56 @@ export const updateNftCard = createAsyncThunk(
   }
 );
 
+export const linkAccounts = createAsyncThunk(
+  "profile/linkAccounts",
+  async ({
+    data,
+    finalFunction,
+  }: {
+    data: Object;
+    finalFunction: () => void;
+  }) => {
+    let returnValue = null;
+    try {
+      const {
+        data: { profile },
+      } = await apiCaller.post("/profile/linkAccounts", data);
+      returnValue = profile;
+      showSuccessToast("Account successfully linked");
+    } catch (err) {
+      showErrorToast("Account was unable to be linked");
+      returnValue = false;
+    }
+    finalFunction();
+    return returnValue;
+  }
+);
+
+export const unlinkAccounts = createAsyncThunk(
+  "profile/unlinkAccounts",
+  async ({
+    data,
+    finalFunction,
+  }: {
+    data: Object;
+    finalFunction: () => void;
+  }) => {
+    let returnValue = null;
+    try {
+      const {
+        data: { profile },
+      } = await apiCaller.post("/profile/unlinkAccounts", data);
+      returnValue = profile;
+      showSuccessToast("Account successfully unlinked");
+    } catch (err) {
+      showErrorToast("Account was unable to be unlinked");
+      returnValue = false;
+    }
+    finalFunction();
+    return returnValue;
+  }
+);
+
 export const profileSlice = createSlice({
   name: "profile",
   initialState,
@@ -192,6 +243,16 @@ export const profileSlice = createSlice({
       }
     });
     builder.addCase(updateNftCard.fulfilled, (state, action) => {
+      if (action.payload) {
+        profileSlice.caseReducers.setProfile(state, action);
+      }
+    });
+    builder.addCase(linkAccounts.fulfilled, (state, action) => {
+      if (action.payload) {
+        profileSlice.caseReducers.setProfile(state, action);
+      }
+    });
+    builder.addCase(unlinkAccounts.fulfilled, (state, action) => {
       if (action.payload) {
         profileSlice.caseReducers.setProfile(state, action);
       }

@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 export const minifyNumber = (num: number): number | string => {
   if (num < 1000) return num;
   const newNum = num.toString();
@@ -12,4 +14,26 @@ export const minifyAddress = (address: string): string => {
     "..." +
     address.substring(address.length - 3, address.length)
   );
+};
+
+export const showSuccessToast = (message: string) => {
+  toast.success(message, {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    progress: undefined,
+  });
+};
+
+export const showErrorToast = (message: string) => {
+  toast.error(message, {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    progress: undefined,
+  });
 };
