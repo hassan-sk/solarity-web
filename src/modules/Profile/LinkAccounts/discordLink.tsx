@@ -6,7 +6,9 @@ import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { linkAccounts, unlinkAccounts } from "redux/slices/profileSlice";
 
 const DISCORD_LINK =
-  "https://discord.com/api/oauth2/authorize?client_id=963209278146117632&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fprofile%3Fview%3Dlink_accounts%26link%3Ddiscord&response_type=code&scope=identify";
+  process.env.NODE_ENV === "development"
+    ? "https://discord.com/api/oauth2/authorize?client_id=963209278146117632&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fprofile%3Fview%3Dlink_accounts%26link%3Ddiscord&response_type=code&scope=identify"
+    : "https://discord.com/api/oauth2/authorize?client_id=963209278146117632&redirect_uri=https%3A%2F%2Fsolarity-web-git-master-hassan-sk.vercel.app%2Fprofile%3Fview%3Dlink_accounts%26link%3Ddiscord&response_type=code&scope=identify";
 
 const DiscordLink: FC<{ resetUrl: Function }> = ({ resetUrl }) => {
   const { discordConnected, discordUsername } = useSelector(
