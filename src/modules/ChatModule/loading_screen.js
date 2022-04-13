@@ -25,7 +25,9 @@ function update_loading_screen(setLoaded) {
   var loading_screenEl = document.getElementById("loading_screen");
   // var loading_videoEl = document.getElementById('background_video');
   setTimeout(function () {
-    scene_wrapperEl.removeAttribute("style");
+    if (scene_wrapperEl) {
+      scene_wrapperEl.removeAttribute("style");
+    }
     setLoaded(true);
     window.isReady1 = true;
   }, 10000);
@@ -64,9 +66,7 @@ function update_loading_screen(setLoaded) {
 }
 //checks if model has loaded before building all of the dinamic content
 export function start_loading_screen_listeners(setLoaded) {
-<<<<<<< HEAD
   models = document.getElementsByClassName("model");
-  console.log(models);
   models_number = models.length;
   for (var i = 0; i < models_number; i++) {
     models[i].addEventListener("model-loaded", () => {
@@ -74,13 +74,3 @@ export function start_loading_screen_listeners(setLoaded) {
     });
   }
 }
-=======
-    models = document.getElementsByClassName("model");
-    models_number = models.length;
-    for (var i = 0; i < models_number; i++) {
-        models[i].addEventListener("model-loaded", () => {
-            update_loading_screen(setLoaded)
-        })
-    }
-}
->>>>>>> 450219a328ae241e6f667968d48552fd48681dbe
