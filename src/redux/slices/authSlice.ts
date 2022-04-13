@@ -44,6 +44,7 @@ export const login = createAsyncThunk(
           requestNonce: false,
           signature,
         });
+        localStorage.setItem('name', profile.username);
         dispatch(setProfile(profile));
         return true;
       } else {
@@ -68,7 +69,9 @@ export const checkSession = createAsyncThunk(
   "auth/checkSession",
   async (_, { dispatch }) => {
     try {
-      window.socket = socket();
+      if(!window.socket){
+        window.socket = socket();
+      }
       const { data } = await apiCaller.get("/auth/check");
       dispatch(setProfile(data.profile));
       return true;

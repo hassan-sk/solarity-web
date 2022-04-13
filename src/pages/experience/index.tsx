@@ -23,24 +23,30 @@ const Index = () => {
     if(!window.socket) {
       return;
     }
-    window.socket.on(ACTIONS.ADD_PEER, data => {
-      dispatch(addPeer(data));
-    })
-    window.socket.on(ACTIONS.REMOVE_PEER, data => {
-      dispatch(removePeer(data));
-    })
+    if(!window.listen) {
+      window.socket.on(ACTIONS.ADD_PEER, data => {
+        dispatch(addPeer(data));
+      })
+      window.socket.on(ACTIONS.SEND_MSG, (data: any) => {
+        dispatch(addMsg(data));
+      })
+      window.socket.on(ACTIONS.REMOVE_PEER, data => {
+        dispatch(removePeer(data));
+      })
 
-    window.socket.on(ACTIONS.ROOM_LIST, data => {
-      dispatch(setRooms(data.rooms));
-    })
+      window.socket.on(ACTIONS.ROOM_LIST, data => {
+        dispatch(setRooms(data.rooms));
+      })
 
-    window.socket.on(ACTIONS.CREATE_ROOM, data => {
-      dispatch(setMsg(data.msgs));
-    })
+      window.socket.on(ACTIONS.CREATE_ROOM, data => {
+        dispatch(setMsg(data.msgs));
+      })
 
-    window.socket.on(ACTIONS.ROOM_READY, data => {
-      router.push(`experience/room?rid=${data.roomId}`);
-    })
+      window.socket.on(ACTIONS.ROOM_READY, data => {
+        router.push(`experience/room?rid=${data.roomId}`);
+      })
+      window.listen = true;
+    }
   }, []);
 
   // useEffect(() => {

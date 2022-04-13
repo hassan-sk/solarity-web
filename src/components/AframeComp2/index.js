@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import { RootStateOrAny, useSelector } from "react-redux";
 import { start_loading_screen_listeners, build_loading_screen } from "modules/ChatModule/loading_screen";
 import styles from 'modules/ChatModule/chat.module.css';
-
-export default function AframeComp2() {
+import { apiCaller } from "utils/fetcher";
+import { User } from "modules/User/Hero";
+export default function AframeComp2(user) {
   const [mounted, setMounted] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  // const [permition, setPermition] = useState(true);
+  const [permition, setPermition] = useState(false);
+  const [rooms, setRooms] = useState([]);
   const assets = [
     {
       pos: "-2.25 1.65 -2.93",
@@ -29,18 +30,21 @@ export default function AframeComp2() {
       rot: "180 90 180",
     },
   ];
-  const { rooms } = useSelector((state) => ({
-    rooms: state.profile.data.rooms,
-  }));
   useEffect(() => {
     require("aframe/dist/aframe-master.js");
     require('aframe-liquid-portal-shader');
     require('aframe-blink-controls');
     setMounted(true);
-    // if (!rooms || (rooms && rooms.length == 0)) {
-    //   setPermition(true);
-    // }
+    setRooms(user.user.rooms);
   }, []);
+
+  useEffect(() => {
+    if (!rooms) {
+      setPermition(false);
+    } else {
+      setPermition(true);
+    }
+  }, [rooms])
 
   useEffect(() => {
     var clearHandle = setInterval(() => {
@@ -57,7 +61,7 @@ export default function AframeComp2() {
   }, [])
 
 
-  // if (permition) {
+  if (permition) {
     if (mounted) {
       return (
         <>
@@ -202,11 +206,11 @@ export default function AframeComp2() {
       );
     }
     return <div>load...</div>;
-  // } else {
-  //   return (
-  //     <div className="pt-20 text-center">
-  //       {"You don't have any room please buy a room"}
-  //     </div>
-  //   );
-  // }
+  } else {
+    return (
+      <div className="pt-20 text-center">
+        {"You don't have any room please buy a room"}
+      </div>
+    );
+  }
 }

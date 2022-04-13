@@ -35,7 +35,7 @@ export const chatSlice = createSlice({
       localStorage.setItem('roomName', action.payload.roomName);
       localStorage.setItem('userName', action.payload.userName);
       localStorage.setItem('name', action.payload.userName);
-      localStorage.setItem('modelIndex', action.payload.modelIndex);console.log(window.socket);
+      localStorage.setItem('modelIndex', action.payload.modelIndex);
       if(!!window.socket)
         window.socket.emit(ACTIONS.JOIN, {roomId: -1, user: { name: state.userName, roomName: state.roomName, modelIndex: state.modelIndex}});
     },
@@ -59,12 +59,15 @@ export const chatSlice = createSlice({
       state.msgs.push(action.payload);
     },
     removePeer(state, action: PayloadAction<any>) {
-      var peerindex = state.peers.findIndex((s: any) => s.name === action.payload.name)
+      var peerindex = state.peers.findIndex((s: any) => s.name === action.payload.name);
       if(peerindex !== -1)
         state.peers.splice(peerindex, 1);
     },
     setMsg(state, action: PayloadAction<any>) {
       state.msgs = action.payload;
+    },
+    setPeers(state, action: PayloadAction<any>) {
+      state.peers = action.payload;
     },
     setRoomIndex(state, action: PayloadAction<any>) {
       state.selectedIndex = action.payload;
@@ -75,6 +78,6 @@ export const chatSlice = createSlice({
   },
 });
 
-export const { createRoom, setName, setSocket, addPeer, addRoom, setRooms, addMsg, removePeer, setMsg, setRoomIndex, setModel } = chatSlice.actions;
+export const { createRoom, setName, setSocket, addPeer, addRoom, setRooms, addMsg, removePeer, setMsg, setRoomIndex, setModel, setPeers } = chatSlice.actions;
 
 export default chatSlice.reducer;
