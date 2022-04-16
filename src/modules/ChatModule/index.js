@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { useEffect, useState, FC } from 'react'
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import { useRouter } from 'next/router'
@@ -11,10 +12,12 @@ import styles from './chat.module.css';
 import {start_loading_screen_listeners, build_loading_screen} from './loading_screen'
 import {start_screens} from './screens'
 import {choose_controls, pass_controls} from './utils'
+import { UserPlus } from 'components/Icons';
+import InviteFriendModal from "components/Modals/InviteFriendModal";
 
 const ChatModule = () => {
   const [mounted, setMounted] = useState(false)
-  const { roomName, userName, modelIndex, msgs, peers } = useAppSelector(state => state.chat);
+  const { roomName, userName, modelIndex, msgs, peers, rooms } = useAppSelector(state => state.chat);
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { rid } = router.query;
@@ -24,6 +27,7 @@ const ChatModule = () => {
   const [gifIntervalId, setGifIntervalId] = useState('');
   
   const [isMute, setMute] = useState(true);
+  const [iniviteFriendModal, setIniviteFriendModal] = useState(false);
   const [isLoaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -88,6 +92,7 @@ useEffect(() => {
           var a = myPosition.x - positions[audio].x;
           var b = myPosition.z - positions[audio].z;
           var distance = 7 - Math.sqrt(a*a + b*b);
+          console.log("distance: ", Math.sqrt(a*a + b*b))
           if(distance < 0 || distance > 7 || !distance)
             distance = 0;
           if(!!audios && !!audios[audio])
@@ -101,7 +106,6 @@ useEffect(() => {
   useEffect(() => {
     if(isLoaded) {
       if(!!entity) {
-        entity.setAttribute('id', 'player');
         entity.setAttribute('class', 'heads');
         entity.setAttribute('networked', 'template:#avatar-template;attachTemplateToLocal:false;');
         entity.setAttribute('position', '0 1.6 0');
@@ -150,6 +154,10 @@ useEffect(() => {
       document.querySelector('.ui-chat').scrollTop = document.querySelector('.ui-chat').scrollHeight
   }, [msgs])
 
+  const handleInviteFriendToggle = () => {
+    setIniviteFriendModal(!iniviteFriendModal);
+  }
+
   if (mounted && models && models[modelIndex] && models[modelIndex].modelUrl) {
       return (
         <div>
@@ -163,7 +171,7 @@ useEffect(() => {
               </div>
               <div id="loading_label" className={styles.loading_label}>
                   POWERED BY SOLARITY
-                  <img id="loading_logo" className={styles.loading_logo} src="/assets/images/loading_logo.png" />
+                  <img id="loading_logo" className={styles.loading_logo} src="/assets/images/loading_logo.png" alt="loadig_logo"/>
               </div>
           </div>
           <div id="scene_wrapper" style={{opacity: "0"}}>
@@ -202,17 +210,17 @@ useEffect(() => {
                   <a-asset-item id="walldeconeon" src="/assets/models/hub/Wall decoration neon LOW POLY.glb"></a-asset-item>
 
                   <a-asset-item id="raccoon-obj" src={models[modelIndex].modelUrl}></a-asset-item>
-                  <img id="try-img" src="/assets/images/japan.png"/>
-                  <img id="tweet-img" src="/assets/images/tweet.jpg"/>
-                  <img id="sky-img" src="/assets/images/sky.jpg"/>
+                  <img id="try-img" src="/assets/images/japan.png" alt="try-img"/>
+                  <img id="tweet-img" src="/assets/images/tweet.jpg" alt="tweer-img"/> 
+                  <img id="sky-img" src="/assets/images/sky.jpg" alt="sky-img"/>
 
-                  <img id="gallery-img" src="/assets/images/gallery.png"/>
-                  <img id="room-img" src="/assets/images/room.png"/>
+                  <img id="gallery-img" src="/assets/images/gallery.png" alt="gallery-img"/>
+                  <img id="room-img" src="/assets/images/room.png" alt="room-img"/>
 
-                  <img id="gif-img1" src="/assets/images/gif_img1.jpeg"/>
-                  <img id="gif-img2" src="/assets/images/gif_img2.jpeg"/>
-                  <img id="gif-img3" src="/assets/images/gif_img3.jpeg"/>
-                  <img id="gif-img4" src="/assets/images/gif_img4.jpeg"/>
+                  <img id="gif-img1" src="/assets/images/gif_img1.jpeg" alt="gif-img1"/>
+                  <img id="gif-img2" src="/assets/images/gif_img2.jpeg" alt="gif-img2"/>
+                  <img id="gif-img3" src="/assets/images/gif_img3.jpeg" alt="gif-img3"/>
+                  <img id="gif-img4" src="/assets/images/gif_img4.jpeg" alt="gif-img4"/>
                   <template 
                     id="avatar-template"
                     dangerouslySetInnerHTML={{
@@ -221,7 +229,7 @@ useEffect(() => {
                   />
               </a-assets>
 
-              <a-entity>
+              <a-entity id="player">
                   <a-entity simple-navmesh-constraint="navmesh:#navmesh;fall:0.5;height:1.65;" id="head"
                             camera="fov: 70; active: true" position="0 1.65 0" wasd-controls="acceleration: 20;"
                             look-controls="pointerLockEnabled: true; reverseMouseDrag: false">
@@ -330,7 +338,7 @@ useEffect(() => {
                   <a-box color="black" width="0.1" position="-1.2 0 0" height="2.9" depth="0.1"></a-box>
               </a-image>
               <a-image width="1.5" height="2" class="clickable nocollision" simple-link="href:  ../room/room.html"
-                      src="#room-img" position="14.2 1.1 -2.2" rotation="0 -90 0" material=" shader: liquid-portal">
+                      src="#room-img" position="14.2 1.1 -2.5" rotation="0 -90 0" material=" shader: liquid-portal">
                   <a-box color="black" width="1.5" position="0 -1 0" height="0.1" depth="0.1"></a-box>
                   <a-box color="black" width="1.5" position="0 1 0" height="0.1" depth="0.1"></a-box>
                   <a-box color="black" width="0.1" position="0.7 0 0" height="1.9" depth="0.1"></a-box>
@@ -360,14 +368,14 @@ useEffect(() => {
               <a-gltf-model class="model" src="#frontwall" position="0 0 0" scale="1 1 1"></a-gltf-model>
 
 
-              {/* <a-gltf-model class="model" src="#walldeco" position="0 0 0" scale="1 1 1"></a-gltf-model> */}
+              <a-gltf-model class="model" src="#walldeco" position="0 0 0" scale="1 1 1"></a-gltf-model>
               <a-gltf-model class="model" src="#text" position="0 0 0" scale="1 1 1"></a-gltf-model>
               <a-gltf-model class="model" src="#spotlights" position="0 0 0" scale="1 1 1"></a-gltf-model>
               <a-gltf-model class="model" src="#decoration" position="0 0 0" scale="1 1 1"></a-gltf-model>
 
               <a-gltf-model class="model" src="#curvedwall" position="0 0 0" scale="1 1 1"></a-gltf-model>
               <a-gltf-model class="model" src="#backwall" position="0 0 0" scale="1 1 1"></a-gltf-model>
-              {/* <a-gltf-model class="model" src="#walldeconeon" position="0 0 0" scale="1 1 1"></a-gltf-model>  */}
+              <a-gltf-model class="model" src="#walldeconeon" position="0 0 0" scale="1 1 1"></a-gltf-model> 
 
               <a-gltf-model class="model" src="#stairsh" position="0 0 0" scale="1 1 1"></a-gltf-model>
               <a-gltf-model class="model" src="#stairs" position="0 0 0" scale="1 1 1"></a-gltf-model>
@@ -419,14 +427,34 @@ useEffect(() => {
 
               {/* <a-entity position="0 0 0" sound="src: #rap; autoplay: true; loop: true; positional: false"></a-entity> */}
           </a-scene>
-          <div className='fixed top-[50px] left-[30px] cursor-pointer' onClick={() => handelManualLeave()}>
+          <div className='fixed top-[5vh] left-[30px] cursor-pointer' onClick={() => handelManualLeave()}>
               <div className='flex rounded-lg bg-brandblack px-4 py-2'>
                 <img src="/images/arrow-left.png" className='mt-1' style={{marginTop: '7px', height: "15px"}} width={15} height={15} alt="back" srcSet="" />
                 <span className='ml-3'>All Rooms</span>
               </div>
           </div>
+
+          <div className='fixed top-[20vh] left-[30px] w-[200px]'>
+              <div className='rounded-lg bg-brandblack px-4 py-2 w-full h-full'>
+                <div className='w-full py-3'>
+                  <h2>UserList</h2>
+                </div>
+                <div className='list overflow-auto h-[55vh]'>
+                  <ul className='no-underline'>
+                    <li className='border-b border-gray-700 py-2 px-3 flex justify-end'>
+                      <button className='flex text-secondary' onClick={handleInviteFriendToggle}><span className='mt-[3px]'><UserPlus/></span>&nbsp;<span>Invite</span></button>
+                    </li>
+                    {!!rooms && rooms.length != 0 && !!rooms[rid] && rooms[rid].speakers.map((speaker, index) => (
+                      <li className=' border-b border-gray-700 py-2 px-3'>
+                        <span className='text-white' key={index}>{speaker}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+          </div>
     
-          <div className='fixed bottom-[55px] left-[30px] rounded-lg bg-brandblack px-4 py-2 cursor-pointer' onClick={() => handelMuteBtnClick()}>
+          <div className='fixed bottom-[5vh] left-[30px] rounded-lg bg-brandblack px-4 py-2 cursor-pointer' onClick={() => handelMuteBtnClick()}>
             <audio
                 id="player-audio"
                 autoPlay
@@ -493,6 +521,10 @@ useEffect(() => {
               </div>
             </div>
           </div>
+          <InviteFriendModal 
+            open={iniviteFriendModal}
+            onClose={handleInviteFriendToggle}
+          />
         </div>
       );
   }

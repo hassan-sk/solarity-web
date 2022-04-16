@@ -15,19 +15,17 @@ import ACTIONS from '../../config/actions';
 const BigRoom: FC<BigRoomType> = ({ scene, content }) => {
   const  [joinModalOpen,setJoinModalOpen] = useState(false)
   const { rooms, selectedIndex } = useAppSelector(state => state.chat);
-  var data: any = {};
+  const { data } = useAppSelector(state => state.profile);
+  var selectedRoom: any = {};
   if(!!rooms && rooms.length !=0 && selectedIndex != -1) {
-    data = rooms[selectedIndex];
-  }
-  if(!data) {
-    data = {};
+    selectedRoom = rooms[selectedIndex];
   }
 
   const handleJoinModalToggle = () => {
     if(selectedIndex != -1){
       setJoinModalOpen(!joinModalOpen)
     } else {
-      toast.error('please select a room', {
+      toast.error('Select a room please', {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -57,14 +55,14 @@ const BigRoom: FC<BigRoomType> = ({ scene, content }) => {
         {content && (
           <div className="flex justify-between my-6">
             <div className="flex flex-col max-w-4xl ">
-              <span className="text-[15px] text-secondary">{data.roomName}</span>
+              <span className="text-[15px] text-secondary">{selectedRoom.roomName}</span>
               <span className="mt-3 text-sm text-gray-950">
-                {data.roomName}
+                {selectedRoom.roomName}
               </span>
             </div>
             <div>
               <div>
-                {!!data.speakers && data.speakers.map((speaker: string, index: any) => (
+                {!!selectedRoom.speakers && selectedRoom.speakers.map((speaker: string, index: any) => (
                   <img key={index} src="/images/icons/sol.png" alt={speaker} width="25" height="25" />
                 ))}
               </div>
@@ -75,7 +73,13 @@ const BigRoom: FC<BigRoomType> = ({ scene, content }) => {
           </div>
         )}
       </div>
-      <JoinRoomModal open={joinModalOpen} onClose={handleJoinModalToggle} />
+      <JoinRoomModal 
+        open={joinModalOpen} 
+        onClose={handleJoinModalToggle} 
+        roomName={selectedRoom.roomName}
+        creator={selectedRoom.name}
+        speakers={selectedRoom.speakers}
+      />
     </div>
   );
 };

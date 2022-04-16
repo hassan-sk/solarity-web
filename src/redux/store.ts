@@ -3,13 +3,14 @@ import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import chatReducer from "./slices/chatSlice";
 import authReducer from "./slices/authSlice";
 import profileReducer from "./slices/profileSlice";
-
+import marketplaceReducer from "./slices/marketplaceSlice"
 export function makeStore() {
   return configureStore({
     reducer: {
       chat: chatReducer,
       auth: authReducer,
       profile: profileReducer,
+      marketplace: marketplaceReducer,
     },
   });
 }

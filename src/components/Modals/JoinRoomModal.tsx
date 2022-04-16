@@ -8,23 +8,28 @@ import AvatarPanel from "components/AvatarPanel";
 import { useRouter } from 'next/router'
 import { models } from "data/experience";
 import { setModel } from "redux/slices/chatSlice";
+import { Join } from "components/Icons";
+import ErrorMessage from "components/ErrorMessage";
+import { setName } from "redux/slices/chatSlice";
 
 const JoinRoomModal: FC<any> = ({
   open,
   onClose,
-  roomname,
+  roomName,
   creator,
-  avatars,
+  speakers,
 }: {
   open: boolean;
   onClose: () => void;
-  roomname: string;
+  roomName: string;
   creator: string;
-  avatars: string[];
+  speakers: string[];
 }) => {
-  const [name, setName] = useState('');
   const [modelIndex, setModelIndex] = useState(0);
+  const [username, setUsername] = useState("");
   const [addOnsIndex, setAddOnsIndex] = useState(0);
+  const [errorFlag, setErrorFlag] = useState<Boolean>(false);
+  const [errorMsg, setErrorMessage] = useState("");
   const { profileData, selectedIndex, rooms } = useSelector((state: RootStateOrAny) => ({
     profileData: state.profile.data,
     selectedIndex: state.chat.selectedIndex,
@@ -34,29 +39,65 @@ const JoinRoomModal: FC<any> = ({
   const router = useRouter();
 
   const joinRoom = () => {
+    if(!profileData || !profileData.username) {
+      if(!username) {
+        setErrorMessage('The name is required.');
+        setErrorFlag(true);
+        return;
+      }
+      localStorage.setItem('name', username);
+      dispatch(setName(username));
+      setErrorFlag(false);
+    }
     dispatch(setModel(modelIndex));
-    if(!!window.socket)
+    if(!!window.socket){
       router.push(`experience/room?rid=${rooms[selectedIndex].roomId}`);
+    }
   }
 
   return (
-    <Base open={open} onClose={onClose} title="Join a Game">
-      <div className="grid grid-cols-2 gap-8 mt-8">
-        <div className="col-span-1 flex justify-between py-4 px-7 bg-primary rounded-xl">
+    <Base open={open} onClose={onClose} title={roomName}>
+      <div className="grid grid-cols-2 gap-8 mt-8 min-h-[250px]">
+        <div className="col-span-1 flex justify-between py-4 px-7 bg-primary min-h-[200px] rounded-xl">
           <AvatarPanel modelPath={models[modelIndex].modelUrl} position={models[modelIndex].position} rotation={models[modelIndex].rotation} scale={models[modelIndex].scale} />
         </div>
-        <div className="flex justify-between py-4 px-7 rounded-xl">
-          <div className="gap-2">
-            <h2 className="text-lg font-light">Plaza</h2>
-            {/* <span className="text-md text-gray-950">Created by {'Spider'}</span><br/>
-            <span className="text-md text-gray-950">Members {3}</span><br /> */}
-            <div className="text-xs text-gray-950 mt-6">your name.</div>
+        <div className="py-4 px-7 rounded-xl">
+        {
+          !!profileData && !!profileData.username ? (
+            <div className="gap-2">
+              <h2 className="text-lg font-light">Plaza</h2>
+              <span className="text-md text-gray-950">Created by {creator}</span><br/>
+              <span className="text-md text-gray-950">Members {!!speakers ? speakers.length: 0}</span><br />
+              <div className="text-xs text-gray-950 mt-6">your name.</div>
               <div className="mt-2">
                 <div className="relative w-full text-gray-100 focus-within:text-gray-400">
                   <h3>{profileData.username}</h3>
                 </div>
               </div>
-          </div>
+            </div>
+          ) : (
+            <div className="gap-2">
+              <span className="text-md text-gray-950">Created by <span className="text-white">{creator}</span></span><br/>
+              <span className="text-md text-gray-950">Number of member: <span className="text-white">{!!speakers ? speakers.length: 0}</span></span><br />
+              <div className="text-xs text-gray-950 mt-6">Type your name please.</div>
+              <div className="mt-2">
+                <div className="relative w-full text-gray-600 focus-within:text-gray-400">
+                  <input
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    className="w-full py-2 pl-6 text-[15px] font-light text-white border-transparent border rounded-md bg-primary focus:outline-none focus:border-gray-500 focus:border focus:text-white placeholder:text-gray-950Í"
+                    placeholder="Your Name"
+                    autoComplete="off"
+                    />
+                </div>
+              </div>
+            </div>
+          )
+        }
+        <div className="mt-4">
+          {errorFlag && (<ErrorMessage errorMessage={errorMsg}/>)}
+        </div>
         </div>
       </div>
       <div className="mt-2">
@@ -81,9 +122,9 @@ const JoinRoomModal: FC<any> = ({
           </div>
         </div>
       </div>
-      <div className="flex justify-center mt-8">
-        <button className="rounded-full btn btn-sm btn-secondary" onClick={joinRoom}>
-          Join
+      <div className="flex float-right mt-8">
+        <button className="rounded-full btn btn-sm btn-secondary px-8" onClick={joinRoom}>
+          <Join />&nbsp;<span>Join</span>
         </button>
       </div>
     </Base>

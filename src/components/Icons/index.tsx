@@ -28,3 +28,6 @@ export { default as Twitter } from "./Twitter";
 export { default as Discord } from "./Discord";
 export { default as DaoConnect } from './DaoConnect'
 export { default as Login } from './Login'
+export { default as Join } from './Join'
+export { default as PlusFill } from './PlusFill'
+export { default as UserPlus } from './UserPlus'

@@ -1,5 +1,6 @@
 import React, { FC, useState } from "react";
-import Base from "components/Widget/Base";
+import { useSelector, RootStateOrAny } from 'react-redux';
+import { toast } from 'react-toastify';
 import LiveRoomComp from "components/LiveRoom";
 import CreateRoomModal from "components/Modals/CreateRoomModal";
 
@@ -9,8 +10,25 @@ interface IProps {
 
 const LiveRooms: FC<IProps> = ({ rows: rooms }) => {
   const [createModalOpen, setCreateModalOpen] = useState(false);
+  const { profileData } = useSelector((state: RootStateOrAny) => ({
+    profileData: state.profile.data,
+  }));
 
   const handleCreateModalToggle = () => {
+    if(!createModalOpen) {
+      if(!profileData.rooms || profileData.rooms.length == 0) {
+        toast.warning("You don't have a own room. you can buy a rooms in marketplace", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        return;
+      }
+    }
     setCreateModalOpen(!createModalOpen);
   };
   return (
@@ -20,7 +38,7 @@ const LiveRooms: FC<IProps> = ({ rows: rooms }) => {
           <div className="flex flex-col p-5">
             <div className="flexfont-[19px] font-bold">Rooms</div>
           </div>
-          <div className="pr-5 text-xs cursor-pointer text-secondary" onClick={handleCreateModalToggle}>Creat a Room</div>
+          <div className="pr-5 text-xs cursor-pointer text-secondary" onClick={handleCreateModalToggle}>Create a Room</div>
         </div>
         <div>
           <div className="divide-y divide-borderwidget max-h-[42vh] min-h-[42vh] overflow-y-auto scrollbar-thin scrollbar-thumb-black">

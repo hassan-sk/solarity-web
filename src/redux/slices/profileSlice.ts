@@ -37,6 +37,44 @@ export const addInfo = createAsyncThunk(
   }
 );
 
+export const placeBid = createAsyncThunk(
+  "profile/placeBid",
+  async ({
+    data,
+    successFunction,
+    errorFunction,
+    finalFunction,
+  }: {
+    data: any;
+    successFunction: () => void;
+    errorFunction: (error: string) => void;
+    finalFunction: () => void;
+  }) => {
+    let returnValue = null;
+    try {
+
+      // Have to deal with Solana Payment.
+
+      ////////////////////////////
+      const {
+        data: { profile },
+      } = await apiCaller.post("/profile/buyRoom", {
+        title: data.title,
+        subTitle: data.subTitle,
+        imageUrl: data.imageUrl,
+        currentBid: data.currentBid,
+      });
+      successFunction();
+      returnValue = profile;
+    } catch (err) {
+      errorFunction(getErrorMessage(err));
+      returnValue = false;
+    }
+    finalFunction();
+    return returnValue;
+  }
+);
+
 export const claimDaos = createAsyncThunk(
   "profile/claimDaos",
   async ({
@@ -167,6 +205,7 @@ export const profileSlice = createSlice({
         "..." +
         publicAddress.substring(publicAddress.length - 4, publicAddress.length);
       state.data = action.payload;
+      localStorage.setItem('name', action.payload.username);
     },
     loadNFTs() {},
   },
@@ -192,6 +231,11 @@ export const profileSlice = createSlice({
       }
     });
     builder.addCase(updateNftCard.fulfilled, (state, action) => {
+      if (action.payload) {
+        profileSlice.caseReducers.setProfile(state, action);
+      }
+    });
+    builder.addCase(placeBid.fulfilled, (state, action) => {
       if (action.payload) {
         profileSlice.caseReducers.setProfile(state, action);
       }

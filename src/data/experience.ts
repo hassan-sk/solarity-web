@@ -12,7 +12,7 @@ export const BIG_ROOM: BigRoomType = {
     title: "Plaza",
     description:
       "  Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    buttonText: "Join a Game",
+    buttonText: "Join a Room",
     buttonLink: "/join-room",
     avatars: []
   },

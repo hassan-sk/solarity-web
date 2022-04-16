@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import Base from "components/Modals/Base";
 import BlackInput from "components/Inputs/BlackInput";
 import AvatarPanel from "components/AvatarPanel";
+import { PlusFill } from "components/Icons";
 
 import { createRoom } from '../../redux/slices/chatSlice';
 import { models } from "data/experience";
@@ -46,7 +47,7 @@ const CreateRoomModal: FC<any> = ({
   return (
     <Base open={open} onClose={onClose} title="Create a Room">
       <div className="grid grid-cols-2 gap-8 mt-8">
-        <div className="col-span-1 flex justify-between py-4 px-7 bg-primary rounded-xl">
+        <div className="col-span-1 flex justify-between py-4 px-4 bg-primary rounded-xl">
           <AvatarPanel modelPath={models[modelIndex].modelUrl} position={models[modelIndex].position} rotation={models[modelIndex].rotation} scale={models[modelIndex].scale} />
         </div>
         <div className="flex justify-between py-4 px-7 rounded-xl">
@@ -97,8 +98,8 @@ const CreateRoomModal: FC<any> = ({
         </div>
       </div>
       <div className="mt-7">
-        <button className="rounded-full btn btn-sm btn-secondary float-right"onClick={createRoomFunc}>
-          - Create -
+        <button className="rounded-full btn btn-sm btn-secondary float-right px-8" onClick={createRoomFunc}>
+          <PlusFill />&nbsp;<span>Create</span>
         </button>
       </div>
     </Base>

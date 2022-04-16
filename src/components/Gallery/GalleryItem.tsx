@@ -1,8 +1,11 @@
 import React from "react";
 import { FC } from "react";
+import { useDispatch } from 'react-redux';
 import Image from "next/image";
+import { useState,  } from "react";
 import { TickCircle, Bid } from "components/Icons";
 import { GalleryItem } from "modal/Gallery";
+import PlaceBidModal from "components/Modals/PlaceBidModal";
 
 const GalleryItemComponent: FC<GalleryItem> = ({
   title,
@@ -14,6 +17,12 @@ const GalleryItemComponent: FC<GalleryItem> = ({
   type = "bid",
   applicationNumber,
 }) => {
+  const [placeBidOpen, SetPlaceBidOpen] = useState(false);
+  const dispatch = useDispatch();
+  const handlePlaceBidToggle = () => {
+    SetPlaceBidOpen(!placeBidOpen);
+  }
+
   return (
     <div className="flex flex-col group ">
       <div className="flex flex-col justify-center gap-2 p-2 transition-all ease-in rounded-t-3xl rounded-b-3xl group-hover:rounded-b-none bg-brandblack">
@@ -21,10 +30,8 @@ const GalleryItemComponent: FC<GalleryItem> = ({
           <Image
             src={imageUrl}
             alt="nft item"
-            // height={133}
             layout="fill"
             priority={true}
-            // width={175}
             className="rounded-3xl"
           />
           <button className="z-10 gap-1 normal-case bg-white rounded-full opacity-0 btn btn-sm btn-accent group-hover:opacity-100 hover:bg-accent text-secondary">
@@ -69,9 +76,12 @@ const GalleryItemComponent: FC<GalleryItem> = ({
                 Connect
               </>
             ) : (
-              <>
+              <div 
+                className="flex" 
+                onClick={handlePlaceBidToggle}
+              >
                 <Bid /> Place a Bid
-              </>
+              </div>
             )}
           </button>
         </div>
@@ -178,6 +188,20 @@ const GalleryItemComponent: FC<GalleryItem> = ({
             </div>
           </div>
         )}
+        <PlaceBidModal
+          open={placeBidOpen}
+          onClose={handlePlaceBidToggle}
+          selectedVerse={{
+            title,
+            collection,
+            imageUrl,
+            currentBid,
+            endingIn,
+            subtitle,
+            type,
+            applicationNumber
+          }}
+        />
       </div>
     </div>
   );
