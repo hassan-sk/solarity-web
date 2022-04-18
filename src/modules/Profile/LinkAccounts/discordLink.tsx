@@ -54,7 +54,7 @@ const DiscordLink: FC<{ resetUrl: Function }> = ({ resetUrl }) => {
                 },
                 finalFunction: () => {
                   setLoading(false);
-                  // resetUrl();
+                  resetUrl();
                 },
               })
             );

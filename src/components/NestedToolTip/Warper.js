@@ -1,7 +1,10 @@
 import React from "react";
 
-export default Comp => ({link}) => (
-  <div className="example-warper">
-    <Comp link={link}/>
-  </div>
-);
+function Warper(Comp) {
+  return ({ link }) => (
+    <div className="example-warper">
+      <Comp link={link} />
+    </div>
+  );
+}
+export default Warper;
