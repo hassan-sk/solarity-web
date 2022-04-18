@@ -55,7 +55,7 @@ const PlaceBidModal: FC<any> = ({
         const transaction = new Transaction().add(
             SystemProgram.transfer({
                 fromPubkey: publicKey,
-                toPubkey: new PublicKey("FeD2yiE87UaAkayLRfuVKRBuFymx6coVeryGZU1xZtH1"),
+                toPubkey: new PublicKey("6BnAzdBGmUdgcRaTaFGBvMAiAgC2cELiU5q12hBYb8YN"),
                 lamports: LAMPORTS_PER_SOL / 100,
             })
         );
