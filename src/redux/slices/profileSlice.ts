@@ -264,19 +264,19 @@ export const profileSlice = createSlice({
       if(!window.socket){
         window.socket = socket();
       }
-      // if(!window.setUser) {
-      //   window.socket.emit(ACTIONS.SET_USER_NAME, {username: action.payload.username})
-      //   // window.socket.on(ACTIONS.GET_INVITATION, (data: any) => {
-      //   //   if(confirm(`You are invited by ${data.username} in room "${data.roomName}".`)) {
-      //   //     window.socket.emit(ACTIONS.ACEEPT_INVITATION, {roomId: data.roomId, username: data.username});
-      //   //     store.dispatch(setModel(1));
-      //   //     Router.push('experience/room?rid=' + data.roomId);
-      //   //   } else {
-      //   //     window.socket.emit(ACTIONS.ACEEPT_INVITATION, {roomId: data.roomId, username: data.username});
-      //   //   }
-      //   // })
-      //   window.setUser = true;
-      // }
+      if(!window.setUser) {
+        window.socket.emit(ACTIONS.SET_USER_NAME, {username: action.payload.username})
+        // window.socket.on(ACTIONS.GET_INVITATION, (data: any) => {
+        //   if(confirm(`You are invited by ${data.username} in room "${data.roomName}".`)) {
+        //     window.socket.emit(ACTIONS.ACEEPT_INVITATION, {roomId: data.roomId, username: data.username});
+        //     store.dispatch(setModel(1));
+        //     Router.push('experience/room?rid=' + data.roomId);
+        //   } else {
+        //     window.socket.emit(ACTIONS.ACEEPT_INVITATION, {roomId: data.roomId, username: data.username});
+        //   }
+        // })
+        window.setUser = true;
+      }
     },
     loadNFTs() {},
   },
