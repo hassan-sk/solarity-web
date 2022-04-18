@@ -13,6 +13,7 @@ export interface CounterState {
 const initialState = {
   logged: false,
   loading: false,
+  checkingSession: true,
 };
 
 type loginProps = {
@@ -43,7 +44,6 @@ export const login = createAsyncThunk(
           requestNonce: false,
           signature,
         });
-        localStorage.setItem('name', profile.username);
         dispatch(setProfile(profile));
         return true;
       } else {
@@ -90,11 +90,12 @@ export const authSlice = createSlice({
     });
     builder.addCase(checkSession.fulfilled, (state, action) => {
       state.logged = action.payload;
+      state.checkingSession = false;
     });
     builder.addCase(logout.fulfilled, (state, action) => {
       if (action.payload) {
-        window.location.reload();
         state.logged = false;
+        window.location.reload();
       }
     });
   },

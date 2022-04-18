@@ -1,6 +1,11 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import ACTIONS from "config/actions";
+import Router from 'next/router'
+import { showErrorToast, showSuccessToast } from "utils";
 import { apiCaller, getErrorMessage } from "utils/fetcher";
+import socket from "utils/socket-client";
+import store from "redux/store";
+import { setModel } from "./chatSlice";
 
 const initialState = {
   data: {},
@@ -191,6 +196,56 @@ export const updateNftCard = createAsyncThunk(
   }
 );
 
+export const linkAccounts = createAsyncThunk(
+  "profile/linkAccounts",
+  async ({
+    data,
+    finalFunction,
+  }: {
+    data: Object;
+    finalFunction: () => void;
+  }) => {
+    let returnValue = null;
+    try {
+      const {
+        data: { profile },
+      } = await apiCaller.post("/profile/linkAccounts", data);
+      returnValue = profile;
+      showSuccessToast("Account successfully linked");
+    } catch (err) {
+      showErrorToast("Account was unable to be linked");
+      returnValue = false;
+    }
+    finalFunction();
+    return returnValue;
+  }
+);
+
+export const unlinkAccounts = createAsyncThunk(
+  "profile/unlinkAccounts",
+  async ({
+    data,
+    finalFunction,
+  }: {
+    data: Object;
+    finalFunction: () => void;
+  }) => {
+    let returnValue = null;
+    try {
+      const {
+        data: { profile },
+      } = await apiCaller.post("/profile/unlinkAccounts", data);
+      returnValue = profile;
+      showSuccessToast("Account successfully unlinked");
+    } catch (err) {
+      showErrorToast("Account was unable to be unlinked");
+      returnValue = false;
+    }
+    finalFunction();
+    return returnValue;
+  }
+);
+
 export const profileSlice = createSlice({
   name: "profile",
   initialState,
@@ -206,6 +261,22 @@ export const profileSlice = createSlice({
         publicAddress.substring(publicAddress.length - 4, publicAddress.length);
       state.data = action.payload;
       localStorage.setItem('name', action.payload.username);
+      if(!window.socket){
+        window.socket = socket();
+      }
+      // if(!window.setUser) {
+      //   window.socket.emit(ACTIONS.SET_USER_NAME, {username: action.payload.username})
+      //   // window.socket.on(ACTIONS.GET_INVITATION, (data: any) => {
+      //   //   if(confirm(`You are invited by ${data.username} in room "${data.roomName}".`)) {
+      //   //     window.socket.emit(ACTIONS.ACEEPT_INVITATION, {roomId: data.roomId, username: data.username});
+      //   //     store.dispatch(setModel(1));
+      //   //     Router.push('experience/room?rid=' + data.roomId);
+      //   //   } else {
+      //   //     window.socket.emit(ACTIONS.ACEEPT_INVITATION, {roomId: data.roomId, username: data.username});
+      //   //   }
+      //   // })
+      //   window.setUser = true;
+      // }
     },
     loadNFTs() {},
   },
@@ -236,6 +307,16 @@ export const profileSlice = createSlice({
       }
     });
     builder.addCase(placeBid.fulfilled, (state, action) => {
+      if (action.payload) {
+        profileSlice.caseReducers.setProfile(state, action);
+      }
+    });
+    builder.addCase(linkAccounts.fulfilled, (state, action) => {
+      if (action.payload) {
+        profileSlice.caseReducers.setProfile(state, action);
+      }
+    });
+    builder.addCase(unlinkAccounts.fulfilled, (state, action) => {
       if (action.payload) {
         profileSlice.caseReducers.setProfile(state, action);
       }

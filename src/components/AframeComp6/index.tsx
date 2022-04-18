@@ -15,7 +15,7 @@ export default function AframeComp6 () {
           <a-cursor></a-cursor>
         <a-entity camera look-controls fov="70" /> 
         <a-assets>
-          <a-asset-item id="zizzi" src="/Final.glb" ></a-asset-item>
+          <a-asset-item id="zizzi" src="/assets/models/planet2.1(1).gltf" ></a-asset-item>
 
         </a-assets>
 

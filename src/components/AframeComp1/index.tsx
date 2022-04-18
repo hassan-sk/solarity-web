@@ -19,14 +19,14 @@ export default function AframeComp1 () {
         <a-assets>
           <a-asset-item id="bro" src="/monke/scene.gltf" ></a-asset-item>
         </a-assets>
-        <a-marker preset='hiro'>
+        {/* <a-marker preset='hiro'>
           <a-entity
             position='0 0 0'
             rotation='0 0 0'
             scale='0.05 0.05 0.05'
             gltf-model='/examples/image-tracking/nft/trex/scene.gltf'
           />
-        </a-marker>
+        </a-marker> */}
         <a-entity camera />
         <a-gltf-model src="#bro" scale="0.1 0.1 0.1" position="-2.3 1.2 -5"  rotation="0 70 0">
         </a-gltf-model>

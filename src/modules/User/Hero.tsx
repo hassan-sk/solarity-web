@@ -22,7 +22,7 @@ export type User = {
   bio?: string;
   githubUsername?: string;
   twitterUsername?: string;
-  discordHandle?: string;
+  discordUsername?: string;
 };
 
 const FollowButton: FC<{
@@ -157,11 +157,11 @@ const Hero: FC<HeroProps> = ({ user }) => {
             <AiOutlineTwitter size={22} color="#55ACEE" />
           </a>
         )}
-        {profile.discordHandle && (
+        {profile.discordUsername && (
           <a
             className="bg-white btn btn-circle"
             target={"__blank"}
-            href={`https://discord.com/${profile.discordHandle}`}
+            href={`https://discord.com/users/${profile.discordUsername}`}
           >
             <FaDiscord size={22} color="#7289D9" />
           </a>

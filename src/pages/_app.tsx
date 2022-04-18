@@ -34,20 +34,23 @@ function MyApp({ children }: any) {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const { logged, profileData } = useSelector((state: RootStateOrAny) => ({
-    profileData: state.profile.data,
-    logged: state.auth.logged,
-  }));
+  const { logged, profileData, checkingSession } = useSelector(
+    (state: RootStateOrAny) => ({
+      profileData: state.profile.data,
+      logged: state.auth.logged,
+      checkingSession: state.auth.checkingSession,
+    })
+  );
 
   useEffect(() => {
     const currentRoute = router.pathname;
     if (logged && !profileData.visible) {
       router.push("/setup");
     }
-    if (currentRoute === "/profile" && !logged) {
+    if (currentRoute === "/profile" && !logged && !checkingSession) {
       router.push("/");
     }
-  }, [logged, profileData]);
+  }, [logged, profileData, checkingSession]);
 
   useEffect(() => {
     dispatch(checkSession());

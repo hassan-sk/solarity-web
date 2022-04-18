@@ -89,7 +89,7 @@ export const useWebTRTC = (roomId, user) => {
                         let settled = false;
 
                         const interVal = setInterval(() => {
-                            if (!!audioElements && audioElements.current(remoteUser.name)) {
+                            if (!!audioElements && audioElements.current[remoteUser.name]) {
                                 audioElements.current[remoteUser.name].srcObject = remoteStream;
                                 settled = true;
                             }

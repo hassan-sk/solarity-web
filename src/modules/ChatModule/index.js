@@ -12,7 +12,7 @@ import styles from './chat.module.css';
 import {start_loading_screen_listeners, build_loading_screen} from './loading_screen'
 import {start_screens} from './screens'
 import {choose_controls, pass_controls} from './utils'
-import { UserPlus } from 'components/Icons';
+import { Chat, Logout, Minus, UserPlus, Users } from 'components/Icons';
 import InviteFriendModal from "components/Modals/InviteFriendModal";
 
 const ChatModule = () => {
@@ -23,12 +23,27 @@ const ChatModule = () => {
   const { rid } = router.query;
   const { clients, provideRef, handelMute } = useWebTRTC(rid, {name: userName});
   const [sendData, setSendData] = useState('');
+  const [roomIndex, setRoomIndex] = useState(-1);
   const [intervalId, setIntervalId] = useState('');
   const [gifIntervalId, setGifIntervalId] = useState('');
   
   const [isMute, setMute] = useState(true);
   const [iniviteFriendModal, setIniviteFriendModal] = useState(false);
   const [isLoaded, setLoaded] = useState(false);
+  const [isChatPanel, setChatPanel] = useState(true);
+  const [isUserPanel, setUserPanel] = useState(true);
+
+  const toggleChatPanel = () => {
+    setChatPanel(!isChatPanel);
+  }
+
+  useEffect(() => {
+    setRoomIndex(rooms.findIndex(s => s.roomId == rid))
+  }, [rooms]);
+
+  const toggleUserPanel = () => {
+    setUserPanel(!isUserPanel);
+  }
 
   useEffect(() => {
     handelMute(isMute, userName);
@@ -434,24 +449,28 @@ useEffect(() => {
               </div>
           </div>
 
-          <div className='fixed top-[20vh] left-[30px] w-[200px]'>
+          <div className={"fixed top-[20vh] left-[30px] w-[200px] transition-opacity " + (isUserPanel ? 'opacity-100': 'opacity-0')}>
               <div className='rounded-lg bg-brandblack px-4 py-2 w-full h-full'>
-                <div className='w-full py-3'>
-                  <h2>UserList</h2>
+              <div className='text-lg mb-4 flex justify-between pt-4'>
+                  <div>User List</div>
+                  <div className='cursor-pointer pt-[3px]' onClick={toggleUserPanel}><Minus /></div>
                 </div>
                 <div className='list overflow-auto h-[55vh]'>
                   <ul className='no-underline'>
                     <li className='border-b border-gray-700 py-2 px-3 flex justify-end'>
                       <button className='flex text-secondary' onClick={handleInviteFriendToggle}><span className='mt-[3px]'><UserPlus/></span>&nbsp;<span>Invite</span></button>
                     </li>
-                    {!!rooms && rooms.length != 0 && !!rooms[rid] && rooms[rid].speakers.map((speaker, index) => (
-                      <li className=' border-b border-gray-700 py-2 px-3'>
+                    {!!rooms && rooms.length != 0 && roomIndex != -1 && !!rooms[roomIndex] && rooms[roomIndex].speakers.map((speaker, index) => (
+                      <li className=' border-b border-gray-700 py-2 px-3' key={index}>
                         <span className='text-white' key={index}>{speaker}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
               </div>
+          </div>
+          <div className={"fixed top-[20vh] left-[30px] shadow-white shadow-2xl cursor-pointer transition-opacity " + (!isUserPanel ? 'opacity-100': 'opacity-0')} onClick={toggleUserPanel}>
+            <Users />
           </div>
     
           <div className='fixed bottom-[5vh] left-[30px] rounded-lg bg-brandblack px-4 py-2 cursor-pointer' onClick={() => handelMuteBtnClick()}>
@@ -468,11 +487,11 @@ useEffect(() => {
                 )
               }
             </div>
-    
-            <div className="fixed top-[5vh] h-[90vh] max-h-[90vh] right-[30px] min-w-[300px] bg-brandblack rounded-lg w-1/4">
-              <div className='w-full p-[20px] h-full flex flex-col gap-2'>
-                <div className='text-lg mb-4'>
-                  Room Chat
+            <div className={"fixed top-[5vh] h-[90vh] max-h-[90vh] right-[30px] min-w-[300px] bg-brandblack rounded-lg w-1/4 transition-opacity " + (isChatPanel ? 'opacity-100': 'opacity-0')}>
+              <div className='w-full p-[30px] h-full flex flex-col gap-2'>
+                <div className='text-lg mb-4 flex justify-between'>
+                  <div>Room Chat</div>
+                  <div className='cursor-pointer pt-[3px]' onClick={toggleChatPanel}><Minus /></div>
                 </div>
                 <div className='ui-chat overflow-auto h-full'>
                   {
@@ -498,7 +517,10 @@ useEffect(() => {
                   <button label="" style={{marginLeft: "20px"}} onClick={sendMsg} >send</button>
                 </div>
               </div>
-    
+            </div>
+            <div className={"fixed top-[5vh] right-[30px] shadow-white shadow-2xl cursor-pointer transition-opacity " + (!isChatPanel ? 'opacity-100': 'opacity-0')} onClick={toggleChatPanel}>
+              <Chat />
+            </div>
               <div className="hidden">
                 {
                   clients && clients.map((ele, ind) => {
@@ -520,7 +542,6 @@ useEffect(() => {
                 }
               </div>
             </div>
-          </div>
           <InviteFriendModal 
             open={iniviteFriendModal}
             onClose={handleInviteFriendToggle}

@@ -1,5 +1,8 @@
 import React, { FC, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector, RootStateOrAny } from "react-redux";
+import { SystemProgram, Transaction, LAMPORTS_PER_SOL, PublicKey, Connection, clusterApiUrl } from '@solana/web3.js';
+import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import Image from "next/image";
 import { TickCircle } from "components/Icons";
 import { Button } from "components/FormComponents";
@@ -9,6 +12,7 @@ import Base from "components/Modals/Base";
 import { GalleryItem } from "modal/Gallery";
 import { placeBid } from "redux/slices/profileSlice";
 import ErrorMessage from "components/ErrorMessage";
+import { web3 } from "@project-serum/anchor";
 
 const LoadingMessage = () => {
     return (
@@ -26,11 +30,53 @@ const PlaceBidModal: FC<any> = ({
     selectedVerse: GalleryItem;
 }) => {
     const dispatch = useDispatch();
-
+    const connection = new Connection(clusterApiUrl('testnet'));
+    const { publicKey, sendTransaction } = useWallet();
+    const { profileData } = useSelector((state: RootStateOrAny) => ({
+        profileData: state.profile.data,
+    }));
     const [loading, setLoading] = useState<Boolean>(false);
+    const [loadingButton, setLoadingButton] = useState<Boolean>(false);
     const [errorMessage, setErrorMessage] = useState<String>("");
     const [error, setError] = useState<Boolean>(false);
-    const placeBidAction = () => {
+    const placeBidAction = async () => {
+        if (!publicKey) {
+            toast.error("connect wallet please", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            return;
+        };
+        const transaction = new Transaction().add(
+            SystemProgram.transfer({
+                fromPubkey: publicKey,
+                toPubkey: new PublicKey("FeD2yiE87UaAkayLRfuVKRBuFymx6coVeryGZU1xZtH1"),
+                lamports: LAMPORTS_PER_SOL / 100,
+            })
+        );
+        try {
+            setLoadingButton(true);
+            const signature = await sendTransaction(transaction, connection);
+            const result = await connection.confirmTransaction(signature, 'processed');
+            setLoadingButton(false);
+        } catch (error) {
+            setLoadingButton(false);
+            toast.error(error.message, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            return;
+        }
         dispatch(placeBid({
             data: selectedVerse,
             successFunction: () => {
@@ -111,7 +157,7 @@ const PlaceBidModal: FC<any> = ({
                 <Button 
                     className="rounded-full btn btn-sm btn-secondary float-right" 
                     disableOnLoading
-                    loading={loading} onClick={placeBidAction}
+                    loading={loadingButton} onClick={placeBidAction}
                 >
                     Yes
                 </Button>
