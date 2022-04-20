@@ -65,7 +65,7 @@ const InviteFriendModal: FC<any> = ({
 
   return (
     <Base open={open} onClose={onClose} title={"Invitation Panel"}>
-      <div className="grid gap-8 mt-8 min-h-[250px]">
+      <div className="grid gap-8 mt-8 min-h-[250px] h-[220px] max-h-[220px] overflow-auto">
         <table className="w-full">
             <thead className="text-secondary text-center">
                 <tr className="py-2 border-b border-gray-500">
@@ -75,7 +75,7 @@ const InviteFriendModal: FC<any> = ({
                     <td className="w-3/6">Action</td>
                 </tr>
             </thead>
-            <tbody className="text-center h-[220px] overflow-auto">
+            <tbody className="text-center">
                 {userlist && userlist.map((user, index) => (
                     <tr className="py-2 border-b border-gray-800" key={index}>
                         <td>{index + 1}</td>
