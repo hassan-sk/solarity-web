@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
-import { useAppSelector, useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch } from "../../redux/hooks";
 import { setRoomIndex } from "redux/slices/chatSlice";
 const index = ({
   data: { roomName, name, speakers },

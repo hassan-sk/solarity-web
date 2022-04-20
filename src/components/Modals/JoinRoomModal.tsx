@@ -1,16 +1,13 @@
 import React, { FC, useState } from "react";
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
-import Image from "next/image";
-import { toast } from 'react-toastify';
 import Base from "components/Modals/Base";
-import BlackInput from "components/Inputs/BlackInput";
 import AvatarPanel from "components/AvatarPanel";
 import { useRouter } from 'next/router'
-import { models } from "data/experience";
 import { setModel } from "redux/slices/chatSlice";
 import { Join } from "components/Icons";
 import ErrorMessage from "components/ErrorMessage";
-import { setName } from "redux/slices/chatSlice";
+import { models } from "data/experience";
+import { setName, setRoom } from "redux/slices/chatSlice";
 
 const JoinRoomModal: FC<any> = ({
   open,
@@ -45,11 +42,19 @@ const JoinRoomModal: FC<any> = ({
         setErrorFlag(true);
         return;
       }
-      localStorage.setItem('name', username);
-      dispatch(setName(username));
+      dispatch(setRoom({
+        modelIndex,
+        roomName,
+        userName: username,
+      }));
       setErrorFlag(false);
+    } else {
+      dispatch(setRoom({
+        modelIndex,
+        roomName,
+        userName: profileData.username,
+      }));
     }
-    dispatch(setModel(modelIndex));
     if(!!window.socket){
       router.push(`experience/room?rid=${rooms[selectedIndex].roomId}`);
     }

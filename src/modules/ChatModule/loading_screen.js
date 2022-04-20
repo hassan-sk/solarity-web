@@ -29,7 +29,6 @@ function update_loading_screen(setLoaded) {
       scene_wrapperEl.removeAttribute("style");
     }
     setLoaded(true);
-    window.isReady1 = true;
   }, 10000);
   models_loaded++;
   if (models_loaded == 1) {
@@ -56,7 +55,6 @@ function update_loading_screen(setLoaded) {
   if (models_loaded == models_number) {
     models_loaded = 0;
     models = [];
-    window.isReady1 = true;
     models_number = undefined;
     setLoaded(true);
     if (!!scene_wrapperEl) scene_wrapperEl.removeAttribute("style");

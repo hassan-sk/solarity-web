@@ -1,7 +1,4 @@
-import React, { FC } from "react";
 import Image from "next/image";
-import { VR } from "components/Icons";
-import { RoomSceneType } from "modal/experience";
 
 const RoomScene = ({
     data: bgImage,

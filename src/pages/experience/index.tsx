@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router'
 import Layout from "components/Layout";
 import Experience from "modules/Experience";
@@ -24,38 +24,30 @@ const Index = () => {
       return;
     }
     if(!window.listen) {
-      window.socket.on(ACTIONS.ADD_PEER, data => {
+      window.socket.on(ACTIONS.ADD_PEER, (data: any) => {
         dispatch(addPeer(data));
       })
       window.socket.on(ACTIONS.SEND_MSG, (data: any) => {
         dispatch(addMsg(data));
       })
-      window.socket.on(ACTIONS.REMOVE_PEER, data => {
+      window.socket.on(ACTIONS.REMOVE_PEER, (data: any) => {
         dispatch(removePeer(data));
       })
 
-      window.socket.on(ACTIONS.ROOM_LIST, data => {
+      window.socket.on(ACTIONS.ROOM_LIST, (data: any) => {
         dispatch(setRooms(data.rooms));
       })
 
-      window.socket.on(ACTIONS.CREATE_ROOM, data => {
+      window.socket.on(ACTIONS.CREATE_ROOM, (data: any) => {
         dispatch(setMsg(data.msgs));
       })
 
-      window.socket.on(ACTIONS.ROOM_READY, data => {
+      window.socket.on(ACTIONS.ROOM_READY, (data: any) => {
         router.push(`experience/room?rid=${data.roomId}`);
       })
       window.listen = true;
     }
   }, []);
-
-  // useEffect(() => {
-  //   return () => {
-  //     if(window.socket) {
-  //       window.socket.disconnect();
-  //     }
-  //   }
-  // })
 
   return (
     <Layout>

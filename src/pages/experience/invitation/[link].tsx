@@ -6,12 +6,10 @@ import Base from "components/Modals/Base";
 import Hero from "modules/User/Hero";
 import Home from "modules/User/Home";
 import RightSidebar from "modules/User/Sidebar";
-import {
-  getServerSideProps,
-  InvitationPageProps,
-} from "modules/Experience/Invitation";
+import { getServerSideProps, InvitationPageProps } from "modules/Experience/Invitation";
 import NoInvitationView from "modules/Experience/NoInvitationView";
 import { Xicon, Revert, Accept } from "components/Icons";
+import ACTIONS from "../../../config/actions"; 
 import {
   setModel,
   setName,
@@ -21,7 +19,7 @@ import {
   setRooms,
   setMsg,
 } from "../../../redux/slices/chatSlice";
-import ACTIONS from "../../../config/actions";
+
 const ProfileIndex: FC<InvitationPageProps> = ({ invitation, success }) => {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -37,25 +35,25 @@ const ProfileIndex: FC<InvitationPageProps> = ({ invitation, success }) => {
       return;
     }
     if (!window.listen) {
-      window.socket.on(ACTIONS.ADD_PEER, (data) => {
+      window.socket.on(ACTIONS.ADD_PEER, (data: any) => {
         dispatch(addPeer(data));
       });
       window.socket.on(ACTIONS.SEND_MSG, (data: any) => {
         dispatch(addMsg(data));
       });
-      window.socket.on(ACTIONS.REMOVE_PEER, (data) => {
+      window.socket.on(ACTIONS.REMOVE_PEER, (data: any) => {
         dispatch(removePeer(data));
       });
 
-      window.socket.on(ACTIONS.ROOM_LIST, (data) => {
+      window.socket.on(ACTIONS.ROOM_LIST, (data: any) => {
         dispatch(setRooms(data.rooms));
       });
 
-      window.socket.on(ACTIONS.CREATE_ROOM, (data) => {
+      window.socket.on(ACTIONS.CREATE_ROOM, (data: any) => {
         dispatch(setMsg(data.msgs));
       });
 
-      window.socket.on(ACTIONS.ROOM_READY, (data) => {
+      window.socket.on(ACTIONS.ROOM_READY, (data: any) => {
         router.push(`experience/room?rid=${data.roomId}`);
       });
       window.listen = true;
