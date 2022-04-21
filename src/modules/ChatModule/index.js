@@ -104,11 +104,11 @@ useEffect(() => {
         if(!!positions[audio] && !!myPosition) {
           var a = myPosition.x - positions[audio].x;
           var b = myPosition.z - positions[audio].z;
-          var distance = 7 - Math.sqrt(a*a + b*b);
-          if(distance < 0 || distance > 7 || !distance)
-            distance = 0;
+          var distance = (a*a + b*b);
+          if(distance < 4 || !distance)
+            distance = 4;
           if(!!audios && !!audios[audio])
-            audios[audio].volume = distance / 10;
+            audios[audio].volume = 1 / distance;
         }
       }
     }

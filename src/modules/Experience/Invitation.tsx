@@ -7,6 +7,7 @@ export type InvitationPageProps = {
 
 export type InvitationType = {
   name: String;
+  invitor: String;
   roomId?: String;
   roomName?: String;
   link?: String;

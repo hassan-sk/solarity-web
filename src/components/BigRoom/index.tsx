@@ -74,6 +74,7 @@ const BigRoom: FC<BigRoomType> = ({ scene, content }) => {
         open={joinModalOpen} 
         onClose={handleJoinModalToggle} 
         roomName={selectedRoom.roomName}
+        person={""}
         creator={selectedRoom.name}
         speakers={selectedRoom.speakers}
       />

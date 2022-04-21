@@ -8,17 +8,20 @@ import { Join } from "components/Icons";
 import ErrorMessage from "components/ErrorMessage";
 import { models } from "data/experience";
 import { setName, setRoom } from "redux/slices/chatSlice";
+import ACTIONS from "config/actions";
 
 const JoinRoomModal: FC<any> = ({
   open,
   onClose,
   roomName,
+  person,
   creator,
   speakers,
 }: {
   open: boolean;
   onClose: () => void;
   roomName: string;
+  person: string;
   creator: string;
   speakers: string[];
 }) => {
@@ -56,6 +59,17 @@ const JoinRoomModal: FC<any> = ({
       }));
     }
     if(!!window.socket){
+      if(person != "") {
+        if(!!rooms) {
+          const roomIndex = rooms.findIndex((s: any) => s.roomName == roomName);
+          if(roomIndex != -1) {
+            window.socket.emit(ACTIONS.ACEEPT_INVITATION, {
+              roomId: rooms[roomIndex].roomId,
+              username: person,
+            });
+          }
+        }
+      }
       router.push(`/experience/room?rid=${rooms[selectedIndex].roomId}`);
     }
   }

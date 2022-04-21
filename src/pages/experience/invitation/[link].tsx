@@ -9,7 +9,6 @@ import NoInvitationView from "modules/Experience/NoInvitationView";
 import { Xicon, Revert, Accept } from "components/Icons";
 import ACTIONS from "../../../config/actions"; 
 import {
-  setModel,
   setName,
   addPeer,
   addMsg,
@@ -71,7 +70,7 @@ const ProfileIndex: FC<InvitationPageProps> = ({ invitation, success }) => {
 
   useEffect(() => {
     if(rooms && rooms.length != 0) {
-      const roomIndex = rooms.findIndex(s => s.roomId == invitation.roomId);
+      const roomIndex = rooms.findIndex((s: any) => s.roomId == invitation.roomId);
       if(roomIndex != -1) {
         setSelectedRoomIndex(roomIndex);
         dispatch(setRoomIndex(roomIndex));
@@ -113,7 +112,7 @@ const ProfileIndex: FC<InvitationPageProps> = ({ invitation, success }) => {
           </div>
           <div className="flex justify-between mb-5">
             <span className="font-semibold">Invited By</span>
-            <span className="font-thin text-secondary">{invitation.name}</span>
+            <span className="font-thin text-secondary">{invitation.invitor}</span>
           </div>
           {invitation.state ? (
             <div>
@@ -152,7 +151,8 @@ const ProfileIndex: FC<InvitationPageProps> = ({ invitation, success }) => {
         open={joinModalOpen} 
         onClose={handleJoinModalToggle} 
         roomName={invitation.roomName}
-        creator={invitation.name}
+        creator={(rooms && rooms.length != 0 && rooms[selectedRoomIndex] != undefined) ? rooms[selectedRoomIndex].name : ""}
+        person={invitation.name}
         speakers={(rooms && rooms.length != 0 && rooms[selectedRoomIndex] != undefined) ? rooms[selectedRoomIndex].speakers : []}
       />
     </div>
