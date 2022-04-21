@@ -29,7 +29,7 @@ function update_loading_screen(setLoaded) {
       scene_wrapperEl.removeAttribute("style");
     }
     setLoaded(true);
-  }, 10000);
+  }, 100000);
   models_loaded++;
   if (models_loaded == 1) {
     //remove the old bar item when the first model is loaded
