@@ -3,7 +3,7 @@ import axios from "axios";
 const urlBase =
   process.env.NODE_ENV === "development"
     ? "http://localhost:3004/api"
-    : "https://solarity.muhash.com/api";
+    : "https://solarity-server.herokuapp.com/api";
 
 export const apiCaller = axios.create({
   baseURL: urlBase,
