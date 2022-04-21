@@ -1,8 +1,7 @@
 import Image from 'next/image';
-import { useEffect, useState, FC } from 'react'
+import { useEffect, useState } from 'react'
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 
 import { useWebTRTC } from '../../utils/useWebTRTC';
 import { models } from '../../data/experience';
@@ -12,7 +11,7 @@ import styles from './chat.module.css';
 import {start_loading_screen_listeners, build_loading_screen} from './loading_screen'
 import {start_screens} from './screens'
 import {choose_controls, pass_controls} from './utils'
-import { Chat, Logout, Minus, UserPlus, Users } from 'components/Icons';
+import { Chat, Minus, UserPlus, Users } from 'components/Icons';
 import InviteFriendModal from "components/Modals/InviteFriendModal";
 
 const ChatModule = () => {
@@ -57,22 +56,21 @@ const ChatModule = () => {
     setMounted(true)
     require('multiuser-aframe');
   }, [])
-var sceneEl = document.querySelector('a-scene');
-  
-var loading_screenEl = document.getElementById('loading_screen');
-var loading_textEl = document.getElementById('loading_text');
-var loading_barEl = document.getElementById('loading_bar');
+
 useEffect(() => {
-  if(sceneEl && loading_textEl  && loading_barEl  &&  loading_screenEl) {
-    // if (sceneEl.hasLoaded) {
-        // start_scene();
-    // } else {
-      build_loading_screen();
-      start_loading_screen_listeners(setLoaded);
-      sceneEl.addEventListener('loaded', start_scene);
-    // }
-  }
-}, [sceneEl, loading_textEl, loading_barEl, loading_screenEl])
+  var clearLoading = setInterval(() => {
+    var sceneEl = document.querySelector('a-scene');
+    var loading_screenEl = document.getElementById('loading_screen');
+    var loading_textEl = document.getElementById('loading_text');
+    var loading_barEl = document.getElementById('loading_bar');
+    if(sceneEl && loading_textEl  && loading_barEl  &&  loading_screenEl) {
+        build_loading_screen();
+        start_loading_screen_listeners(setLoaded);
+        sceneEl.addEventListener('loaded', start_scene);
+    }
+    clearInterval(clearLoading);
+  }, 300);
+}, [])
   
   const start_scene = () => {
       // setGifIntervalId(start_screens())
@@ -106,12 +104,11 @@ useEffect(() => {
         if(!!positions[audio] && !!myPosition) {
           var a = myPosition.x - positions[audio].x;
           var b = myPosition.z - positions[audio].z;
-          var distance = 7 - Math.sqrt(a*a + b*b);
-          console.log("distance: ", Math.sqrt(a*a + b*b))
-          if(distance < 0 || distance > 7 || !distance)
-            distance = 0;
+          var distance = (a*a + b*b);
+          if(distance < 4 || !distance)
+            distance = 4;
           if(!!audios && !!audios[audio])
-            audios[audio].volume = distance / 10;
+            audios[audio].volume = 1 / distance;
         }
       }
     }
@@ -124,7 +121,6 @@ useEffect(() => {
         entity.setAttribute('class', 'heads');
         entity.setAttribute('networked', 'template:#avatar-template;attachTemplateToLocal:false;');
         entity.setAttribute('position', '0 1.6 0');
-        sceneEl = null;
         window.NAF.schemas.add({
           template: '#avatar-template',
           components: [
@@ -132,6 +128,7 @@ useEffect(() => {
             'rotation',
           ]
         });
+        window.isReady1 = true;
         setIntervalId(setInterval(updateVolume, 300));
       }
     }

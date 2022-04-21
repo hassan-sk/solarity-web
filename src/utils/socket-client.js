@@ -8,6 +8,6 @@ const socket = () => {
     transport:['websocket'],
     rejectUnauthorized: false,
   }
-  return io.connect( process.env.NODE_ENV === "development" ? "http://localhost:3004" : "https://solarity.muhash.com/", options);
+  return io.connect( process.env.NODE_ENV === "development" ? "http://localhost:3004" : "https://solarity.muhash.com", options);
 }
 export default socket

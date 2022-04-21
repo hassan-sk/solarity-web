@@ -1,10 +1,8 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
-import Image from "next/image";
 import { toast } from 'react-toastify';
 
 import Base from "components/Modals/Base";
-import BlackInput from "components/Inputs/BlackInput";
 import AvatarPanel from "components/AvatarPanel";
 import { PlusFill } from "components/Icons";
 

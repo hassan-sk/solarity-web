@@ -1,22 +1,19 @@
 import React, { FC, useState, useEffect } from "react";
-import Image from "next/image";
-import { VR } from "components/Icons";
 import { toast } from 'react-toastify';
 import RoomScene from 'components/BigRoom/RoomScene';
 import LiveRooms from "components/LiveRooms";
 import JoinRoomModal from "components/Modals/JoinRoomModal";
-import { useAppSelector, useAppDispatch } from "../../redux/hooks";
+import { useAppSelector } from "../../redux/hooks";
 
 import { BigRoomType } from "modal/experience";
-import { LIVE_ROOM } from "data/experience";
 
 import ACTIONS from '../../config/actions';
 
 const BigRoom: FC<BigRoomType> = ({ scene, content }) => {
   const  [joinModalOpen,setJoinModalOpen] = useState(false)
   const { rooms, selectedIndex } = useAppSelector(state => state.chat);
-  const { data } = useAppSelector(state => state.profile);
   var selectedRoom: any = {};
+  
   if(!!rooms && rooms.length !=0 && selectedIndex != -1) {
     selectedRoom = rooms[selectedIndex];
   }
@@ -77,6 +74,7 @@ const BigRoom: FC<BigRoomType> = ({ scene, content }) => {
         open={joinModalOpen} 
         onClose={handleJoinModalToggle} 
         roomName={selectedRoom.roomName}
+        person={""}
         creator={selectedRoom.name}
         speakers={selectedRoom.speakers}
       />

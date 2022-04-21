@@ -43,14 +43,18 @@ const InviteFriendModal: FC<any> = ({
           var roomIndex = rooms.findIndex((s: any) => s.roomId == rid);
           var userFilter: any = [];
           users.map((user: any, index: number) => {
+            if(user.username != localStorage.getItem('name')) {
               if(rooms[roomIndex].speakers.findIndex((s: String) => s == user.username) == -1) {
                 let stateIndex = rooms[roomIndex].states.findIndex((s: String) => s == user.username);
                 if( stateIndex > -1) {
                   users[index].state = "Pending";
                   users[index].link = rooms[roomIndex].links[stateIndex];
                 }
-                userFilter.push(users[index]);
+              } else {
+                users[index].state = undefined;
               }
+              userFilter.push(users[index]);
+            }
           });
           setUserlist(userFilter);
       }
@@ -60,12 +64,12 @@ const InviteFriendModal: FC<any> = ({
         var userIndex = userlist.findIndex(s => s.username == username);
         var userData = userlist.concat([]);
         setUserlist(userData);
-        window.socket.emit(ACTIONS.INVITE_FRIEND, {username, roomId: rid});
+        window.socket.emit(ACTIONS.INVITE_FRIEND, {username, invitor: localStorage.getItem('name'), roomId: rid});
     }
 
   return (
     <Base open={open} onClose={onClose} title={"Invitation Panel"}>
-      <div className="grid gap-8 mt-8 min-h-[250px]">
+      <div className="grid gap-8 mt-8 min-h-[250px] h-[220px] max-h-[220px] overflow-auto">
         <table className="w-full">
             <thead className="text-secondary text-center">
                 <tr className="py-2 border-b border-gray-500">
@@ -75,7 +79,7 @@ const InviteFriendModal: FC<any> = ({
                     <td className="w-3/6">Action</td>
                 </tr>
             </thead>
-            <tbody className="text-center h-[220px] overflow-auto">
+            <tbody className="text-center">
                 {userlist && userlist.map((user, index) => (
                     <tr className="py-2 border-b border-gray-800" key={index}>
                         <td>{index + 1}</td>

@@ -34,22 +34,22 @@ export const useWebTRTC = (roomId, user) => {
                 audio: true
             });
         }
-
-        startCapture().then(() => {
-            addNewClient({ ...user, muted: true }, () => {
-                const localAudioElement = audioElements.current[user.name];
-                if (localAudioElement) {
-                    localAudioElement.volume = 0;
-                    localAudioElement.srcObject = localMediaStream.current;
-                }
-            });
-            var clearIts = setInterval(() => {
-                if(window.isReady1 != undefined && window.isReady1) {
+        var clearIts = setInterval(() => {
+            if(window.isReady1 != undefined && window.isReady1) {
+                startCapture().then(() => {
+                    addNewClient({ ...user, muted: true }, () => {
+                        const localAudioElement = audioElements.current[user.name];
+                        if (localAudioElement) {
+                            localAudioElement.volume = 0;
+                            localAudioElement.srcObject = localMediaStream.current;
+                        }
+                    });
+                    
                     window.socket.emit(ACTIONS.JOIN, { roomId, user: {name: user.name, roomName: roomName, modelIndex: modelIndex} });
-                    clearInterval(clearIts);
-                }
-            }, 300);
-        });
+                });
+                clearInterval(clearIts);
+            }
+        }, 300);
 
         return () => {
             // leaving room

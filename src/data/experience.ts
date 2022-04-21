@@ -20,7 +20,7 @@ export const BIG_ROOM: BigRoomType = {
 
 export const models: any[] = [
   {
-    imageUrl: "images/placeholder/marketplace/gallery/SolGods.jpg",
+    imageUrl: "/images/placeholder/marketplace/gallery/SolGods.jpg",
     modelUrl: "/resource/models/sorrow_-_metaverse_avatars/scene.gltf",
     name: 'SolGods',
     position: "-120 -20 -80",
@@ -28,7 +28,7 @@ export const models: any[] = [
     scale: "15 15 15",
   },
   {
-    imageUrl: "images/placeholder/marketplace/gallery/DeGods.png",
+    imageUrl: "/images/placeholder/marketplace/gallery/DeGods.png",
     modelUrl: "/resource/models/avatar1.glb",
     name: 'DeGods',
     position: "0 2 -10",
@@ -36,7 +36,7 @@ export const models: any[] = [
     scale: "5 5 5",
   },
   {
-    imageUrl: "images/placeholder/marketplace/gallery/MoneyGirl.jpeg",
+    imageUrl: "/images/placeholder/marketplace/gallery/MoneyGirl.jpeg",
     modelUrl: "/resource/models/avatar2.glb",
     name: 'MoneyGirl',
     position: "0 -15 30",

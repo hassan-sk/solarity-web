@@ -1,30 +1,34 @@
+import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useAppSelector } from "../../../redux/hooks";
 import React, { FC, useEffect } from "react";
 import { useRouter } from "next/router";
-import Layout from "components/Layout";
-import Base from "components/Modals/Base";
-import Hero from "modules/User/Hero";
-import Home from "modules/User/Home";
-import RightSidebar from "modules/User/Sidebar";
-import {
-  getServerSideProps,
-  InvitationPageProps,
-} from "modules/Experience/Invitation";
+import JoinRoomModal from "components/Modals/JoinRoomModal";
+import { getServerSideProps, InvitationPageProps } from "modules/Experience/Invitation";
 import NoInvitationView from "modules/Experience/NoInvitationView";
 import { Xicon, Revert, Accept } from "components/Icons";
+import ACTIONS from "../../../config/actions"; 
 import {
-  setModel,
   setName,
   addPeer,
   addMsg,
   removePeer,
   setRooms,
   setMsg,
+  setRoomIndex
 } from "../../../redux/slices/chatSlice";
-import ACTIONS from "../../../config/actions";
+
 const ProfileIndex: FC<InvitationPageProps> = ({ invitation, success }) => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const { rooms } = useAppSelector(state => state.chat);
+  const  [joinModalOpen,setJoinModalOpen] = useState(false)
+  const [selectedRoomIndex, setSelectedRoomIndex] = useState(-1);
+  const handleJoinModalToggle = () => {
+    if(selectedRoomIndex != -1){
+      setJoinModalOpen(!joinModalOpen)
+    }
+  }
   if (!success) return <NoInvitationView />;
   useEffect(() => {
     // When a user click f5 key, it helps to forget a user's name.
@@ -37,25 +41,25 @@ const ProfileIndex: FC<InvitationPageProps> = ({ invitation, success }) => {
       return;
     }
     if (!window.listen) {
-      window.socket.on(ACTIONS.ADD_PEER, (data) => {
+      window.socket.on(ACTIONS.ADD_PEER, (data: any) => {
         dispatch(addPeer(data));
       });
       window.socket.on(ACTIONS.SEND_MSG, (data: any) => {
         dispatch(addMsg(data));
       });
-      window.socket.on(ACTIONS.REMOVE_PEER, (data) => {
+      window.socket.on(ACTIONS.REMOVE_PEER, (data: any) => {
         dispatch(removePeer(data));
       });
 
-      window.socket.on(ACTIONS.ROOM_LIST, (data) => {
+      window.socket.on(ACTIONS.ROOM_LIST, (data: any) => {
         dispatch(setRooms(data.rooms));
       });
 
-      window.socket.on(ACTIONS.CREATE_ROOM, (data) => {
+      window.socket.on(ACTIONS.CREATE_ROOM, (data: any) => {
         dispatch(setMsg(data.msgs));
       });
 
-      window.socket.on(ACTIONS.ROOM_READY, (data) => {
+      window.socket.on(ACTIONS.ROOM_READY, (data: any) => {
         router.push(`experience/room?rid=${data.roomId}`);
       });
       window.listen = true;
@@ -63,17 +67,16 @@ const ProfileIndex: FC<InvitationPageProps> = ({ invitation, success }) => {
 
     window.socket.emit(ACTIONS.ROOM_LIST, {});
   }, []);
-  const accept = () => {
-    if (!!window.socket) {
-      window.socket.emit(ACTIONS.ACEEPT_INVITATION, {
-        roomId: invitation.roomId,
-        username: invitation.name,
-      });
-      dispatch(setModel(1));
-      dispatch(setName(invitation.name));
-      router.push("/experience/room?rid=" + invitation.roomId);
+
+  useEffect(() => {
+    if(rooms && rooms.length != 0) {
+      const roomIndex = rooms.findIndex((s: any) => s.roomId == invitation.roomId);
+      if(roomIndex != -1) {
+        setSelectedRoomIndex(roomIndex);
+        dispatch(setRoomIndex(roomIndex));
+      }
     }
-  };
+  }, [rooms]);
 
   const deny = () => {
     if (!!window.socket) {
@@ -109,7 +112,7 @@ const ProfileIndex: FC<InvitationPageProps> = ({ invitation, success }) => {
           </div>
           <div className="flex justify-between mb-5">
             <span className="font-semibold">Invited By</span>
-            <span className="font-thin text-secondary">{invitation.name}</span>
+            <span className="font-thin text-secondary">{invitation.invitor}</span>
           </div>
           {invitation.state ? (
             <div>
@@ -128,7 +131,7 @@ const ProfileIndex: FC<InvitationPageProps> = ({ invitation, success }) => {
             <div className="flex gap-4 justify-between px-16">
               <button
                 className="gap-2 text-xs normal-case rounded-full btn btn-primary px-6"
-                onClick={accept}
+                onClick={handleJoinModalToggle}
               >
                 <Accept />
                 Accept
@@ -144,6 +147,14 @@ const ProfileIndex: FC<InvitationPageProps> = ({ invitation, success }) => {
           )}
         </div>
       </div>
+      <JoinRoomModal 
+        open={joinModalOpen} 
+        onClose={handleJoinModalToggle} 
+        roomName={invitation.roomName}
+        creator={(rooms && rooms.length != 0 && rooms[selectedRoomIndex] != undefined) ? rooms[selectedRoomIndex].name : ""}
+        person={invitation.name}
+        speakers={(rooms && rooms.length != 0 && rooms[selectedRoomIndex] != undefined) ? rooms[selectedRoomIndex].speakers : []}
+      />
     </div>
   );
 };
