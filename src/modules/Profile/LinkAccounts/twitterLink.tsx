@@ -5,10 +5,20 @@ import { FC, useEffect, useState } from "react";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { linkAccounts, unlinkAccounts } from "redux/slices/profileSlice";
 
-const TWITTER_LINK =
-  process.env.NODE_ENV === "development"
-    ? "https://twitter.com/i/oauth2/authorize?response_type=code&client_id=MENrR095Mkl6WFdKWGZEV0VLTkg6MTpjaQ&redirect_uri=http%3A%2F%2Flocalhost:3000%2Fprofile%3Fview%3Dlink_accounts%26link%3Dtwitter&scope=tweet.read%20users.read%20offline.access&state=state&code_challenge=challenge&code_challenge_method=plain"
-    : "https://twitter.com/i/oauth2/authorize?response_type=code&client_id=MENrR095Mkl6WFdKWGZEV0VLTkg6MTpjaQ&redirect_uri=https://solarity-web-git-master-hassan-sk.vercel.app&scope=tweet.read%20users.read%20offline.access&state=twitter&code_challenge=challenge&code_challenge_method=plain";
+const twitterLinkGenerator = (currentUrl: string) => {
+  const baseUrl = "https://twitter.com/i/oauth2/authorize";
+  const params = {
+    response_type: "code",
+    client_id: "MENrR095Mkl6WFdKWGZEV0VLTkg6MTpjaQ",
+    redirect_uri: currentUrl,
+    scope: "tweet.read users.read offline.access",
+    state: "state",
+    code_challenge: "challenge",
+    code_challenge_method: "plain",
+  };
+  const urlParams = new URLSearchParams(params);
+  return baseUrl + "?" + urlParams.toString();
+};
 
 const twitterLink: FC<{ resetUrl: Function }> = ({ resetUrl }) => {
   const { twitterConnected, twitterUsername } = useSelector(
@@ -19,7 +29,17 @@ const twitterLink: FC<{ resetUrl: Function }> = ({ resetUrl }) => {
   const dispatch = useDispatch();
   const {
     query: { link, code },
+    asPath,
   } = router;
+  const appUrl = (() => {
+    let url = new URL(window.location.origin + asPath);
+    let params = new URLSearchParams(url.search);
+    params.delete("state");
+    params.delete("code");
+    params.set("link", "twitter");
+    return url.origin + url.pathname + "?" + params.toString();
+  })();
+  const twitterConnectionLink = twitterLinkGenerator(appUrl);
   useEffect(() => {
     if (link === "twitter") {
       setLoading(true);
@@ -28,15 +48,17 @@ const twitterLink: FC<{ resetUrl: Function }> = ({ resetUrl }) => {
           data: {
             link: "twitter",
             code,
+            url: appUrl,
           },
           finalFunction: () => {
             setLoading(false);
-            // resetUrl();
+            resetUrl();
           },
         })
       );
     }
   }, [code, link]);
+
   return (
     <div className="border border-brandblack rounded-3xl p-5 flex items-center space-x-4">
       {twitterConnected && (
@@ -69,7 +91,7 @@ const twitterLink: FC<{ resetUrl: Function }> = ({ resetUrl }) => {
           className={`btn btn-primary bg-[#1DA1F2] flex space-x-2 ${
             loading ? "loading" : ""
           }`}
-          href={TWITTER_LINK}
+          href={twitterConnectionLink}
         >
           <Image src={twitterLogo} height="25" width="25" objectFit="contain" />
           <span>LINK TWITTER</span>

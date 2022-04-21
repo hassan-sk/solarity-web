@@ -5,10 +5,17 @@ import { FC, useEffect, useState } from "react";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { linkAccounts, unlinkAccounts } from "redux/slices/profileSlice";
 
-const DISCORD_LINK =
-  process.env.NODE_ENV === "development"
-    ? "https://discord.com/api/oauth2/authorize?client_id=963209278146117632&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fprofile%3Fview%3Dlink_accounts%26link%3Ddiscord&response_type=code&scope=identify"
-    : "https://discord.com/api/oauth2/authorize?client_id=963209278146117632&redirect_uri=https%3A%2F%2Fsolarity-web-git-master-hassan-sk.vercel.app%2Fprofile%3Fview%3Dlink_accounts%26link%3Ddiscord&response_type=code&scope=identify";
+const discordLinkGenerator = (currentUrl: string) => {
+  const baseUrl = "https://discord.com/api/oauth2/authorize";
+  const params = {
+    client_id: "963209278146117632",
+    redirect_uri: currentUrl,
+    response_type: "code",
+    scope: "identify connections applications.builds.read guilds",
+  };
+  const urlParams = new URLSearchParams(params);
+  return baseUrl + "?" + urlParams.toString();
+};
 
 const DiscordLink: FC<{ resetUrl: Function }> = ({ resetUrl }) => {
   const { discordConnected, discordUsername } = useSelector(
@@ -19,7 +26,20 @@ const DiscordLink: FC<{ resetUrl: Function }> = ({ resetUrl }) => {
   const dispatch = useDispatch();
   const {
     query: { link, code },
+    asPath,
   } = router;
+  console.log(code);
+  const appUrl = (() => {
+    let url = new URL(window.location.origin + asPath);
+    let params = new URLSearchParams(url.search);
+    params.delete("state");
+    params.delete("code");
+    params.set("link", "discord");
+    return url.origin + url.pathname + "?" + params.toString();
+  })();
+
+  const discordConnectionLink = discordLinkGenerator(appUrl);
+
   useEffect(() => {
     if (link === "discord") {
       setLoading(true);
@@ -28,10 +48,11 @@ const DiscordLink: FC<{ resetUrl: Function }> = ({ resetUrl }) => {
           data: {
             link: "discord",
             code,
+            url: appUrl,
           },
           finalFunction: () => {
             setLoading(false);
-            resetUrl();
+            // resetUrl();
           },
         })
       );
@@ -69,7 +90,7 @@ const DiscordLink: FC<{ resetUrl: Function }> = ({ resetUrl }) => {
           className={`btn btn-primary bg-[#6a0dad] flex space-x-2 ${
             loading ? "loading" : ""
           }`}
-          href={DISCORD_LINK}
+          href={discordConnectionLink}
         >
           <Image src={discordLogo} height="25" width="25" objectFit="contain" />
           <span>LINK DISCORD</span>

@@ -134,6 +134,10 @@ export const TAGS: TagsLinkCollectionProps = {
       label: "Infra",
       link: (symbol: string) => `/daos/${symbol}/infra`,
     },
+    {
+      label: "Announcements",
+      link: (symbol: string) => `/daos/${symbol}/announcements`,
+    },
   ],
 };
 
