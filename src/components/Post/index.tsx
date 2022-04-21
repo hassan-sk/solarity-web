@@ -49,8 +49,8 @@ const index = ({
     <div>
       <div className="flex gap-4  bg-[#1F2125] px-5 py-3 border-l border-darkcharcoal border-r ">
         <div className="flex">
-          <div className="relative mt-3 w-14 h-14">
-            <img src={user.avatar} alt={title} className="rounded-full" />
+          <div className="relative mt-3 w-14 h-14 bg-black rounded-full overflow-hidden">
+            <img src={user.avatar} className="rounded-full" />
           </div>
         </div>
         <div className="flex flex-col w-full">
@@ -71,7 +71,11 @@ const index = ({
 
             {type !== "announcement" ? (
               <div className="flex flex-col items-end">
-                <span className="text-sm font-bold">{minifyNumber(likes)}</span>
+                {likes > 0 && (
+                  <span className="text-sm font-bold">
+                    {minifyNumber(likes)}
+                  </span>
+                )}
                 {type !== "featured" && (
                   <span className="text-xs text-gray-950">{time}</span>
                 )}

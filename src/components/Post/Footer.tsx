@@ -46,22 +46,18 @@ const Footer = ({
         </div>
         {type === "tweet" && (
           <>
-            {retweets && (
-              <div className="flex items-center justify-center gap-3">
-                <Share />
-                <span className="text-xs text-gray-950">
-                  {minifyNumber(retweets)} Retweets
-                </span>
-              </div>
-            )}
-            {likes !== 0 && (
-              <div className="flex items-center justify-center gap-3">
-                <Love />
-                <span className="text-xs text-gray-950">
-                  {minifyNumber(likes || 0)} Favorites
-                </span>
-              </div>
-            )}
+            <div className="flex items-center justify-center gap-3">
+              <Share />
+              <span className="text-xs text-gray-950">
+                {minifyNumber(retweets || 0)} Retweets
+              </span>
+            </div>
+            <div className="flex items-center justify-center gap-3">
+              <Love />
+              <span className="text-xs text-gray-950">
+                {minifyNumber(likes || 0)} Favorites
+              </span>
+            </div>
           </>
         )}
 
