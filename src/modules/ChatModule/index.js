@@ -114,13 +114,11 @@ useEffect(() => {
     }
   }
 
-  var entity = document.querySelector('a-entity[camera]');
+  var entity = document.querySelector('#player');
   useEffect(() => {
     if(isLoaded) {
       if(!!entity) {
-        entity.setAttribute('class', 'heads');
-        entity.setAttribute('networked', 'template:#avatar-template;attachTemplateToLocal:false;');
-        entity.setAttribute('position', '0 1.6 0');
+        // entity.setAttribute('networked', 'template:#avatar-template;attachTemplateToLocal:false;');
         window.NAF.schemas.add({
           template: '#avatar-template',
           components: [
@@ -239,18 +237,16 @@ useEffect(() => {
                       __html: '<a-gltf-model src="#raccoon-obj"></a-gltf-model>'
                     }}
                   />
-              </a-assets>
+                </a-assets>
 
-              <a-entity id="player">
-                  <a-entity simple-navmesh-constraint="navmesh:#navmesh;fall:0.5;height:1.65;" id="head"
-                            camera="fov: 70; active: true" position="0 1.65 0" wasd-controls="acceleration: 20;"
-                            look-controls="pointerLockEnabled: true; reverseMouseDrag: false">
+                <a-entity id="player" position="0 1.6 0" wasd-controls="acceleration: 20;" look-controls="pointerLockEnabled: true; reverseMouseDrag: false" networked="template:#avatar-template;attachTemplateToLocal:false;">
+                  <a-entity simple-navmesh-constraint="navmesh:#navmesh;fall:0.5;height:1.65;" id="head" 
+                            camera="fov: 70; active: true" >
                       <a-entity id="cursor" class="mouseOnly" cursor="" raycaster="far: 10; objects: .clickable"
                                 material="color: white; shader: flat" position="0 0 -0.3"
                                 geometry="primitive: sphere; radius: 0.001">
                       </a-entity>
                   </a-entity>
-                      {/* <a-entity geometry="primitive: plane; width: 1; height: auto" material="color: blue" text="value: Super" position="1.9 2.8 0"></a-entity> */}
                   <a-entity id="leftHand" class="leftController controllerOnly"
                             hand-controls="hand: left; handModelStyle: lowPoly; color: #15ACCF"
                             laser-controls="hand: left" vive-controls="hand: left" oculus-touch-controls="hand: left"
