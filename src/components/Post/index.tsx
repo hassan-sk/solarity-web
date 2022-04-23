@@ -1,11 +1,12 @@
-import React from "react";
+import React, { FC, useState } from "react";
 import Image from "next/image";
 import classnames from "classnames";
 import Tags from "components/Post/Tags";
 import { AccountType, Post } from "modal/post";
 import Footer from "components/Post/Footer";
 import { VR } from "components/Icons";
-import { minifyNumber } from "utils";
+import { getNftDetails, minifyAddress, minifyNumber } from "utils";
+import avatarPlaceholder from "assets/images/placeholder/avatar.png";
 
 import AframeComp from "components/AframeComp";
 import AframeComp1 from "components/AframeComp1";
@@ -18,8 +19,105 @@ import AframeComp7 from "components/AframeComp7";
 import AframeComp8 from "components/AframeComp8";
 import AframeComp9 from "components/AframeComp9";
 
+const AvatarDisplay: FC<{ url?: string }> = ({ url }) => {
+  return (
+    <div className="flex">
+      <div className="relative mt-3 w-14 h-14 bg-black rounded-full overflow-hidden">
+        <img src={url || avatarPlaceholder.src} className="rounded-full" />
+      </div>
+    </div>
+  );
+};
+
+const TopBarInfo: FC<{
+  title: string;
+  tags?: any[];
+  user: any;
+  type: string;
+  likes?: number;
+  time?: string;
+}> = ({ title, user, tags = [], type, likes = 0, time }) => {
+  return (
+    <>
+      <span className="font-bold text-secondary">{user.name}</span>
+      <div className="flex items-start justify-between w-full">
+        <div className="flex flex-col">
+          <div className="flex">
+            <span
+              className={classnames(
+                type === "featured" ? "text-base" : "text-xl",
+                "font-bold"
+              )}
+              dangerouslySetInnerHTML={{ __html: title }}
+            />
+          </div>
+          {tags && <Tags tags={tags} />}
+        </div>
+
+        {type !== "announcement" ? (
+          <div className="flex flex-col items-end">
+            {likes > 0 && (
+              <span className="text-sm font-bold">{minifyNumber(likes)}</span>
+            )}
+            {type !== "featured" && (
+              <span className="text-xs text-gray-950">{time}</span>
+            )}
+          </div>
+        ) : (
+          <button className="rounded-full btn btn-primary">ACTIVE</button>
+        )}
+      </div>
+    </>
+  );
+};
+
+const Subtitle: FC<{
+  subtitle?: string | Function;
+  type: string;
+  data?: any;
+  user?: any;
+}> = ({ subtitle, type, data, user }) => {
+  const [nftImage, setNftImage] = useState("");
+  if (type == "blockchainActivity") {
+    const { action, tokenMint, price, collection } = data;
+    let collectionName = "nft";
+    if (collection) {
+      collectionName = collection.replace("_", " ");
+    }
+    let prefix = "a";
+    if (["a", "e", "i", "o", "u"].includes(collectionName[0])) {
+      prefix = "an";
+    }
+    getNftDetails(tokenMint)
+      .then(({ Preview_URL }) => setNftImage(Preview_URL))
+      .catch(() => {});
+    return (
+      <div>
+        <p>{`${action} ${prefix} ${collectionName} for ${price} SOL`}</p>
+        <img className="pt-2 rounded-3xl h-[300px]" src={nftImage} />
+      </div>
+    );
+  }
+
+  if (!subtitle) return <></>;
+  if (typeof subtitle === "string") {
+    return (
+      <span
+        className="mt-2 text-sm leading-5"
+        dangerouslySetInnerHTML={{
+          __html: subtitle,
+        }}
+      />
+    );
+  }
+  if (typeof subtitle === "function") {
+    return subtitle();
+  }
+};
+
 const index = ({
   accountType,
+  data,
   data: {
     title,
     subtitle,
@@ -45,55 +143,21 @@ const index = ({
   data: Post;
   accountType: AccountType;
 }) => {
+  let profileImage = user && user.avatar;
   return (
     <div>
       <div className="flex gap-4  bg-[#1F2125] px-5 py-3 border-l border-darkcharcoal border-r ">
-        <div className="flex">
-          <div className="relative mt-3 w-14 h-14 bg-black rounded-full overflow-hidden">
-            <img src={user.avatar} className="rounded-full" />
-          </div>
-        </div>
+        <AvatarDisplay url={profileImage} />
         <div className="flex flex-col w-full">
-          <span className="font-bold text-secondary">{user.name}</span>
-          <div className="flex items-start justify-between w-full">
-            <div className="flex flex-col">
-              <div className="flex">
-                <span
-                  className={classnames(
-                    type === "featured" ? "text-base" : "text-xl",
-                    "font-bold"
-                  )}
-                  dangerouslySetInnerHTML={{ __html: title }}
-                />
-              </div>
-              {tags && <Tags tags={tags} />}
-            </div>
-
-            {type !== "announcement" ? (
-              <div className="flex flex-col items-end">
-                {likes > 0 && (
-                  <span className="text-sm font-bold">
-                    {minifyNumber(likes)}
-                  </span>
-                )}
-                {type !== "featured" && (
-                  <span className="text-xs text-gray-950">{time}</span>
-                )}
-              </div>
-            ) : (
-              <button className="rounded-full btn btn-primary">ACTIVE</button>
-            )}
-          </div>
-          {subtitle && typeof subtitle === "string" ? (
-            <span
-              className="mt-2 text-sm leading-5"
-              dangerouslySetInnerHTML={{
-                __html: subtitle,
-              }}
-            />
-          ) : (
-            typeof subtitle === "function" && subtitle()
-          )}
+          <TopBarInfo
+            title={title}
+            type={type}
+            user={user}
+            tags={tags}
+            time={time}
+            likes={likes}
+          />
+          <Subtitle subtitle={subtitle} type={type} data={data} user={user} />
           {progress && (
             <div className="flex items-center justify-end w-full gap-6">
               <span className="text-xs text-gray-950">

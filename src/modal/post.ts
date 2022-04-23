@@ -1,6 +1,11 @@
 import React from "react";
 
-export type PostType = "featured" | "announcement" | "normal" | "tweet";
+export type PostType =
+  | "featured"
+  | "announcement"
+  | "normal"
+  | "tweet"
+  | "blockchainActivity";
 
 export type AccountType = "user" | "dao" | "none";
 
@@ -11,6 +16,7 @@ export type Tag = {
   type: TagType;
 };
 export type Post = {
+  created_at?: Date;
   title: string;
   image?: string;
   time?: string;
