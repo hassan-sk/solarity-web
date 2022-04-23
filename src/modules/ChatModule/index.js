@@ -127,7 +127,7 @@ const ChatModule = () => {
     require('aframe-blink-controls');
     require('./components');
     setMounted(true)
-    require('multiuser-aframe1');
+    require('multiuser-aframe');
   }, [])
 
 useEffect(() => {
