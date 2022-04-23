@@ -26,9 +26,6 @@ const InviteFriendModal: FC<any> = ({
   const router = useRouter();
   const { rid } = router.query;
 
-  const joinRoom = () => {
-  }
-
   useEffect(() => {
       if(open)
         getUsers();
@@ -50,10 +47,10 @@ const InviteFriendModal: FC<any> = ({
                   users[index].state = "Pending";
                   users[index].link = rooms[roomIndex].links[stateIndex];
                 }
+                userFilter.push(users[index]);
               } else {
                 users[index].state = undefined;
               }
-              userFilter.push(users[index]);
             }
           });
           setUserlist(userFilter);

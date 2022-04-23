@@ -4,8 +4,11 @@ import { useAppSelector } from "../../../redux/hooks";
 import React, { FC, useEffect } from "react";
 import { useRouter } from "next/router";
 import JoinRoomModal from "components/Modals/JoinRoomModal";
+import Logo from "components/Logo";
 import { getServerSideProps, InvitationPageProps } from "modules/Experience/Invitation";
 import NoInvitationView from "modules/Experience/NoInvitationView";
+import { WalletCard } from "components/WalletCard";
+import { GuestCard } from "components/GuestCard";
 import { Xicon, Revert, Accept } from "components/Icons";
 import ACTIONS from "../../../config/actions"; 
 import {
@@ -29,7 +32,7 @@ const ProfileIndex: FC<InvitationPageProps> = ({ invitation, success }) => {
       setJoinModalOpen(!joinModalOpen)
     }
   }
-  if (!success) return <NoInvitationView />;
+  if (!success || invitation.state) return <NoInvitationView />;
   useEffect(() => {
     // When a user click f5 key, it helps to forget a user's name.
     if (localStorage.getItem("name")) {
@@ -83,6 +86,8 @@ const ProfileIndex: FC<InvitationPageProps> = ({ invitation, success }) => {
       window.socket.emit(ACTIONS.ACEEPT_INVITATION, {
         roomId: invitation.roomId,
         username: invitation.name,
+        guestname: '',
+        type: false,
       });
     }
     router.push("/");
@@ -92,60 +97,17 @@ const ProfileIndex: FC<InvitationPageProps> = ({ invitation, success }) => {
     router.push("/");
   };
   return (
-    <div className="absolute top-[30vh] left-[70vh] w-[60vh]">
-      <div className="bg-brandblack rounded-3xl w-full">
-        <div className="border-borderwidget p-10">
-          <div className="flex flex-col mb-10">
-            <div className="text-lg font-bold text-center">Room Invitation</div>
-          </div>
-          <div className="flex justify-between mb-5">
-            <span className="font-semibold">Room Name</span>
-            <span className="font-thin text-secondary">
-              {invitation.roomName}
-            </span>
-          </div>
-          <div className="flex justify-between mb-5">
-            <span className="font-semibold">Room Number</span>
-            <span className="font-thin text-secondary">
-              {invitation.roomId}
-            </span>
-          </div>
-          <div className="flex justify-between mb-5">
-            <span className="font-semibold">Invited By</span>
-            <span className="font-thin text-secondary">{invitation.invitor}</span>
-          </div>
-          {invitation.state ? (
-            <div>
-              <div className="text-secondary">The Invitation is expired.</div>
-              <div className="w-full flex justify-end">
-                <button
-                  className="gap-2 text-xs normal-case rounded-full btn btn-primary px-6"
-                  onClick={back}
-                >
-                  <Revert />
-                  Back
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div className="flex gap-4 justify-between px-16">
-              <button
-                className="gap-2 text-xs normal-case rounded-full btn btn-primary px-6"
-                onClick={handleJoinModalToggle}
-              >
-                <Accept />
-                Accept
-              </button>
-              <button
-                className="gap-2 text-xs normal-case rounded-full btn btn-primary px-6"
-                onClick={deny}
-              >
-                <Xicon />
-                Deny
-              </button>
-            </div>
-          )}
-        </div>
+    <div className="pt-[10vh]">
+      <div className="flex justify-center mb-5"><Logo /></div>
+      <div className="flex justify-center mb-10">
+        <p>
+          Please join a room which was created by 
+          <span className="text-secondary"> @{(rooms && rooms.length != 0 && rooms[selectedRoomIndex] != undefined) ? rooms[selectedRoomIndex].name : ""}</span>
+        </p>
+      </div>
+      <div className="md:flex md:justify-center w-full">
+        <WalletCard handleJoinModalToggle={handleJoinModalToggle}/>
+        <GuestCard handleJoinModalToggle={handleJoinModalToggle}/>
       </div>
       <JoinRoomModal 
         open={joinModalOpen} 

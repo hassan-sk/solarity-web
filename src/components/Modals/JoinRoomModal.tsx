@@ -39,6 +39,7 @@ const JoinRoomModal: FC<any> = ({
   const router = useRouter();
 
   const joinRoom = () => {
+    var type = false;
     if(!profileData || !profileData.username) {
       if(!username) {
         setErrorMessage('The name is required.');
@@ -50,6 +51,7 @@ const JoinRoomModal: FC<any> = ({
         roomName,
         userName: username,
       }));
+      type = true;
       setErrorFlag(false);
     } else {
       dispatch(setRoom({
@@ -66,6 +68,8 @@ const JoinRoomModal: FC<any> = ({
             window.socket.emit(ACTIONS.ACEEPT_INVITATION, {
               roomId: rooms[roomIndex].roomId,
               username: person,
+              guestname: type ? username: '',
+              type: type,
             });
           }
         }

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router'
+import { toast } from "react-toastify";
 import Layout from "components/Layout";
 import Experience from "modules/Experience";
 
@@ -44,6 +45,17 @@ const Index = () => {
 
       window.socket.on(ACTIONS.ROOM_READY, (data: any) => {
         router.push(`experience/room?rid=${data.roomId}`);
+      })
+      window.socket.emit(ACTIONS.DUPLICATION_INVITATION, () => {
+        toast.warning('This user is already invited.', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       })
       window.listen = true;
     }
