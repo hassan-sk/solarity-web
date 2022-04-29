@@ -11,6 +11,7 @@
   "dependencies": {
     "@headlessui/react": "^1.5.0",
     "@heroicons/react": "^1.0.5",
+    "@metamask/detect-provider": "^1.2.0",
     "@nfteyez/sol-rayz": "^0.10.2",
     "@nfteyez/sol-rayz-react": "^0.8.2",
     "@project-serum/anchor": "^0.19.1-beta.1",
@@ -63,6 +64,7 @@
     "socket.io-client": "^4.4.1",
     "tailwind-override": "^0.6.1",
     "use-file-picker": "^1.4.2",
+    "web3": "^1.7.3",
     "yup": "^0.32.11"
   },
   "devDependencies": {

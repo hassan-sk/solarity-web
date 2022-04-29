@@ -6,13 +6,13 @@ export const minifyNumber = (num: number): number | string => {
   return newNum.substring(0, newNum.length - 3) + "K";
 };
 
-export const minifyAddress = (address: string): string => {
+export const minifyAddress = (address: string, rate?: number): string => {
   if (address == null) return "";
   if (address.length <= 5) return address;
   return (
-    address.substring(0, 3) +
+    address.substring(0, rate || 3) +
     "..." +
-    address.substring(address.length - 3, address.length)
+    address.substring(address.length - rate || 3, address.length)
   );
 };
 
