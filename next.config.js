@@ -17,7 +17,6 @@ const withTM = require("next-transpile-modules")([
   // "@solana/wallet-adapter-solong",
   // "@solana/wallet-adapter-torus",
   "@solana/wallet-adapter-wallets",
-  "web3",
   // "@project-serum/sol-wallet-adapter",
   // "@solana/wallet-adapter-ant-design",
 ]);
