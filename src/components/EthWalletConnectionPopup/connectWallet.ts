@@ -1,8 +1,6 @@
 import detectEthereumProvider from "@metamask/detect-provider";
-import { linkAccounts } from "redux/slices/profileSlice";
 import { showErrorToast } from "utils";
-import { apiCaller } from "utils/fetcher";
-import Web3 from "Web3";
+import Web3 from "web3";
 
 const connectWallet = async (
   walletId: string,
