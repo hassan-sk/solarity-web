@@ -10,8 +10,8 @@ export interface BannerProps {
     imageUrl: string;
     price: string;
   };
-  user: User;
-  vrdao: {
+  user: any;
+  vrdao?: {
     featured: boolean;
     imageUrl: string;
     price: string;
@@ -24,7 +24,7 @@ const Banner: FC<BannerProps> = ({ vrprofile, user, vrdao, smallImage }) => {
     <div>
       {vrprofile && (
         <div className="relative w-full h-[400px] rounded-2xl -mt-5">
-          <AframeComp2 user={user}/>
+          <AframeComp2 user={user} permitionFlag={false}/>
           {vrprofile.price && (
             <Link
               href={

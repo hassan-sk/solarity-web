@@ -11,6 +11,7 @@ const initialState = {
   data: {},
   nfts: [],
   nftsLoaded: false,
+  activeRoomNo: -1,
 };
 
 export const addInfo = createAsyncThunk(
@@ -57,17 +58,34 @@ export const placeBid = createAsyncThunk(
   }) => {
     let returnValue = null;
     try {
+      const { selectedAsset, selectedIndex, transaction, connection, sendTransaction } = data;
 
-      // Have to deal with Solana Payment.
+      const {
+        data: { state },
+      } = await apiCaller.post("/profile/checkRoom", {
+        roomNo: selectedIndex,
+      });
+      if( state == true ) {
+        errorFunction("This room is already available.");
+        return;
+      }
 
-      ////////////////////////////
+      try {
+        const signature = await sendTransaction(transaction, connection);
+        await connection.confirmTransaction(signature, 'processed');
+      } catch (error: any) {
+        errorFunction(error.message);
+        return;
+      }
+
       const {
         data: { profile },
       } = await apiCaller.post("/profile/buyRoom", {
-        title: data.title,
-        subTitle: data.subTitle,
-        imageUrl: data.imageUrl,
-        currentBid: data.currentBid,
+        title: selectedAsset.title,
+        subTitle: selectedAsset.subTitle,
+        imageUrl: selectedAsset.imageUrl,
+        currentBid: selectedAsset.currentBid,
+        roomNo: selectedIndex,
       });
       successFunction();
       returnValue = profile;
@@ -264,21 +282,12 @@ export const profileSlice = createSlice({
       if(!window.socket){
         window.socket = socket();
       }
-      if(!window.setUser) {
-        window.socket.emit(ACTIONS.SET_USER_NAME, {username: action.payload.username})
-        // window.socket.on(ACTIONS.GET_INVITATION, (data: any) => {
-        //   if(confirm(`You are invited by ${data.username} in room "${data.roomName}".`)) {
-        //     window.socket.emit(ACTIONS.ACEEPT_INVITATION, {roomId: data.roomId, username: data.username});
-        //     store.dispatch(setModel(1));
-        //     Router.push('experience/room?rid=' + data.roomId);
-        //   } else {
-        //     window.socket.emit(ACTIONS.ACEEPT_INVITATION, {roomId: data.roomId, username: data.username});
-        //   }
-        // })
-        window.setUser = true;
-      }
+      window.socket.emit(ACTIONS.SET_USER_NAME, {username: action.payload.username})
     },
     loadNFTs() {},
+    setActiveRoomNo(state, action: PayloadAction<any>) {
+      state.activeRoomNo = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(addInfo.fulfilled, (state, action) => {
@@ -324,6 +333,6 @@ export const profileSlice = createSlice({
   },
 });
 
-export const { setProfile, loadNFTs } = profileSlice.actions;
+export const { setProfile, loadNFTs, setActiveRoomNo } = profileSlice.actions;
 
 export default profileSlice.reducer;

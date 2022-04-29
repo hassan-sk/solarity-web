@@ -1,4 +1,5 @@
 import React from "react";
+import AframeComp1 from "components/AframeComp1";
 import TagsCollection from "components/TagsCollection";
 import Gallery from "components/Gallery";
 import { CaretDown } from "components/Icons";

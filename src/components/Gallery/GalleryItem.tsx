@@ -2,25 +2,45 @@ import React from "react";
 import { FC } from "react";
 import { useDispatch } from 'react-redux';
 import Image from "next/image";
-import { useState,  } from "react";
+import { toast } from "react-toastify";
 import { TickCircle, Bid } from "components/Icons";
 import { GalleryItem } from "modal/Gallery";
-import PlaceBidModal from "components/Modals/PlaceBidModal";
+import { setAsset } from "redux/slices/marketplaceSlice";
 
-const GalleryItemComponent: FC<GalleryItem> = ({
-  title,
-  collection,
-  imageUrl,
-  currentBid,
-  endingIn,
-  subtitle,
-  type = "bid",
-  applicationNumber,
+export type GalleryItemProps = {
+  galleryItem: GalleryItem;
+  tagIndex?: Number;
+};
+
+const GalleryItemComponent: FC<GalleryItemProps> = ({  
+  galleryItem: {
+    roomNo,
+    title,
+    collection,
+    imageUrl,
+    currentBid,
+    endingIn,
+    subtitle,
+    type = "bid",
+    applicationNumber,
+  },
+  tagIndex,
 }) => {
-  const [placeBidOpen, SetPlaceBidOpen] = useState(false);
   const dispatch = useDispatch();
   const handlePlaceBidToggle = () => {
-    SetPlaceBidOpen(!placeBidOpen);
+    if(roomNo != undefined && roomNo <= 1 && tagIndex != undefined && tagIndex == 0) {
+      dispatch(setAsset({tagIndex, roomNo}));
+    } else {
+      toast.error(title + " isn't ready now.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
   }
 
   return (
@@ -188,20 +208,6 @@ const GalleryItemComponent: FC<GalleryItem> = ({
             </div>
           </div>
         )}
-        <PlaceBidModal
-          open={placeBidOpen}
-          onClose={handlePlaceBidToggle}
-          selectedVerse={{
-            title,
-            collection,
-            imageUrl,
-            currentBid,
-            endingIn,
-            subtitle,
-            type,
-            applicationNumber
-          }}
-        />
       </div>
     </div>
   );

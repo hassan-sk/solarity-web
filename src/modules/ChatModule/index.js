@@ -439,7 +439,6 @@ useEffect(() => {
               <a-gltf-model class="model" src="#headd" position="0 0 0" scale="1 1 1"></a-gltf-model>
               <a-gltf-model class="model" src="#chandelier" position="0 0 0" scale="1 1 1"></a-gltf-model>
 
-
               <a-gltf-model class="model" src="#door" position="0 0 0" scale="1 1 1"></a-gltf-model>
 
               <a-gltf-model class="model" src="#pool" position="0 0 0" scale="1 1 1"></a-gltf-model>

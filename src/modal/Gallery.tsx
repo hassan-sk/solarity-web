@@ -1,7 +1,9 @@
 export type GalleryItem = {
+  roomNo: number;
   title: string;
   collection: string;
   imageUrl: string;
+  description?: string;
   currentBid?: number;
   subtitle?: string;
   endingIn?: string;
