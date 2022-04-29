@@ -37,3 +37,19 @@ export const showErrorToast = (message: string) => {
     progress: undefined,
   });
 };
+
+export const getNftDetails = async (mintAddress: string) => {
+  try {
+    const details = await fetch(
+      `https://api.all.art/v1/solana/${mintAddress}`,
+      {
+        mode: "cors",
+        credentials: "omit",
+      }
+    );
+    const data = await details.json();
+    return data;
+  } catch (err) {
+    return false;
+  }
+};

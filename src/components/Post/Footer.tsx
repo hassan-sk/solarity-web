@@ -23,6 +23,7 @@ const Footer = ({
     avatar: string;
   };
 }) => {
+  if (type == "blockchainActivity") return <></>;
   return (
     <div className="border-t justify-between  border-[hsl(210,9%,9%)] flex px-10 py-5 bg-[#1F2125] border-l border-r border-l-darkcharcoal border-r-darkcharcoal w-full">
       <div className="flex gap-6">
@@ -35,7 +36,7 @@ const Footer = ({
             >
               <a className="flex flex-row">
                 <img
-                  src={user.avatar || avatarPlaceholder}
+                  src={user.avatar || avatarPlaceholder.src}
                   alt="user avatar"
                   className="rounded-full h-[35px] w-[35px]"
                 />

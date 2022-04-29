@@ -5,6 +5,9 @@ import { apiCaller } from "utils/fetcher";
 import { Post, AccountType } from "modal/post";
 import { POSTS } from "data/home";
 import ago from "s-ago";
+import axios from "axios";
+import { getNftDetails } from "utils";
+import { Promise } from "bluebird";
 
 interface IProps {
   user?: any;
@@ -14,6 +17,7 @@ interface IProps {
 
 const Posts: FC<IProps> = ({ accountType, user, dao }) => {
   const [tweets, setTweets] = useState<any>([]);
+  const [blockchainActivities, setBlockchainActivities] = useState<any>([]);
   const [loading, setLoading] = useState<Boolean>(false);
   const [error, setError] = useState<Boolean>(false);
   const router = useRouter();
@@ -37,8 +41,7 @@ const Posts: FC<IProps> = ({ accountType, user, dao }) => {
       const {
         data: { data },
       } = await apiCaller("/tweets?" + queryString);
-
-      const tweets = (data as [any]).map(
+      const tweets = (data as any[]).map(
         ({
           full_text,
           favorite_count,
@@ -64,6 +67,7 @@ const Posts: FC<IProps> = ({ accountType, user, dao }) => {
           retweets: retweet_count,
           type: "tweet",
           id,
+          created_at: new Date(created_at),
           time: ago(new Date(created_at)),
           accountType,
           user: {
@@ -78,7 +82,66 @@ const Posts: FC<IProps> = ({ accountType, user, dao }) => {
     }
     setLoading(false);
   };
+  const fetchBlockchainActivities = async () => {
+    if (!user) return null;
+    try {
+      const { publicAddress } = user;
+      const { data } = await axios.get(
+        `https://api-mainnet.magiceden.dev/v2/wallets/${publicAddress}/activities?offset=0&limit=100`
+      );
+      const formattedData: any[] = [];
+      Promise.each(data, async (entry: any) => {
+        const {
+          blockTime,
+          buyer,
+          type,
+          seller,
+          price,
+          source,
+          collection,
+          tokenMint,
+        } = entry;
+        let action;
+        switch (type) {
+          case "delist":
+            action = "delisted";
+            break;
+          case "list":
+            action = "listed";
+            break;
+          case "buyNow":
+            action = buyer == publicAddress ? "bought" : "sold";
+            break;
+          default:
+            break;
+        }
+        formattedData.push({
+          accountType: "user",
+          created_at: new Date(blockTime * 1000),
+          time: ago(new Date(blockTime * 1000)),
+          id: user.username,
+          type: "blockchainActivity",
+          title: "Blockchain Activities",
+          action,
+          seller,
+          buyer,
+          tokenMint,
+          source,
+          price,
+          user,
+          collection,
+        });
+      });
+      setBlockchainActivities(formattedData);
+    } catch (err) {
+      console.log("Unable to fetch the blockchain activities", err);
+    }
+  };
   useEffect(() => {
+    if (blockchainActivities.length == 0) {
+      fetchBlockchainActivities();
+    }
+    fetchBlockchainActivities();
     let queryString = "";
     if (id && !loading && accountType !== "none") {
       queryString = `${accountType === "user" ? "username" : "symbol"}=${id}`;
@@ -105,7 +168,15 @@ const Posts: FC<IProps> = ({ accountType, user, dao }) => {
   }
   try {
     let posts = POSTS;
-    if (accountType !== "none") posts = tweets as Post[];
+    if (accountType !== "none") {
+      posts = [...blockchainActivities, ...tweets];
+      posts = posts.sort((x, y) => {
+        if (x.created_at && y.created_at) {
+          return (y.created_at || 0) - (x.created_at || 0);
+        }
+        return 1;
+      });
+    }
     return (
       <div className="flex flex-col gap-1 pb-5">
         {posts.map((post, index) => (
