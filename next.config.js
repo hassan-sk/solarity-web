@@ -5,6 +5,7 @@ const webpack = require("webpack");
 /** eslint-disable @typescript-eslint/no-var-requires */
 const withTM = require("next-transpile-modules")([
   "@solana/wallet-adapter-base",
+  "web3",
   // Uncomment wallets you want to use
   // "@solana/wallet-adapter-bitpie",
   // "@solana/wallet-adapter-coin98",
