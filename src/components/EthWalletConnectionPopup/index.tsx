@@ -1,9 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { FC, Fragment } from "react";
 import metamask from "assets/images/brand-logos/metamask.png";
-import coinbase from "assets/images/brand-logos/coinbase.png";
 import connectWallet from "./connectWallet";
-import { RootStateOrAny, useSelector } from "react-redux";
 
 const WALLETS = [
   {
