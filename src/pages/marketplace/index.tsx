@@ -4,14 +4,14 @@ import MarketPlace from "modules/Marketplace";
 import Hero from "components/Hero";
 
 import RightSidebar from "modules/Marketplace/RightSidebar";
-
+import SelectedAsset from "components/SelectedAsset";
 import { HERO_DATA } from "data/marketplace";
 
 const Index = () => {
   return (
     <Layout
       rightSidebar={<RightSidebar />}
-      heroContent={<Hero {...HERO_DATA} />}
+      heroContent={<SelectedAsset />}
     >
       <MarketPlace />
     </Layout>

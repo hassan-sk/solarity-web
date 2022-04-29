@@ -58,7 +58,7 @@ function update_loading_screen(setLoaded) {
     models_number = undefined;
     setLoaded(true);
     if (!!scene_wrapperEl) scene_wrapperEl.removeAttribute("style");
-    if (!!loading_screenEl) loading_screenEl.remove();
+    if (!!loading_screenEl) loading_screenEl.style.display = "none";
     // loading_videoEl.remove();
   }
 }

@@ -6,7 +6,7 @@ const GalleryComponent: FC<Gallery> = ({ rows }) => {
   return (
     <div className="flex flex-col gap-6 my-9">
       {rows.map((row, index) => (
-        <GalleryRow key={index} {...row} />
+        <GalleryRow key={index} galleryRow={row} tagIndex={index}/>
       ))}
     </div>
   );

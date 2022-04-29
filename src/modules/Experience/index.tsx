@@ -8,7 +8,7 @@ const Experience = () => {
   return (
     <div className="flex flex-col pb-14">
       <BigRoom {...BIG_ROOM}/>
-      <GalleryE rows={GALLERYE.rows}/>
+      {/* <GalleryE rows={GALLERYE.rows}/> */}
     </div>
   );
 };
