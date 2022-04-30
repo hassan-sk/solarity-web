@@ -35,8 +35,11 @@ export default function RoomFullView({user}) {
     require("aframe/dist/aframe-master.js");
     require('aframe-liquid-portal-shader');
     require('aframe-blink-controls');
-    if(user.rooms && user.rooms[roomId]) {
-      setRoom(user.rooms[roomId]);
+    if(user.rooms) {
+      var room = user.rooms.find(s => s._id == roomId);
+      if(!!room) {
+        setRoom(room);
+      }
     }
     setMounted(true);
   }, []);

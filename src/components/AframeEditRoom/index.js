@@ -8,11 +8,13 @@ export default function AframeEditRoom({
   setPicNo,
   chooseFlag,
   setChooseFlag,
+  setRoom_id,
   imageUrl,
 }) {
   const [mounted, setMounted] = useState(false);
-  const [permition, setPermition] = useState(true);
+  const [permition, setPermition] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [roomlist, setRooms] = useState([]);
   const assets = [
     {
       pos: "-2.25 1.65 -2.93",
@@ -35,12 +37,15 @@ export default function AframeEditRoom({
       rot: "180 90 180",
     },
   ];
-  const { rooms } = useSelector((state) => ({
+  const { rooms, activeRoomId } = useSelector((state) => ({
     rooms: state.profile.data.rooms,
+    activeRoomId: state.profile.activeRoomId,
   }));
-
+  
   useEffect(() => {
-    delete AFRAME.components["cursor-listen"];
+    require("aframe/dist/aframe-master.js");
+    if(!!AFRAME.components["cursor-listen"])
+      delete AFRAME.components["cursor-listen"];
     AFRAME.registerComponent("cursor-listen", {
       schema: {
         picno: { default: 0 },
@@ -70,12 +75,39 @@ export default function AframeEditRoom({
         });
       },
     });
-    require("aframe/dist/aframe-master.js");
+    if (!!rooms && rooms.length != 0) {
+      var roomIndex = -1;
+      if(activeRoomId != "") {
+        roomIndex = rooms.findIndex(s => s._id == activeRoomId);
+      } else {
+        roomIndex = rooms.findIndex(s => s.active == true);
+      }
+      if(roomIndex != -1) {
+        setRoom_id(rooms[roomIndex]._id)
+        setRooms([rooms[roomIndex]]);
+      }
+    }
     setMounted(true);
-    if (!rooms || (rooms && rooms.length == 0)) {
+  }, []);
+
+  useEffect(() => {
+    var roomIndex = -1;
+    if(activeRoomId != "") {
+      roomIndex = rooms.findIndex(s => s._id == activeRoomId);
+    }
+    if(roomIndex != -1) {
+      setRoom_id(rooms[roomIndex]._id)
+      setRooms([rooms[roomIndex]]);
+    }
+  }, [activeRoomId]);
+
+  useEffect(() => {
+    if (roomlist.length == 0) {
+      setPermition(false);
+    } else {
       setPermition(true);
     }
-  }, []);
+  }, [roomlist])
 
   useEffect(() => {
     if (chooseFlag) {
@@ -105,7 +137,7 @@ export default function AframeEditRoom({
     }, 100);
   }, [])
 
-  // if (permition) {
+  if (permition) {
     if (mounted) {
       return (
         <>
@@ -212,10 +244,10 @@ export default function AframeEditRoom({
                 material="shader:standard;"
                 color="#111122"
               >
-                {rooms &&
-                  !!rooms[0] &&
-                  !!rooms[0].nftStates &&
-                  rooms[0].nftStates.map((nft, index1) => {
+                {roomlist &&
+                  !!roomlist[0] &&
+                  !!roomlist[0].nftStates &&
+                  roomlist[0].nftStates.map((nft, index1) => {
                     if (index + 1 == nft.no)
                       return (
                         <a-image
@@ -242,10 +274,10 @@ export default function AframeEditRoom({
                 material="shader:standard;"
                 color="#111122"
               >
-                {rooms &&
-                  !!rooms[0] &&
-                  !!rooms[0].nftStates &&
-                  rooms[0].nftStates.map((nft, index1) => {
+                {roomlist &&
+                  !!roomlist[0] &&
+                  !!roomlist[0].nftStates &&
+                  roomlist[0].nftStates.map((nft, index1) => {
                     if (index + 1 == nft.no)
                       return (
                         <a-image
@@ -277,11 +309,11 @@ export default function AframeEditRoom({
       );
     }
     return <div>load...</div>;
-  // } else {
-  //   return (
-  //     <div className="pt-20 text-center">
-  //       {"You don't have any room please buy a room"}
-  //     </div>
-  //   );
-  // }
+  } else {
+    return (
+      <div className="pt-20 text-center">
+        {"You don't have any active room."}
+      </div>
+    );
+  }
 }

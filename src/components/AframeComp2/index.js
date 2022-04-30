@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useAppSelector } from "redux/hooks";
 import { start_loading_screen_listeners, build_loading_screen } from "modules/ChatModule/loading_screen";
 import styles from 'modules/ChatModule/chat.module.css';
 
@@ -7,6 +8,7 @@ export default function AframeComp2({user, permitionFlag}) {
   const [loaded, setLoaded] = useState(false);
   const [permition, setPermition] = useState(false);
   const [rooms, setRooms] = useState([]);
+  const { activeRoomId } = useAppSelector(state => state.profile);
   const assets = [
     {
       pos: "-2.25 1.65 -2.93",
@@ -34,7 +36,12 @@ export default function AframeComp2({user, permitionFlag}) {
     require('aframe-liquid-portal-shader');
     require('aframe-blink-controls');
     if(user != {} && !!user.rooms) {
-      const roomIndex = user.rooms.findIndex(s => s.active == true);
+      var roomIndex = -1;
+      if(activeRoomId != "") {
+        roomIndex = user.rooms.findIndex(s => s._id == activeRoomId);
+      } else {
+        roomIndex = user.rooms.findIndex(s => s.active == true);
+      }
       if(roomIndex != -1) {
         setRooms([user.rooms[roomIndex]]);
       }
@@ -42,7 +49,17 @@ export default function AframeComp2({user, permitionFlag}) {
     setMounted(true);
   }, []);
 
-  useEffect(() => {console.log(rooms)
+  useEffect(() => {
+    var roomIndex = -1;
+    if(activeRoomId != "") {
+      roomIndex = user.rooms.findIndex(s => s._id == activeRoomId);
+    }
+    if(roomIndex != -1) {
+      setRooms([user.rooms[roomIndex]]);
+    }
+  }, [activeRoomId]);
+
+  useEffect(() => {
     if (rooms.length == 0) {
       setPermition(false);
     } else {
@@ -93,21 +110,21 @@ export default function AframeComp2({user, permitionFlag}) {
               loading-screen="enabled:false" 
             >
                   <a-assets timeout="100000">
-                      <a-asset-item id="room-gltf" src="assets/models/Normal room optimized.glb"></a-asset-item>
-                      <a-asset-item id="arcade-gltf" src="assets/models/Arcade console.glb"></a-asset-item>
-                      <a-asset-item id="atm-gltf" src="assets/models/ATM.glb"></a-asset-item>
-                      <a-asset-item id="chair-gltf" src="assets/models/Chair.glb"></a-asset-item>
+                      <a-asset-item id="room-gltf" src="/assets/models/Normal room optimized.glb"></a-asset-item>
+                      <a-asset-item id="arcade-gltf" src="/assets/models/Arcade console.glb"></a-asset-item>
+                      <a-asset-item id="atm-gltf" src="/assets/models/ATM.glb"></a-asset-item>
+                      <a-asset-item id="chair-gltf" src="/assets/models/Chair.glb"></a-asset-item>
 
-                      <a-asset-item id="vr-gltf" src="assets/models/VR.glb"></a-asset-item>
-                      <a-asset-item id="navmesh-gltf" src="assets/models/navmesh.gltf"></a-asset-item>
+                      <a-asset-item id="vr-gltf" src="/assets/models/VR.glb"></a-asset-item>
+                      <a-asset-item id="navmesh-gltf" src="/assets/models/navmesh.gltf"></a-asset-item>
 
-                      <img id="hub-img" src="assets/images/hub.png" />
-                      <img id="sky-img" src="assets/images/sky.jpg"/>
+                      <img id="hub-img" src="/assets/images/hub.png" />
+                      <img id="sky-img" src="/assets/images/sky.jpg"/>
 
-                      <img id="gif-img1" src="assets/images/gif_img1.jpeg"/>
-                      <img id="gif-img2" src="assets/images/gif_img2.jpeg"/>
-                      <img id="gif-img3" src="assets/images/gif_img3.jpeg"/>
-                      <img id="gif-img4" src="assets/images/gif_img4.jpeg"/>
+                      <img id="gif-img1" src="/assets/images/gif_img1.jpeg"/>
+                      <img id="gif-img2" src="/assets/images/gif_img2.jpeg"/>
+                      <img id="gif-img3" src="/assets/images/gif_img3.jpeg"/>
+                      <img id="gif-img4" src="/assets/images/gif_img4.jpeg"/>
 
                 </a-assets>
 

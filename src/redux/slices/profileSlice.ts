@@ -11,7 +11,7 @@ const initialState = {
   data: {},
   nfts: [],
   nftsLoaded: false,
-  activeRoomNo: -1,
+  activeRoomId: "",
 };
 
 export const addInfo = createAsyncThunk(
@@ -70,13 +70,13 @@ export const placeBid = createAsyncThunk(
         return;
       }
 
-      try {
-        const signature = await sendTransaction(transaction, connection);
-        await connection.confirmTransaction(signature, 'processed');
-      } catch (error: any) {
-        errorFunction(error.message);
-        return;
-      }
+      // try {
+      //   const signature = await sendTransaction(transaction, connection);
+      //   await connection.confirmTransaction(signature, 'processed');
+      // } catch (error: any) {
+      //   errorFunction(error.message);
+      //   return;
+      // }
 
       const {
         data: { profile },
@@ -286,7 +286,7 @@ export const profileSlice = createSlice({
     },
     loadNFTs() {},
     setActiveRoomNo(state, action: PayloadAction<any>) {
-      state.activeRoomNo = action.payload;
+      state.activeRoomId = action.payload;
     },
   },
   extraReducers: (builder) => {
