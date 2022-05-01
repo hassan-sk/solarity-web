@@ -6,7 +6,7 @@ const index = ({
   data: { roomName, name, speakers },
   index,
 }: {
-  data: { roomName: string, name: string, speakers: string[]};
+  data: { roomName: string, name: string, speakers: string[] };
   index: number;
 }) => {
   const dispatch = useAppDispatch();

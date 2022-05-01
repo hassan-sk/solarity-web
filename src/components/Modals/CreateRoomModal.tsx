@@ -11,9 +11,15 @@ import { models } from "data/experience";
 
 const CreateRoomModal: FC<any> = ({
   open,
+  title,
+  type,
+  roomNo,
   onClose
 }: {
   open: boolean;
+  title: string;
+  type: boolean;
+  roomNo: number;
   onClose: () => void;
 }) => {
   const dispatch = useDispatch();
@@ -38,12 +44,12 @@ const CreateRoomModal: FC<any> = ({
       });
       return;
     }
-    dispatch(createRoom({roomName, userName: profileData.username, modelIndex}));
+    dispatch(createRoom({title, type, roomNo, roomName, userName: profileData.username, modelIndex}));
     onClose();
   };
 
   return (
-    <Base open={open} onClose={onClose} title="Create a Room">
+    <Base open={open} onClose={onClose} title={title}>
       <div className="grid grid-cols-2 gap-8 mt-8">
         <div className="col-span-1 flex justify-between py-4 px-4 bg-primary rounded-xl">
           <AvatarPanel modelPath={models[modelIndex].modelUrl} position={models[modelIndex].position} rotation={models[modelIndex].rotation} scale={models[modelIndex].scale} />

@@ -9,6 +9,8 @@ export type InvitationType = {
   name: String;
   invitor: String;
   roomId?: String;
+  type: Boolean;
+  roomNo: Number;
   roomName?: String;
   link?: String;
   state?: Boolean;

@@ -44,7 +44,13 @@ const Index = () => {
       })
 
       window.socket.on(ACTIONS.ROOM_READY, (data: any) => {
-        router.push(`experience/room?rid=${data.roomId}`);
+        if(data.type == false && data.roomNo == 0) {
+          router.push(`experience/hubRoom?rid=${data.roomId}`);
+        } else if(data.type == false && data.roomNo == 1) {
+          router.push(`experience/galleryRoom?rid=${data.roomId}`);
+        } else if(data.type == true) {
+          router.push(`experience/ownRoom?rid=${data.roomId}`);
+        }
       })
       window.socket.emit(ACTIONS.DUPLICATION_INVITATION, () => {
         toast.warning('This user is already invited.', {

@@ -113,6 +113,8 @@ const ProfileIndex: FC<InvitationPageProps> = ({ invitation, success }) => {
         open={joinModalOpen} 
         onClose={handleJoinModalToggle} 
         roomName={invitation.roomName}
+        type={invitation.type}
+        roomNo={invitation.roomNo}
         creator={(rooms && rooms.length != 0 && rooms[selectedRoomIndex] != undefined) ? rooms[selectedRoomIndex].name : ""}
         person={invitation.name}
         speakers={(rooms && rooms.length != 0 && rooms[selectedRoomIndex] != undefined) ? rooms[selectedRoomIndex].speakers : []}

@@ -38,7 +38,7 @@ const LiveRooms: FC<IProps> = ({ rows: rooms }) => {
           <div className="flex flex-col p-5">
             <div className="flexfont-[19px] font-bold">Rooms</div>
           </div>
-          <div className="pr-5 text-xs cursor-pointer text-secondary" onClick={handleCreateModalToggle}>Create a Room</div>
+          {/* <div className="pr-5 text-xs cursor-pointer text-secondary" onClick={handleCreateModalToggle}>Create a Room</div> */}
         </div>
         <div>
           <div className="divide-y divide-borderwidget max-h-[42vh] min-h-[42vh] overflow-y-auto scrollbar-thin scrollbar-thumb-black">
@@ -48,10 +48,10 @@ const LiveRooms: FC<IProps> = ({ rows: rooms }) => {
           </div>
         </div>
       </div>
-      <CreateRoomModal
+      {/* <CreateRoomModal
         open={createModalOpen}
         onClose={handleCreateModalToggle}
-      />
+      /> */}
     </div>
   );
 };
