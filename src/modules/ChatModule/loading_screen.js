@@ -65,6 +65,7 @@ function update_loading_screen(setLoaded) {
 //checks if model has loaded before building all of the dinamic content
 export function start_loading_screen_listeners(setLoaded) {
   // THREE.Cache.clear();
+  models_loaded = 0;
   models = document.getElementsByClassName("model");
   models_number = models.length;
   for (var i = 0; i < models_number; i++) {
