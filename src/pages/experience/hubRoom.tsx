@@ -1,4 +1,4 @@
-import HubChatModule from "modules/HubChatModule";
+import HubChatModule from "modules/ChatModule";
 
 const GalleryRoom = () => {
 

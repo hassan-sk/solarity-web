@@ -1,4 +1,4 @@
-import OwnChatModule from "modules/HubChatModule/own";
+import OwnChatModule from "modules/ChatModule/own";
 
 const OwnRoom = () => {
 

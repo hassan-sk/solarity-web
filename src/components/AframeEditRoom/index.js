@@ -44,6 +44,7 @@ export default function AframeEditRoom({
   
   useEffect(() => {
     require("aframe/dist/aframe-master.js");
+    require('aframe-liquid-portal-shader');
     if(!!AFRAME.components["cursor-listen"])
       delete AFRAME.components["cursor-listen"];
     AFRAME.registerComponent("cursor-listen", {
@@ -164,21 +165,21 @@ export default function AframeEditRoom({
               loading-screen="enabled:false" 
             >
             <a-assets timeout="100000">
-                <a-asset-item id="room-gltf" src="assets/models/Normal room optimized.glb"></a-asset-item>
-                <a-asset-item id="arcade-gltf" src="assets/models/Arcade console.glb"></a-asset-item>
-                <a-asset-item id="atm-gltf" src="assets/models/ATM.glb"></a-asset-item>
-                <a-asset-item id="chair-gltf" src="assets/models/Chair.glb"></a-asset-item>
+                <a-asset-item id="room-gltf" src="/assets/models/Normal room optimized.glb"></a-asset-item>
+                <a-asset-item id="arcade-gltf" src="/assets/models/Arcade console.glb"></a-asset-item>
+                <a-asset-item id="atm-gltf" src="/assets/models/ATM.glb"></a-asset-item>
+                <a-asset-item id="chair-gltf" src="/assets/models/Chair.glb"></a-asset-item>
 
-                <a-asset-item id="vr-gltf" src="assets/models/VR.glb"></a-asset-item>
-                <a-asset-item id="navmesh-gltf" src="assets/models/navmesh.gltf"></a-asset-item>
+                <a-asset-item id="vr-gltf" src="/assets/models/VR.glb"></a-asset-item>
+                <a-asset-item id="navmesh-gltf" src="/assets/models/navmesh.gltf"></a-asset-item>
 
-                <img id="hub-img" src="assets/images/hub.png" />
-                <img id="sky-img" src="assets/images/sky.jpg"/>
+                <img id="hub-img" src="/assets/images/hub.png" />
+                <img id="sky-img" src="/assets/images/sky.jpg"/>
 
-                <img id="gif-img1" src="assets/images/gif_img1.jpeg"/>
-                <img id="gif-img2" src="assets/images/gif_img2.jpeg"/>
-                <img id="gif-img3" src="assets/images/gif_img3.jpeg"/>
-                <img id="gif-img4" src="assets/images/gif_img4.jpeg"/>
+                <img id="gif-img1" src="/assets/images/gif_img1.jpeg"/>
+                <img id="gif-img2" src="/assets/images/gif_img2.jpeg"/>
+                <img id="gif-img3" src="/assets/images/gif_img3.jpeg"/>
+                <img id="gif-img4" src="/assets/images/gif_img4.jpeg"/>
 
             </a-assets>
 
@@ -252,6 +253,7 @@ export default function AframeEditRoom({
                       return (
                         <a-image
                           src={nft.link}
+                          key={index1}
                           width="1.1"
                           height="1.1"
                           position=""
@@ -282,6 +284,7 @@ export default function AframeEditRoom({
                       return (
                         <a-image
                           src={nft.link}
+                          key={index1}
                           width="1.1"
                           height="1.1"
                           position=""
