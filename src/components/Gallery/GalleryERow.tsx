@@ -1,17 +1,37 @@
-import React, { FC } from "react";
+import React, { FC, useState, useEffect } from "react";
+import { useAppSelector, useAppDispatch } from "redux/hooks";
 import GalleryRowHeader from "components/Gallery/GalleryRowHeader";
-import GalleryItem from "components/Gallery/GalleryItem";
+import GalleryItemE from "components/Gallery/GalleryItemE";
+import HubItem from "components/HubItem";
 
-import { GalleryRow } from "modal/Gallery";
+const GalleryERow = () => {
+  const { rooms } = useAppSelector(state => state.profile.data);
 
-const GalleryERow: FC<GalleryRow> = ({ title, items }) => {
   return (
     <div className="flex flex-col">
-      <GalleryRowHeader title={title} />
+      <GalleryRowHeader title={"Rooms"} />
       <div className="grid grid-cols-4 gap-3 mt-4">
-        {items.map((item, index) => (
-          <GalleryItem key={index} {...item} />
-        ))}
+        <GalleryItemE 
+          key={0} 
+          type={false}
+          roomNo={0} 
+          title={"Hub"}
+          imageUrl={"/assets/images/rooms/room1.png"}
+          currentBid={"0"}
+        />
+        <GalleryItemE 
+          key={1} 
+          type={false}
+          roomNo={1} 
+          title={"Gallery"}
+          imageUrl={"/assets/images/rooms/gallery.png"}
+          currentBid={"0"}
+        />
+        {
+          rooms && rooms.length != 0 && rooms.map((room: any, index: number) => (
+            <GalleryItemE key={index + 2} type={true} {...room} />
+          ))
+        }
       </div>
     </div>
   );

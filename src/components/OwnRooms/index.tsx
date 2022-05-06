@@ -5,15 +5,19 @@ import RoomItem from "components/RoomItem";
 
 const OwnRooms = ({ rooms }: { rooms: any[] }) => {
     const [activeIndex, setActiveIndex] = useState(-1);
+    const [activeId, setActiveId] = useState("");
     const router = useRouter();
 
     useEffect(() => {
         const roomIndex = rooms.findIndex(s => s.active == true);
-        setActiveIndex(rooms[roomIndex].roomNo);
+        if(roomIndex > -1) {
+            setActiveIndex(rooms[roomIndex].roomNo);
+            setActiveId(rooms[roomIndex]._id);
+        }
     }, [rooms])
 
     const editRoom = () => {
-        // router.push("")
+        router.push("/profile?view=nft_selection");
     }
 
     return (
@@ -22,7 +26,7 @@ const OwnRooms = ({ rooms }: { rooms: any[] }) => {
                 <div className="col-span-6 mr-5 w-3/5">
                     <h2 className="py-5 pl-2 m-0">Rooms</h2>
                     <Image 
-                        src={"/assets/images/rooms/room" + 0 + ".png"}
+                        src={"/assets/images/rooms/room" + (activeIndex != -1 ? activeIndex : 0) + ".png"}
                         alt={"room no-" + (activeIndex != -1 ? activeIndex : 0)}
                         width="100%" 
                         height="50%" 
@@ -38,7 +42,7 @@ const OwnRooms = ({ rooms }: { rooms: any[] }) => {
                     <div className="flex grid-cols-3">
                         {
                             rooms && rooms.map((room, index) => (
-                                <RoomItem room={room} activeIndex={activeIndex} setActiveIndex={setActiveIndex} key={index} />
+                                <RoomItem room={room} activeIndex={activeIndex} setActiveIndex={setActiveIndex} activeId={activeId} setActiveId={setActiveId} key={index} />
                             ))
                         }
                     </div>

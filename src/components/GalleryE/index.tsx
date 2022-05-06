@@ -1,13 +1,12 @@
 import React, { FC } from "react";
 import GalleryERow from "../Gallery/GalleryERow";
 import { Gallery } from "modal/Gallery";
+import { apiCaller } from "utils/fetcher";
 
-const GalleryE: FC<Gallery> = ({ rows }) => {
+const GalleryE = () => {
   return (
     <div className="flex flex-col gap-6 my-4">
-      {rows.map((row, index) => (
-        <GalleryERow key={index} {...row} />
-      ))}
+      <GalleryERow />
     </div>
   );
 };

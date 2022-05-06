@@ -10,17 +10,22 @@ const RoomItem = ({
   room,
   activeIndex,
   setActiveIndex,
+  activeId,
+  setActiveId,
 }: {
   room: any;
   activeIndex: number;
   setActiveIndex: any;
+  activeId: string;
+  setActiveId: any;
 }) => {
     const dispatch = useAppDispatch();
     const router = useRouter();
     const { username } = router.query;
     const setActive = async () => {
         setActiveIndex(room.roomNo)
-        dispatch(setActiveRoomNo(room.roomNo));
+        setActiveId(room._id);
+        dispatch(setActiveRoomNo(room._id));
         await apiCaller.post(`/profile/setActiveRoom`, {
             roomNo: room.roomNo,
         });
@@ -40,7 +45,7 @@ const RoomItem = ({
                 />
             </div>
             <div className="flex justify-center">
-                <Link href={`/${username}/room/${room.roomNo}`} passHref>
+                <Link href={`/${username}/room/${room._id}`} passHref>
                     <a  target="_blank" className="hover:text-secondary text-sm cursor-pointer mt-2">View Room</a>
                 </Link>
             </div>

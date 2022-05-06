@@ -65,7 +65,7 @@ const ChatModule = () => {
         var userFilter = [];
         users.map((user, index) => {
           if(user.username != localStorage.getItem('name')) {
-            if(!!rooms[roomIndex].speakers) {
+            if(!!rooms[roomIndex] && !!rooms[roomIndex].speakers) {
               if(rooms[roomIndex].speakers.findIndex(s => s == user.username) == -1) {
                 let stateIndex = rooms[roomIndex].states.findIndex(s => s == user.username);
                 if( stateIndex > -1) {
@@ -93,7 +93,7 @@ const ChatModule = () => {
   const inviteFriend = (username) => {
       var userData = userlist.concat([]);
       setUserlist(userData);
-      window.socket.emit(ACTIONS.INVITE_FRIEND, {username, invitor: localStorage.getItem('name'), roomId: rid});
+      window.socket.emit(ACTIONS.INVITE_FRIEND, {username, invitor: localStorage.getItem('name'), roomId: rid, type: rooms[roomIndex].type, roomNo: rooms[roomIndex].roomNo});
   }
 
   const getAvatarImg = (userName) => {

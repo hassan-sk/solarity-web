@@ -19,6 +19,7 @@ const SelectDisplayNftView = () => {
   const [error, setError] = useState<string | Boolean>(false);
   const [picNo, setPicNo] = useState<string>("0");
   const [chooseFlag, setChooseFlag] = useState<string | Boolean>(false);
+  const [room_id, setRoom_id] = useState("");
   const router = useRouter();
 
   if (loading) {
@@ -48,7 +49,7 @@ const SelectDisplayNftView = () => {
     dispatch(
       updateNftCard({
         data: {
-          roomId: 0,
+          roomId: room_id,
           picNo: picNo,
           mintAddress: selected,
           link: imageUrl,
@@ -61,8 +62,12 @@ const SelectDisplayNftView = () => {
     setChooseFlag(true);
   };
 
-  var back = () => {
+  const back = () => {
     router.push(`/${profileData.username}`)
+  }
+
+  const toAssets = () => {
+    router.push(`/${profileData.username}/assets`)
   }
 
   return (
@@ -77,6 +82,7 @@ const SelectDisplayNftView = () => {
             setChooseFlag={setChooseFlag}
             picNo={picNo}
             setPicNo={setPicNo}
+            setRoom_id={setRoom_id}
             imageUrl={imageUrl}
           />
         </div>
@@ -106,7 +112,10 @@ const SelectDisplayNftView = () => {
             ) : (
               <div></div>
             )}
-            <div className="float-right">
+            <div className="float-right flex">
+              <Button wrap onClick={toAssets}>
+                Go to Assets
+              </Button> &nbsp;&nbsp;
               <Button wrap onClick={back}>
                 Back to Profile
               </Button>

@@ -14,6 +14,8 @@ const JoinRoomModal: FC<any> = ({
   open,
   onClose,
   roomName,
+  type,
+  roomNo,
   person,
   creator,
   speakers,
@@ -21,6 +23,8 @@ const JoinRoomModal: FC<any> = ({
   open: boolean;
   onClose: () => void;
   roomName: string;
+  type: boolean;
+  roomNo: number;
   person: string;
   creator: string;
   speakers: string[];
@@ -39,7 +43,7 @@ const JoinRoomModal: FC<any> = ({
   const router = useRouter();
 
   const joinRoom = () => {
-    var type = false;
+    var type1 = false;
     if(!profileData || !profileData.username) {
       if(!username) {
         setErrorMessage('The name is required.');
@@ -51,7 +55,7 @@ const JoinRoomModal: FC<any> = ({
         roomName,
         userName: username,
       }));
-      type = true;
+      type1 = true;
       setErrorFlag(false);
     } else {
       dispatch(setRoom({
@@ -68,13 +72,20 @@ const JoinRoomModal: FC<any> = ({
             window.socket.emit(ACTIONS.ACEEPT_INVITATION, {
               roomId: rooms[roomIndex].roomId,
               username: person,
-              guestname: type ? username: '',
-              type: type,
+              guestname: type1 ? username: '',
+              type1: type1,
             });
           }
         }
       }
-      router.push(`/experience/room?rid=${rooms[selectedIndex].roomId}`);
+
+      if(type == false && roomNo == 0) {
+        router.push(`/experience/hubRoom?rid=${rooms[selectedIndex].roomId}`);
+      } else if(type == false && roomNo == 1) {
+        router.push(`/experience/galleryRoom?rid=${rooms[selectedIndex].roomId}`);
+      } else if(type == true) {
+        router.push(`/experience/ownRoom?rid=${rooms[selectedIndex].roomId}`);
+      }
     }
   }
 

@@ -49,7 +49,7 @@ const BigRoom: FC<BigRoomType> = ({ scene, content }) => {
           <RoomScene data={scene.bgImage} />
         </div>
 
-        {content && (
+        {content && selectedRoom ? (
           <div className="flex justify-between my-6">
             <div className="flex flex-col max-w-4xl ">
               <span className="text-[15px] text-secondary">{selectedRoom.roomName}</span>
@@ -63,17 +63,21 @@ const BigRoom: FC<BigRoomType> = ({ scene, content }) => {
                   <img key={index} src="/images/icons/sol.png" alt={speaker} width="25" height="25" />
                 ))}
               </div>
-              <button className="btn btn-secondary rounded-3xl" onClick={handleJoinModalToggle}>
-                {content.buttonText}
-              </button>
+              { !!selectedRoom.roomName ? (
+                  <button className="btn btn-secondary rounded-3xl" onClick={handleJoinModalToggle}>
+                    {content.buttonText}
+                  </button>
+              ) : (<></>)}
             </div>
           </div>
-        )}
+        ): (<></>)}
       </div>
       <JoinRoomModal 
         open={joinModalOpen} 
         onClose={handleJoinModalToggle} 
         roomName={selectedRoom.roomName}
+        type={selectedRoom.type}
+        roomNo={selectedRoom.roomNo}
         person={""}
         creator={selectedRoom.name}
         speakers={selectedRoom.speakers}
