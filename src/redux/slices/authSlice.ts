@@ -4,6 +4,8 @@ import ACTIONS from "config/actions";
 import { apiCaller } from "utils/fetcher";
 import { setProfile } from "./profileSlice";
 import socket from "utils/socket-client";
+import Web3 from "web3";
+import { signMessage } from "utils/walletHelpers";
 
 export interface CounterState {
   roomName: string;
@@ -18,37 +20,37 @@ const initialState = {
 
 type loginProps = {
   publicKey: any;
-  signMessage: Function;
+  walletType: "solana" | "ethereum";
+  provider: any;
 };
 
 export const login = createAsyncThunk(
   "auth/login",
-  async ({ publicKey, signMessage }: loginProps, { dispatch }) => {
+  async ({ publicKey, walletType, provider }: loginProps, { dispatch }) => {
     try {
-      const publicAddress = publicKey.toString();
       const {
         data: { nonce },
       } = await apiCaller.post("/auth/login", {
         requestNonce: true,
-        publicAddress,
+        walletType,
+        publicKey,
       });
-      const messageToSign = new TextEncoder().encode(nonce);
-      let signatureEncoded: Uint8Array;
-      if (signMessage) {
-        signatureEncoded = await signMessage(messageToSign);
-        const signature = base58.encode(signatureEncoded);
-        const {
-          data: { profile },
-        } = await apiCaller.post("/auth/login", {
-          publicAddress,
-          requestNonce: false,
-          signature,
-        });
-        dispatch(setProfile(profile));
-        return true;
-      } else {
-        return false;
-      }
+      const signature = await signMessage(
+        walletType,
+        nonce,
+        provider,
+        publicKey
+      );
+      const {
+        data: { profile },
+      } = await apiCaller.post("/auth/login", {
+        publicKey,
+        walletType,
+        requestNonce: false,
+        signature,
+      });
+      dispatch(setProfile(profile));
+      return true;
     } catch (err) {
       return false;
     }
@@ -68,7 +70,7 @@ export const checkSession = createAsyncThunk(
   "auth/checkSession",
   async (_, { dispatch }) => {
     try {
-      if(!window.socket){
+      if (!window.socket) {
         window.socket = socket();
       }
       const { data } = await apiCaller.get("/auth/check");

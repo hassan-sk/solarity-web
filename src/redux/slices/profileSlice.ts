@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import ACTIONS from "config/actions";
-import Router from 'next/router'
+import Router from "next/router";
 import { showErrorToast, showSuccessToast } from "utils";
 import { apiCaller, getErrorMessage } from "utils/fetcher";
 import socket from "utils/socket-client";
@@ -58,21 +58,27 @@ export const placeBid = createAsyncThunk(
   }) => {
     let returnValue = null;
     try {
-      const { selectedAsset, selectedIndex, transaction, connection, sendTransaction } = data;
+      const {
+        selectedAsset,
+        selectedIndex,
+        transaction,
+        connection,
+        sendTransaction,
+      } = data;
 
       const {
         data: { state },
       } = await apiCaller.post("/profile/checkRoom", {
         roomNo: selectedIndex,
       });
-      if( state == true ) {
+      if (state == true) {
         errorFunction("This room is already available.");
         return;
       }
 
       try {
         const signature = await sendTransaction(transaction, connection);
-        await connection.confirmTransaction(signature, 'processed');
+        await connection.confirmTransaction(signature, "processed");
       } catch (error: any) {
         errorFunction(error.message);
         return;
@@ -271,18 +277,21 @@ export const profileSlice = createSlice({
     setProfile(state, action: PayloadAction<any>) {
       const {
         payload,
-        payload: { publicAddress },
+        payload: { solanaAddress, ethereumAddress },
       } = action;
+      const address = solanaAddress || ethereumAddress;
       payload.shortPublicAddress =
-        publicAddress.substring(0, 4) +
+        address.substring(0, 4) +
         "..." +
-        publicAddress.substring(publicAddress.length - 4, publicAddress.length);
+        address.substring(address.length - 4, address.length);
       state.data = action.payload;
-      localStorage.setItem('name', action.payload.username);
-      if(!window.socket){
+      localStorage.setItem("name", action.payload.username);
+      if (!window.socket) {
         window.socket = socket();
       }
-      window.socket.emit(ACTIONS.SET_USER_NAME, {username: action.payload.username})
+      window.socket.emit(ACTIONS.SET_USER_NAME, {
+        username: action.payload.username,
+      });
     },
     loadNFTs() {},
     setActiveRoomNo(state, action: PayloadAction<any>) {

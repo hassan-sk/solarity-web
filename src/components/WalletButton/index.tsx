@@ -1,32 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 import placeholder from "assets/images/placeholder/avatar.png";
 
-import { SelectAndConnectWalletButton } from "components/SelectAndConnectWalletButton";
-import { useWallet } from "@solana/wallet-adapter-react";
 import { useSelector, RootStateOrAny, useDispatch } from "react-redux";
 import { login } from "redux/slices/authSlice";
-// import { authLogin } from "actions";
+import WalletSelector from "components/WalletSelector";
 
 const ButtonWallet = () => {
   const dispatch = useDispatch();
+  const [show, setShow] = useState(false);
 
   const { logged, profileData } = useSelector((state: RootStateOrAny) => ({
     logged: state.auth.logged,
     profileData: state.profile.data,
   }));
 
-  const { publicKey, signMessage } = useWallet();
-
   if (!logged) {
     return (
-      <SelectAndConnectWalletButton
-        onUseWalletClick={() => {
-          dispatch(login({ publicKey, signMessage }));
-        }}
-      />
+      <>
+        <WalletSelector
+          type="all"
+          title="Login with Wallet"
+          subtitle="Select a wallet from the list below"
+          open={show}
+          onClose={() => setShow(false)}
+          onSelect={(address, type, provider) => {
+            dispatch(
+              login({
+                publicKey: address,
+                walletType: type,
+                provider,
+              })
+            );
+          }}
+        />
+        <button
+          className="gap-3 font-normal normal-case btn rounded-3xl btn-secondary"
+          onClick={() => setShow(true)}
+        >
+          <div>Login With Wallet</div>
+        </button>
+      </>
     );
   }
 

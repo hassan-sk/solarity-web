@@ -3,6 +3,7 @@ import { FC, Fragment } from "react";
 import connectWallet from "./connectWallet";
 import metamask from "assets/images/wallets/metamask.png";
 import phantom from "assets/images/wallets/phantom.png";
+import solflare from "assets/images/wallets/solflare.png";
 
 const WALLETS = [
   {
@@ -12,6 +13,12 @@ const WALLETS = [
     image: phantom.src,
   },
   {
+    label: "Solflare",
+    id: "solflare",
+    type: "solana",
+    image: solflare.src,
+  },
+  {
     label: "Metamask",
     id: "metamask",
     type: "ethereum",
@@ -19,11 +26,14 @@ const WALLETS = [
   },
 ];
 
-const EthWalletConnectionPopup: FC<{
+const WalletSelector: FC<{
   open: boolean;
   onClose: () => void;
-  onProviderFetch: (web3: any, walletAddress: string) => void;
-}> = ({ open, onClose, onProviderFetch }) => {
+  onSelect: (address: string, type: string, provider: any) => void;
+  title?: string;
+  subtitle?: string;
+  type: "all" | "ethereum" | "solana";
+}> = ({ open, onClose, onSelect, title, subtitle, type }) => {
   return (
     <Transition appear show={open} as={Fragment}>
       <Dialog
@@ -63,16 +73,21 @@ const EthWalletConnectionPopup: FC<{
                 as="h3"
                 className="text-2xl font-bold leading-6 text-center mb-3"
               >
-                Ethereum Wallets
+                {title || "Wallets"}
               </Dialog.Title>
               <p className="text-center text-sm mb-10">
-                Please connect to a ethereum wallet from the list below
+                {subtitle || "Please connect to a wallet from the list below"}
               </p>
-              {WALLETS.map(({ label, id, image }) => {
+              {WALLETS.filter((t) => {
+                if (type === "all") return true;
+                return type === t.type;
+              }).map(({ label, id, type, image }) => {
                 return (
                   <a
                     onClick={() => {
-                      connectWallet(id, onProviderFetch);
+                      connectWallet(id, type, ({ address, type, provider }) => {
+                        onSelect(address, type, provider);
+                      });
                     }}
                     key={id}
                     className="flex mb-3 p-3 px-5 flex items-center hover:bg-secondary rounded-xl bg-gray-700 cursor-pointer"
@@ -92,4 +107,4 @@ const EthWalletConnectionPopup: FC<{
   );
 };
 
-export default EthWalletConnectionPopup;
+export default WalletSelector;
