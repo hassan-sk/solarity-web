@@ -76,15 +76,6 @@ export const placeBid = createAsyncThunk(
         return;
       }
 
-<<<<<<< HEAD
-      try {
-        const signature = await sendTransaction(transaction, connection);
-        await connection.confirmTransaction(signature, "processed");
-      } catch (error: any) {
-        errorFunction(error.message);
-        return;
-      }
-=======
       // try {
       //   const signature = await sendTransaction(transaction, connection);
       //   await connection.confirmTransaction(signature, 'processed');
@@ -92,7 +83,6 @@ export const placeBid = createAsyncThunk(
       //   errorFunction(error.message);
       //   return;
       // }
->>>>>>> d449ff3fed2801930ceaed33b9ef9c8b67a4a0c1
 
       const {
         data: { profile },
