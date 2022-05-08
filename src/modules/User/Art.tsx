@@ -2,18 +2,21 @@ import React, { FC, useEffect, useState } from "react";
 import { Connection, clusterApiUrl } from "@solana/web3.js";
 import { getParsedNftAccountsByOwner } from "@nfteyez/sol-rayz";
 import Select from "components/SelectInput";
-import { getNfts } from "hooks";
+import { getEthereumNfts, getNfts } from "hooks";
 
 type ArtProps = {
   publicAddress: string;
+  username: string;
 };
 
 export type NftCardProps = {
   name: string;
   mint: string;
-  uri: string;
+  uri?: string;
   onClick?: (mintAddress: string) => void;
   selected?: boolean;
+  image?: string;
+  collection?: string;
 };
 
 export const NftCard: FC<NftCardProps> = ({
@@ -21,6 +24,8 @@ export const NftCard: FC<NftCardProps> = ({
   mint,
   uri,
   onClick,
+  image,
+  collection,
   selected,
 }) => {
   const [details, setDetails] = useState<{
@@ -28,11 +33,18 @@ export const NftCard: FC<NftCardProps> = ({
     image?: string;
   }>({});
   const getDetails = async () => {
-    const details = await fetch(uri, {
-      mode: "cors",
-      credentials: "omit",
-    });
-    setDetails(await details.json());
+    if (uri) {
+      const details = await fetch(uri, {
+        mode: "cors",
+        credentials: "omit",
+      });
+      setDetails(await details.json());
+    } else {
+      setDetails({
+        collection: { name: collection || "-" },
+        image,
+      });
+    }
   };
   useEffect(() => {
     getDetails();
@@ -97,10 +109,10 @@ export const NftCard: FC<NftCardProps> = ({
   );
 };
 
-const Art: FC<ArtProps> = ({ publicAddress }) => {
+const Art: FC<ArtProps> = ({ publicAddress, username }) => {
   const [nfts, loading, error] = getNfts(publicAddress);
-
-  if (loading) {
+  const [ethNfts, ethLoading, ethError] = getEthereumNfts(username, true);
+  if (loading || ethLoading) {
     return (
       <div className="alert alert-warning shadow-lg w-full mb-5">
         <span>Loading NFTs...</span>
@@ -108,7 +120,7 @@ const Art: FC<ArtProps> = ({ publicAddress }) => {
     );
   }
 
-  if (error) {
+  if (error || ethError) {
     return (
       <div className="alert alert-error shadow-lg w-full mb-5">
         <span>Error Loading NFTs...</span>
@@ -116,7 +128,7 @@ const Art: FC<ArtProps> = ({ publicAddress }) => {
     );
   }
 
-  if (!loading && nfts.length == 0) {
+  if (!loading && !ethLoading && nfts.length + ethNfts.lenght == 0) {
     return (
       <div className="alert alert-info shadow-lg w-full mb-5">
         <span>This user doesn't own any NFTs...</span>
@@ -124,14 +136,20 @@ const Art: FC<ArtProps> = ({ publicAddress }) => {
     );
   }
 
+  const allNfts = [
+    ...ethNfts,
+    ...nfts.map(({ data: { name, uri }, mint }) => ({ name, uri, mint })),
+  ];
+  console.log(allNfts);
+
   return (
     <div className="flex flex-col">
       <div className="flex">
         <Select title="All Collections" className="rounded-full font-[19px]" />
       </div>
       <div className="grid grid-cols-3 gap-3 my-4 ">
-        {nfts.map(({ data: { name, uri }, mint }, index) => (
-          <NftCard key={"nftCard-" + index} name={name} mint={mint} uri={uri} />
+        {allNfts.map((data, index) => (
+          <NftCard key={"nftCard-" + index} {...data} />
         ))}
       </div>
     </div>

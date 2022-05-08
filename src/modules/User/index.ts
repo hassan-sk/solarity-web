@@ -8,7 +8,8 @@ export type UserPageProps = {
 export type UserType = {
   profileImageLink: string;
   username: string;
-  publicAddress: string;
+  solanaAddress: string;
+  ethereumAddress: string;
 };
 
 export const getServerSideProps = async (context: any) => {
