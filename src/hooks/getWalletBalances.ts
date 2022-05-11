@@ -6,37 +6,42 @@ import { apiCaller } from "utils/fetcher";
 import solanaLogo from "../assets/images/solana-logo.png";
 import axios from "axios";
 
-export const getTokenBalances = (
-  publicAddress?: string
-): [tokenBalance: any[], loading: Boolean, error: Boolean] => {
-  const [tokenBalances, setTokenBalances] = <any[]>useState([]);
+export const getWalletBalances = ({
+  solanaAddress,
+  ethereumAddress,
+}: {
+  solanaAddress?: string;
+  ethereumAddress?: string;
+}): [tokens: any[], coins: any[], loading: Boolean, error: Boolean] => {
+  const [tokens, setTokens] = useState<any[]>([]);
+  const [coins, setCoins] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+
   const { logged, profileData } = useSelector((state: RootStateOrAny) => ({
     logged: state.auth.logged,
     profileData: state.profile.data,
   }));
 
-  if (!publicAddress && logged) {
-    publicAddress = profileData.publicAddress;
+  if ((!solanaAddress || !ethereumAddress) && logged) {
+    solanaAddress = profileData.solanaAddress;
+    ethereumAddress = profileData.ethereumAddress;
   }
 
-  if (!publicAddress) {
-    setLoading(true);
-  }
+  const connection = new Connection(clusterApiUrl("mainnet-beta"));
 
-  const getData = async (publicAddress: string) => {
+  const getTokens = async () => {
+    if (!solanaAddress) return;
     let {
       data: { tokenAddresses },
-    } = await apiCaller("/daos/tokenAddresses");
-    const publicKey = new PublicKey(publicAddress);
+    } = await apiCaller("/daos/tokens");
+    const publicKey = new PublicKey(String(solanaAddress));
     const tokenKeys = (<[{ tokenAddress: string }]>tokenAddresses).map(
       ({ tokenAddress }) => ({
         tokenKey: new PublicKey(tokenAddress),
         tokenAddress,
       })
     );
-    const connection = new Connection(clusterApiUrl("mainnet-beta"));
     const results = await Promise.map(
       tokenKeys,
       async ({ tokenKey, tokenAddress }) => {
@@ -79,10 +84,20 @@ export const getTokenBalances = (
         ...results[index],
       };
     });
+    setTokens(balances);
+  };
+
+  const getCoins = async () => {
+    if (!solanaAddress && !ethereumAddress) return;
+    const coins = [];
     const solBalance = await connection.getBalance(
-      new PublicKey(publicAddress)
+      new PublicKey(solanaAddress)
     );
-    let solUsdValue;
+    const web3 = new Web3("https://cloudflare-eth.com/");
+    const rawBalance = await web3.eth.getBalance(address);
+    balance = Number(Web3.utils.fromWei(rawBalance));
+    balance = Number(balance.toFixed(4));
+    let solUsdValue = 0;
     if (solBalance > 0) {
       let {
         data: {
@@ -91,28 +106,31 @@ export const getTokenBalances = (
       } = await axios.get(
         "https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd"
       );
-      solUsdValue = ((solBalance / 1000000000) * price).toFixed(4);
+      solUsdValue = Number(((solBalance / 1000000000) * price).toFixed(4));
     }
-    balances.unshift({
+    coins.unshift({
       token: "SOL",
       usdValue: solUsdValue,
       tokenAddress: "",
       balance: (solBalance / 1000000000).toString(),
       image: solanaLogo.src,
     });
+    setCoins(coins);
+  };
+
+  const getAllData = async () => {
+    setLoading(true);
+    setError(false);
+    try {
+      await Promise.all([getTokens(), getCoins()]);
+    } catch {
+      setError(true);
+    }
     setLoading(false);
-    setTokenBalances(balances.filter(({ balance }) => balance > 0));
   };
 
   useEffect(() => {
-    try {
-      if (publicAddress) {
-        getData(publicAddress);
-      }
-    } catch {
-      setLoading(false);
-      setError(true);
-    }
+    getAllData();
   }, []);
-  return [tokenBalances, loading, error];
+  return [tokens, coins, loading, error];
 };

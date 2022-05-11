@@ -3,12 +3,24 @@ import { FC } from "react";
 type Props = {
   noText?: boolean;
   text?: string;
+  center?: boolean;
+  size?: number;
 };
-export const Loader: FC<Props> = ({ text = "Loading...", noText = false }) => {
+export const Loader: FC<Props> = ({
+  text = "Loading...",
+  noText = false,
+  center = true,
+  size = 8,
+}) => {
   return (
-    <div className="flex flex-col justify-center items-center text-xl font-light">
+    <div
+      className={
+        "flex flex-col text-xl font-light " +
+        (center ? "justify-center items-center" : "")
+      }
+    >
       <svg
-        className="animate-spin h-8 w-8 text-white"
+        className={`animate-spin h-${size} w-${size} text-white`}
         xmlns="http://www.w3.org/2000/svg"
         fill="white"
         viewBox="0 0 24 24"
