@@ -3,7 +3,7 @@ import { RootStateOrAny, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
 export const getWalletActivities = (
-  publicAddress?: string
+  solanaAddress?: string
 ): [tokenBalance: any[], loading: Boolean, error: Boolean] => {
   const [walletActivities, setWalletActivities] = <any[]>useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,21 +12,16 @@ export const getWalletActivities = (
     logged: state.auth.logged,
     profileData: state.profile.data,
   }));
-
-  if (!publicAddress && logged) {
-    publicAddress = profileData.publicAddress;
+  if (!solanaAddress && logged) {
+    solanaAddress = profileData.solanaAddress;
   }
-
-  if (!publicAddress) {
-    setLoading(true);
-  }
-
   useEffect(() => {
+    setLoading(true);
     try {
-      if (publicAddress) {
+      if (solanaAddress) {
         axios
           .get(
-            `https://api-mainnet.magiceden.dev/v2/wallets/${publicAddress}/activities?offset=0&limit=100`
+            `https://api-mainnet.magiceden.dev/v2/wallets/${solanaAddress}/activities?offset=0&limit=100`
           )
           .then(({ data }) => {
             setLoading(false);
@@ -37,10 +32,10 @@ export const getWalletActivities = (
             setError(true);
           });
       }
-    } catch {
-      setLoading(false);
+    } catch (err) {
       setError(true);
     }
+    setLoading(false);
   }, []);
   return [walletActivities, loading, error];
 };

@@ -4,11 +4,14 @@ import TokenBalance from "components/TokenBalances";
 import Transfer from "components/Tables/Transfer1";
 
 const Payout: FC<{ user: any }> = ({ user }) => {
-  const { publicAddress } = user;
+  const { solanaAddress, ethereumAddress } = user;
   return (
     <div className="flex flex-col gap-10">
-      {/* <TokenBalance publicAddress={publicAddress} /> */}
-      {/* <Transfer publicAddress={publicAddress} /> */}
+      <TokenBalance
+        solanaAddress={solanaAddress}
+        ethereumAddress={ethereumAddress}
+      />
+      <Transfer solanaAddress={solanaAddress} />
     </div>
   );
 };

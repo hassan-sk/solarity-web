@@ -4,14 +4,18 @@ import CreateContract from "components/Modals/CreateContract";
 import TokenBalanceItem, {
   TokenBalanceItemProps,
 } from "components/TokenBalances/TokenBalanceItem";
-import { getTokenBalances } from "hooks";
+import { getWalletBalances } from "hooks";
+import { Loader } from "components/Loader";
 
 export interface TokenBalancesProps {
   title: string;
   tokens: TokenBalanceItemProps[];
 }
 
-const TokenBalance: FC<{ publicAddress: string }> = ({ publicAddress }) => {
+const TokenBalance: FC<{ solanaAddress: string; ethereumAddress: string }> = ({
+  solanaAddress,
+  ethereumAddress,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleModal = () => {
@@ -29,8 +33,11 @@ const TokenBalance: FC<{ publicAddress: string }> = ({ publicAddress }) => {
             Create Contract
           </button>
         </div>
-        <div className="flex gap-4 pb-5 pl-8 overflow-x-auto scrollbar-thin scrollbar-thumb-black track-white">
-          <TokenBalanceDisplay publicAddress={publicAddress} />
+        <div className="pb-5 px-8 overflow-x-auto scrollbar-thin scrollbar-thumb-black track-white">
+          <TokenBalanceDisplay
+            solanaAddress={solanaAddress}
+            ethereumAddress={ethereumAddress}
+          />
         </div>
       </div>
       <CreateContract open={isOpen} onClose={toggleModal} />
@@ -38,35 +45,30 @@ const TokenBalance: FC<{ publicAddress: string }> = ({ publicAddress }) => {
   );
 };
 
-const TokenBalanceDisplay: FC<{ publicAddress: string }> = ({
-  publicAddress,
-}) => {
-  const [tokenBalances, loading, error] = getTokenBalances(publicAddress);
-
-  if (loading) {
-    return <div className="alert alert-info">Fetching your token balances</div>;
-  }
+const TokenBalanceDisplay: FC<{
+  solanaAddress: string;
+  ethereumAddress: string;
+}> = ({ solanaAddress, ethereumAddress }) => {
+  const { tokens, coins, loading, error } = getWalletBalances({
+    solanaAddress,
+    ethereumAddress,
+  });
   if (error) {
     return (
-      <div className="alert alert-error">
-        Error fetching your tokens balance
-      </div>
+      <div className="alert alert-error">Error fetching token balances</div>
     );
   }
-  if (!loading && tokenBalances.length == 0) {
-    return (
-      <div className="alert alert-warning">
-        {"User doesn't have any token balance"}
-      </div>
-    );
+  if (loading) {
+    return <Loader text="Loading balances" />;
   }
-
   return (
-    <>
-      {tokenBalances.map((item, index) => (
-        <TokenBalanceItem key={index} {...item} />
-      ))}
-    </>
+    <div className="flex flex-row gap-5">
+      {[...coins, ...tokens.filter(({ balance }) => balance != 0)].map(
+        (item, index) => (
+          <TokenBalanceItem key={index} {...item} />
+        )
+      )}
+    </div>
   );
 };
 

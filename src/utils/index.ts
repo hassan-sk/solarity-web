@@ -12,7 +12,7 @@ export const minifyAddress = (address: string, rate?: number): string => {
   return (
     address.substring(0, rate || 3) +
     "..." +
-    address.substring(address.length - rate || 3, address.length)
+    address.substring(address.length - (rate || 3), address.length)
   );
 };
 

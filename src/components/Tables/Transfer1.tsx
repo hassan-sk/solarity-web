@@ -14,7 +14,7 @@ export interface TransferTableProps1 {
   // }[];
 }
 
-const Transfer1: FC<{ publicAddress: string }> = ({ publicAddress }) => {
+const Transfer1: FC<{ solanaAddress: string }> = ({ solanaAddress }) => {
   return (
     <div className="flex flex-col gap-8 p-8 mb-10 bg-brandblack">
       <div className="flex justify-between">
@@ -54,26 +54,26 @@ const Transfer1: FC<{ publicAddress: string }> = ({ publicAddress }) => {
       <div className="grid grid-cols-5 text-xs text-gray-950">
         <div> Date </div>
         <div> Source/Recipient </div>
-        <div className="col-span-2 ">Reference</div>
+        <div className="col-span-2 ">Action</div>
         <div>Amount</div>
         <div></div>
       </div>
-      <TransferDisplay publicAddress={publicAddress} />
+      <TransferDisplay solanaAddress={solanaAddress} />
     </div>
   );
 };
 
-const TransferDisplay: FC<{ publicAddress: string }> = ({ publicAddress }) => {
-  const [walletActivities, loading, error] = getWalletActivities(publicAddress);
-
+const TransferDisplay: FC<{ solanaAddress: string }> = ({ solanaAddress }) => {
+  solanaAddress = "4wejSnr97csngztZ5SU7A6iZRXJD7B3Y1R1koCQ5NjmD";
+  const [walletActivities, loading, error] = getWalletActivities(solanaAddress);
   const formattedWalletActivities = walletActivities.map(
     ({ blockTime, price, type, buyer, tokenMint }) => {
       let data = {
         date: moment(blockTime * 1000).format("MM/DD/YYYY"),
-        amount: price > 0 ? price + " SOL" : "",
+        amount: price > 0 ? parseFloat(price.toFixed(4)) + " SOL" : "",
         type,
         source: minifyAddress(type == "buyNow" ? buyer : "-"),
-        reference: `${type}: address${minifyAddress(tokenMint)}`,
+        action: `${type.toUpperCase()}: ${minifyAddress(tokenMint)}`,
       };
       return data;
     }
@@ -103,9 +103,9 @@ const TransferDisplay: FC<{ publicAddress: string }> = ({ publicAddress }) => {
     <>
       {formattedWalletActivities.map((row, index) => (
         <div key={index} className="grid grid-cols-5 text-sm">
-          <div> {row.date} </div>
-          <div> {row.source} </div>
-          <div className="col-span-2 ">{row.reference}</div>
+          <div>{row.date}</div>
+          <div>{row.source}</div>
+          <div className="col-span-2 ">{row.action}</div>
           <div
             className={
               row.type === "buyNow" ? "text-[#11C278]" : "text-[#FFFF00]"
