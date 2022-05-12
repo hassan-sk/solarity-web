@@ -1,10 +1,17 @@
-import { Connection, clusterApiUrl, PublicKey } from "@solana/web3.js";
+import {
+  Connection,
+  clusterApiUrl,
+  PublicKey,
+  LAMPORTS_PER_SOL,
+} from "@solana/web3.js";
 import Promise from "bluebird";
 import { RootStateOrAny, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { apiCaller } from "utils/fetcher";
-import solanaLogo from "../assets/images/solana-logo.png";
+import solanaIcon from "../assets/images/icons/solana.png";
+import ethereumIcon from "../assets/images/icons/ethereum.png";
 import axios from "axios";
+import Web3 from "web3";
 
 export const getWalletBalances = ({
   solanaAddress,
@@ -12,7 +19,7 @@ export const getWalletBalances = ({
 }: {
   solanaAddress?: string;
   ethereumAddress?: string;
-}): [tokens: any[], coins: any[], loading: Boolean, error: Boolean] => {
+}): { tokens: any[]; coins: any[]; loading: Boolean; error: Boolean } => {
   const [tokens, setTokens] = useState<any[]>([]);
   const [coins, setCoins] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -27,9 +34,7 @@ export const getWalletBalances = ({
     solanaAddress = profileData.solanaAddress;
     ethereumAddress = profileData.ethereumAddress;
   }
-
   const connection = new Connection(clusterApiUrl("mainnet-beta"));
-
   const getTokens = async () => {
     if (!solanaAddress) return;
     let {
@@ -53,7 +58,7 @@ export const getWalletBalances = ({
             }
           );
           const { value } = info;
-          const balance =
+          let balance =
             value[0].account.data.parsed.info.tokenAmount.uiAmountString;
           if (balance) {
             const {
@@ -65,12 +70,12 @@ export const getWalletBalances = ({
                 tokenAddress
             );
             return {
-              balance: balance.toString(),
-              usdValue: (price * balance).toFixed(4),
+              balance: parseFloat(Number(balance).toFixed(4)),
+              usdValue: Number((price * balance).toFixed(4)),
             };
-          } else return { balance: "0" };
-        } catch {
-          return { balance: "0" };
+          } else return { balance: 0, usdValue: 0 };
+        } catch (err) {
+          return { balance: 0, usdValue: 0 };
         }
       }
     );
@@ -78,7 +83,8 @@ export const getWalletBalances = ({
       [{ token: string; image: string; tokenAddress?: string }]
     >tokenAddresses).map(({ token, image, tokenAddress }, index) => {
       return {
-        token,
+        title: token,
+        symbol: token,
         image,
         tokenAddress,
         ...results[index],
@@ -90,31 +96,40 @@ export const getWalletBalances = ({
   const getCoins = async () => {
     if (!solanaAddress && !ethereumAddress) return;
     const coins = [];
-    const solBalance = await connection.getBalance(
-      new PublicKey(solanaAddress)
+    let {
+      data: {
+        solana: { usd: solanaPrice },
+        ethereum: { usd: ethereumPrice },
+      },
+    } = await axios.get(
+      "https://api.coingecko.com/api/v3/simple/price?ids=solana,ethereum&vs_currencies=usd"
     );
-    const web3 = new Web3("https://cloudflare-eth.com/");
-    const rawBalance = await web3.eth.getBalance(address);
-    balance = Number(Web3.utils.fromWei(rawBalance));
-    balance = Number(balance.toFixed(4));
-    let solUsdValue = 0;
-    if (solBalance > 0) {
-      let {
-        data: {
-          solana: { usd: price },
-        },
-      } = await axios.get(
-        "https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd"
+    if (solanaAddress) {
+      const solBalance = await connection.getBalance(
+        new PublicKey(solanaAddress)
       );
-      solUsdValue = Number(((solBalance / 1000000000) * price).toFixed(4));
+      const balance = Number(solBalance / LAMPORTS_PER_SOL);
+      const usdValue = Number((balance * solanaPrice).toFixed(4));
+      coins.push({
+        title: "Solana",
+        symbol: "SOL",
+        usdValue,
+        balance: parseFloat(balance.toFixed(4)),
+        image: solanaIcon.src,
+      });
     }
-    coins.unshift({
-      token: "SOL",
-      usdValue: solUsdValue,
-      tokenAddress: "",
-      balance: (solBalance / 1000000000).toString(),
-      image: solanaLogo.src,
-    });
+    if (ethereumAddress) {
+      const web3 = new Web3("https://cloudflare-eth.com/");
+      const rawBalance = await web3.eth.getBalance(ethereumAddress);
+      let balance = Number(Web3.utils.fromWei(rawBalance));
+      coins.push({
+        title: "Ethereum",
+        symbol: "ETH",
+        usdValue: Number((ethereumPrice * balance).toFixed(4)),
+        balance: parseFloat(balance.toFixed(4)),
+        image: ethereumIcon.src,
+      });
+    }
     setCoins(coins);
   };
 
@@ -123,7 +138,7 @@ export const getWalletBalances = ({
     setError(false);
     try {
       await Promise.all([getTokens(), getCoins()]);
-    } catch {
+    } catch (err) {
       setError(true);
     }
     setLoading(false);
@@ -132,5 +147,6 @@ export const getWalletBalances = ({
   useEffect(() => {
     getAllData();
   }, []);
-  return [tokens, coins, loading, error];
+
+  return { tokens, coins, loading, error };
 };

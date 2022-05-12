@@ -7,8 +7,8 @@ const Payout: FC<{ user: any }> = ({ user }) => {
   const { publicAddress } = user;
   return (
     <div className="flex flex-col gap-10">
-      <TokenBalance publicAddress={publicAddress} />
-      <Transfer publicAddress={publicAddress} />
+      {/* <TokenBalance publicAddress={publicAddress} /> */}
+      {/* <Transfer publicAddress={publicAddress} /> */}
     </div>
   );
 };

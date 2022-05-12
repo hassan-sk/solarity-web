@@ -12,7 +12,7 @@ const ProfileIndex: FC<UserPageProps> = ({ user, success }) => {
   return (
     <Layout heroContent={<Hero user={user || {}} />}>
       <Art
-        publicAddress={(user && user.solanaAddress) || ""}
+        solanaAddress={(user && user.solanaAddress) || ""}
         username={(user && user.username) || ""}
       />
     </Layout>

@@ -1,10 +1,11 @@
+import { FC } from "react";
 import BalanceView from "./BalanceView";
 import Home from "./Home";
 
-const Sidebar = () => {
+const Sidebar: FC<{ user: any }> = ({ user }) => {
   return (
     <>
-      <BalanceView />
+      <BalanceView {...user} />
       <br />
       <Home />
     </>
