@@ -85,9 +85,9 @@ const Posts: FC<IProps> = ({ accountType, user, dao }) => {
   const fetchBlockchainActivities = async () => {
     if (!user) return null;
     try {
-      const { publicAddress } = user;
+      const { solanaAddress } = user;
       const { data } = await axios.get(
-        `https://api-mainnet.magiceden.dev/v2/wallets/${publicAddress}/activities?offset=0&limit=100`
+        `https://api-mainnet.magiceden.dev/v2/wallets/${solanaAddress}/activities?offset=0&limit=100`
       );
       const formattedData: any[] = [];
       Promise.each(data, async (entry: any) => {
