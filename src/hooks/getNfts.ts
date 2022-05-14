@@ -48,6 +48,7 @@ export const getNfts = (
   };
 
   const getEthereumNfts = async () => {
+    if (!username) return;
     try {
       const {
         data: { nfts: _nfts },
@@ -80,6 +81,8 @@ export const getNfts = (
       setSolNfts([...newSolNfts]);
     });
   };
+
+  console.log(solNfts);
 
   const getAllData = async () => {
     setLoading(true);

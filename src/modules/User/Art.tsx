@@ -16,7 +16,7 @@ export type NftCardProps = {
   collectionName: string;
   type: string;
   image: string;
-  onClick?: (mintAddress: string) => void;
+  onClick?: () => void;
   selected?: boolean;
 };
 
@@ -32,13 +32,13 @@ export const NftCard: FC<NftCardProps> = ({
   const isSol = type === "Solana";
   const icon = isSol ? solanaIcon.src : ethereumIcon.src;
   return (
-    <div
+    <a
       className={`relative flex flex-col gap-2 p-4 ${
         selected ? "bg-secondary" : "bg-brandblack"
       } rounded-3xl ${!selected && "hover:bg-black"} ${
         clickable && "cursor-pointer"
       } `}
-      onClick={() => {}}
+      onClick={() => onClick && onClick()}
     >
       <img src={icon} className="w-10 object-contain absolute top-5 left-5" />
       <div className="flex justify-center rounded-xl overflow-hidden">
@@ -89,7 +89,7 @@ export const NftCard: FC<NftCardProps> = ({
           </span>
         </div>
       </div>
-    </div>
+    </a>
   );
 };
 

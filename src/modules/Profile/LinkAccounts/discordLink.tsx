@@ -11,8 +11,9 @@ const discordLinkGenerator = (currentUrl: string) => {
     client_id: "963209278146117632",
     redirect_uri: currentUrl,
     response_type: "code",
-    scope: "identify connections applications.builds.read guilds",
+    scope: "identify connections guilds guilds.members.read dm_channels.read",
   };
+
   const urlParams = new URLSearchParams(params);
   return baseUrl + "?" + urlParams.toString();
 };

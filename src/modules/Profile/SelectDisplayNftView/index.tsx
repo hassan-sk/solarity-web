@@ -5,14 +5,18 @@ import AframeEditRoom from "components/AframeEditRoom";
 import { getNfts } from "hooks";
 import { NftCardSelect } from "modules/User/NftCardSelect";
 import { updateNftCard } from "redux/slices/profileSlice";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 
 const SelectDisplayNftView = () => {
   const dispatch = useDispatch();
   const { profileData } = useSelector((state: RootStateOrAny) => ({
     profileData: state.profile.data,
   }));
-  const [nfts, nftLoading, nftError] = getNfts(profileData.publicAddress);
+  const [nfts, nftLoading, nftError] = getNfts(
+    profileData.username,
+    profileData.solanaAddress
+  );
+  console.log(nfts);
   const [loading, setLoading] = useState<Boolean>(false);
   const [selected, setSelected] = useState<string>();
   const [imageUrl, setImageUrl] = useState<string>();
@@ -63,12 +67,12 @@ const SelectDisplayNftView = () => {
   };
 
   const back = () => {
-    router.push(`/${profileData.username}`)
-  }
+    router.push(`/${profileData.username}`);
+  };
 
   const toAssets = () => {
-    router.push(`/${profileData.username}/assets`)
-  }
+    router.push(`/${profileData.username}/assets`);
+  };
 
   return (
     <div>
@@ -88,9 +92,8 @@ const SelectDisplayNftView = () => {
         </div>
         <div className="p-2">
           <div className="h-[110px] rounded-xl border border-brandblack flex flex-wrap items-center overflow-x-auto scrollbar-thin scrollbar-thumb-black scrollbar-track-white">
-            {nfts.map(({ mint, data: { name, uri } }, index) => (
+            {nfts.map(({ mintAddress: mint, name, uri }, index) => (
               <NftCardSelect
-                mint={mint}
                 uri={uri}
                 name={name}
                 key={index}
@@ -115,7 +118,8 @@ const SelectDisplayNftView = () => {
             <div className="float-right flex">
               <Button wrap onClick={toAssets}>
                 Go to Assets
-              </Button> &nbsp;&nbsp;
+              </Button>{" "}
+              &nbsp;&nbsp;
               <Button wrap onClick={back}>
                 Back to Profile
               </Button>

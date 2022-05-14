@@ -46,16 +46,22 @@ const NftCards: FC<NftCardsProps> = ({
   }
   return (
     <div className="gap-4 border border-brandblack rounded-3xl grid grid-cols-1  sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-      {nfts.map(({ mint, data: { name, uri } }, index) => (
-        <NftCard
-          mint={mint}
-          uri={uri}
-          name={name}
-          key={index}
-          selected={mint == selected}
-          onClick={(mint) => onClick(mint)}
-        />
-      ))}
+      {nfts.map(
+        (
+          { type, mintAddress: mint, name, uri, image, collectionName },
+          index
+        ) => (
+          <NftCard
+            collectionName={collectionName}
+            image={image}
+            type={type}
+            name={name}
+            key={index}
+            selected={mint == selected}
+            onClick={() => onClick(mint)}
+          />
+        )
+      )}
     </div>
   );
 };
