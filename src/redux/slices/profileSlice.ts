@@ -72,8 +72,9 @@ export const placeBid = createAsyncThunk(
         roomNo: selectedIndex,
       });
       if (state == true) {
-        errorFunction("This room is already available.");
-        return;
+        // uncomment below
+        // errorFunction("This room is already available.");
+        // return;
       }
 
       // try {
