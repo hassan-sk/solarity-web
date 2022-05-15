@@ -73,17 +73,16 @@ export const placeBid = createAsyncThunk(
       });
       if (state == true) {
         // uncomment below
-        // errorFunction("This room is already available.");
-        // return;
+        errorFunction("This room is already available.");
+        return;
       }
-
-      // try {
-      //   const signature = await sendTransaction(transaction, connection);
-      //   await connection.confirmTransaction(signature, 'processed');
-      // } catch (error: any) {
-      //   errorFunction(error.message);
-      //   return;
-      // }
+      try {
+        const signature = await sendTransaction(transaction, connection);
+        await connection.confirmTransaction(signature, 'processed');
+      } catch (error: any) {
+        errorFunction(error.message);
+        return;
+      }
 
       const {
         data: { profile },
@@ -287,10 +286,10 @@ export const profileSlice = createSlice({
         address.substring(address.length - 4, address.length);
       state.data = action.payload;
       localStorage.setItem("name", action.payload.username);
-      if (!window.socket) {
-        window.socket = socket();
+      if (!(window as any).socket) {
+        (window as any).socket = socket();
       }
-      window.socket.emit(ACTIONS.SET_USER_NAME, {
+      (window as any).socket.emit(ACTIONS.SET_USER_NAME, {
         username: action.payload.username,
       });
     },

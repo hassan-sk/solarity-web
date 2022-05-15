@@ -4,7 +4,7 @@ export type GalleryItem = {
   collection: string;
   imageUrl: string;
   description?: string;
-  currentBid?: number;
+  currentBid: number;
   subtitle?: string;
   endingIn?: string;
   applicationNumber?:string;

@@ -36,7 +36,7 @@ const SelectedAsset: FC<HeroProps> = ({}) => {
   const { selectedTagIndex, selectedIndex, assets } = useAppSelector(
     (state) => state.marketplace
   );
-  const { sendTransaction } = useWallet();
+  const { sendTransaction, publicKey, wallet } = useWallet();
   const connection = new Connection(clusterApiUrl("testnet"));
   const dispatch = useAppDispatch();
 
@@ -60,13 +60,26 @@ const SelectedAsset: FC<HeroProps> = ({}) => {
       });
       return;
     }
-    const transaction = new Transaction().add(
-      SystemProgram.transfer({
-        fromPubkey: new PublicKey(solanaAddress),
-        toPubkey: new PublicKey("6BnAzdBGmUdgcRaTaFGBvMAiAgC2cELiU5q12hBYb8YN"),
-        lamports: LAMPORTS_PER_SOL * selectedAsset.currentBid,
-      })
-    );
+    var transaction;
+    try {
+      transaction= new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: new PublicKey(solanaAddress),
+          toPubkey: new PublicKey("6BnAzdBGmUdgcRaTaFGBvMAiAgC2cELiU5q12hBYb8YN"),
+          lamports: LAMPORTS_PER_SOL * selectedAsset.currentBid,
+        })
+      );
+    } catch (error: any) {
+      toast.error(error.msg, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
     setLoadingButton(true);
     dispatch(
       placeBid({
