@@ -6,6 +6,7 @@ const socket = () => {
     reconnectionAttempt: "Infinity",
     timeout: 10000,
     transport: ["websocket"],
+    secure: true,
     rejectUnauthorized: false,
   };
   return io.connect(

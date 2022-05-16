@@ -29,20 +29,6 @@ const GalleryItemComponent: FC<GalleryItemEProps> = ({
   }));
 
   const handleCreateModalToggle = () => {
-    if(!createModalOpen) {
-      if(!profileData.rooms || profileData.rooms.length == 0) {
-        toast.warning("You don't have an own room. you can buy rooms in marketplace", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        return;
-      }
-    }
     setCreateModalOpen(!createModalOpen);
   };
 

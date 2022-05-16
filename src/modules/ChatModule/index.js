@@ -23,6 +23,7 @@ import { models } from "data/experience";
 import VolumeUp from '../../components/Icons/VolumeUp';
 import VolumeOff from '../../components/Icons/VolumeOff';
 import NestedToolTip from 'components/NestedToolTip';
+import freeObjectFromMemory from '../../utils/clearObject';
 
 const ChatModule = () => {
   const [mounted, setMounted] = useState(false)
@@ -51,8 +52,11 @@ const ChatModule = () => {
   }, [rooms]);
 
   useEffect(() => {
-    if(open)
-      getUsers();
+    function init() {
+      if(open)
+        getUsers();
+    }
+    init();
   }, [open, rooms])
 
   const getUsers = async () => {
@@ -128,6 +132,7 @@ const ChatModule = () => {
     require('./components');
     setMounted(true)
     require('multiuser-aframe');
+    THREE.Cache.enabled = false;
   }, [])
 
 useEffect(() => {
@@ -227,6 +232,16 @@ useEffect(() => {
   const handelManualLeave = () => {
     clearInterval(intervalId);
     // clearInterval(gifIntervalId);
+
+    var objectsToDelete = [];
+    var items = document.querySelectorAll('.model');
+    for (var iIndex = 0; iIndex < items.length; iIndex++){
+      objectsToDelete.push(items[iIndex]);
+    }
+    for (var i = 0; i < objectsToDelete.length; i++) {
+      freeObjectFromMemory(objectsToDelete[i].object3D, objectsToDelete[i]);    
+    }
+
     window.isReady1 = false;
     window.positions = {};
     window.myPosition = {};
@@ -343,7 +358,7 @@ useEffect(() => {
                             raycaster="showLine: true; far: 10; interval: 0; objects: .clickable, a-link;"
                             line="color: lawngreen; opacity: 0.5" visible="true"></a-entity>
               </a-entity>
-              {/* <a-entity light="type: ambient; intensity: 0; color:  #FFFFFF; shadowCameraVisible: false;"></a-entity>
+              <a-entity light="type: ambient; intensity: 0; color:  #FFFFFF; shadowCameraVisible: false;"></a-entity>
               <a-entity light="type:point; color:  #FFFFFF; intensity: 3; distance: 10; decay: 1;" position="3 3 0">
               </a-entity>
               <a-entity light="type:point; color:  #FFFFFF; intensity: 3; distance: 10; castShadow: false; decay: 1"
@@ -428,7 +443,7 @@ useEffect(() => {
                   <a-box color="black" width="1.5" position="0 1 0" height="0.1" depth="0.1"></a-box>
                   <a-box color="black" width="0.1" position="0.7 0 0" height="1.9" depth="0.1"></a-box>
                   <a-box color="black" width="0.1" position="-0.7 0 0" height="1.9" depth="0.1"></a-box>
-              </a-image> */}
+              </a-image>
               {/* <a-plane class="clickable nocollision" simple-link="href: https://www.google.com" scale="1.5 2 1"
                       position="14.2 1.1 -2.5" rotation="0 -90 0"
                       material="background-color: #EE88FF; shader: portal; pano: /assets/images/japan.png"></a-plane> */}
@@ -465,7 +480,7 @@ useEffect(() => {
               <a-gltf-model class="model" src="#stairs" position="0 0 0" scale="1 1 1"></a-gltf-model>
               <a-gltf-model class="model" src="#stairsback" position="0 0 0" scale="1 1 1"></a-gltf-model>
 
-              {/* <a-entity position="9 0 4.8">
+              <a-entity position="9 0 4.8">
                   <a-gltf-model class="model" src="#table1" position="0 0 0" scale="1 1 1"></a-gltf-model>
                   <a-gltf-model class="model clickable nocollision" src="#chair1" position="1 0 .96" scale="1 1 1" rotation="0 0 0"></a-gltf-model>
                   <a-gltf-model class="model clickable nocollision" src="#chair1" position="-.96 0 -1" scale="1 1 1" rotation="0 180 0;"></a-gltf-model>
@@ -500,7 +515,7 @@ useEffect(() => {
               <a-entity id="globe" class="model" gltf-model="/assets/models/hub/Hologram_sphere.glb"
                         material="roughness: 70; metalness: 0; shader: standard"
                         animation__spin="property: rotation; dur: 12000; loop: true; to: 0 360 0;" position="3 1.5 0">
-              </a-entity> */}
+              </a-entity>
               
               {/* <a-entity id="navmesh" class="model" gltf-model="/assets/models/hub/avatar1.glb" visible="true"></a-entity> */}
               <a-sky animation="property: rotation;

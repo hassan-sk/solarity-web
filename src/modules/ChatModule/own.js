@@ -23,6 +23,7 @@ import { models } from "data/experience";
 import VolumeUp from '../../components/Icons/VolumeUp';
 import VolumeOff from '../../components/Icons/VolumeOff';
 import NestedToolTip from 'components/NestedToolTip';
+import freeObjectFromMemory from 'utils/clearObject';
 
 const OwnChatModule = () => {
   const [mounted, setMounted] = useState(false)
@@ -164,6 +165,7 @@ const OwnChatModule = () => {
     require('./components');
     setMounted(true)
     require('multiuser-aframe');
+    THREE.Cache.enabled = false;
   }, [])
 
 useEffect(() => {
@@ -263,6 +265,16 @@ useEffect(() => {
   const handelManualLeave = () => {
     clearInterval(intervalId);
     // clearInterval(gifIntervalId);
+
+    var objectsToDelete = [];
+    var items = document.querySelectorAll('.model');
+    for (var iIndex = 0; iIndex < items.length; iIndex++){
+      objectsToDelete.push(items[iIndex]);
+    }
+    for (var i = 0; i < objectsToDelete.length; i++) {
+      freeObjectFromMemory(objectsToDelete[i].object3D, objectsToDelete[i]);    
+    }
+
     window.isReady1 = false;
     window.positions = {};
     window.myPosition = {};

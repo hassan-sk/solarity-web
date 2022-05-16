@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppSelector } from "redux/hooks";
 import { start_loading_screen_listeners, build_loading_screen } from "modules/ChatModule/loading_screen";
 import styles from 'modules/ChatModule/chat.module.css';
+import freeObjectFromMemory from "utils/clearObject";
 
 export default function AframeComp2({user, permitionFlag}) {
   const [mounted, setMounted] = useState(false);
@@ -9,6 +10,7 @@ export default function AframeComp2({user, permitionFlag}) {
   const [permition, setPermition] = useState(false);
   const [rooms, setRooms] = useState([]);
   const { activeRoomId } = useAppSelector(state => state.profile);
+  const componentWillUnmount = useRef(false);
   const assets = [
     {
       pos: "-2.25 1.65 -2.93",
@@ -47,7 +49,29 @@ export default function AframeComp2({user, permitionFlag}) {
       }
     }
     setMounted(true);
+    THREE.Cache.enabled = false;
   }, []);
+
+  useEffect(() => {
+    return () => {
+        componentWillUnmount.current = true
+    }
+  }, [])
+
+  var items = document.querySelectorAll('.model');
+  useEffect(() => {
+    return () => {
+      if (componentWillUnmount.current) {
+        var objectsToDelete = [];
+        for (var iIndex = 0; iIndex < items.length; iIndex++){
+          objectsToDelete.push(items[iIndex]);
+        }
+        for (var i = 0; i < objectsToDelete.length; i++) {
+          freeObjectFromMemory(objectsToDelete[i].object3D, objectsToDelete[i]);    
+        }
+      }
+    }
+  }, [items]);
 
   useEffect(() => {
     var roomIndex = -1;
@@ -80,7 +104,6 @@ export default function AframeComp2({user, permitionFlag}) {
       }
     }, 100);
   }, [])
-
 
   if((user.rooms && user.rooms.length != 0) || permitionFlag) {
     if (permition || permitionFlag) {
