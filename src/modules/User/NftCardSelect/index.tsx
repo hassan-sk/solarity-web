@@ -25,10 +25,10 @@ export const NftCardSelect: FC<NftCardProps> = ({
       mode: "cors",
       credentials: "omit",
     })
-    .then(details1 => {
-      if(!details1)
+    .then(res => {
+      if(!res)
         return;
-      details1.json().then(res => {setDetails(res)});
+      res.json().then(result => {setDetails(result)});
     })
     .catch(error => console.error('Error: ', error));
   };
@@ -41,7 +41,7 @@ export const NftCardSelect: FC<NftCardProps> = ({
     <div className="w-[100px] h-[100px] rounded-xs p-2">
       {details.image && (
         <div 
-          className={`border border-2 ${selected ? `border-red`: `border-transparent`} cursor-pointer hover:border hover:border-2 hover:border-white`}
+          className={`border-2 ${selected ? `border-red`: `border-transparent`} cursor-pointer hover:border-2 hover:border-white`}
           onClick={() => onClick && onClick(mint, details.image)}
         >
             <img

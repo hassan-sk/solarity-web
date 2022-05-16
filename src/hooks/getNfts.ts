@@ -82,7 +82,6 @@ export const getNfts = (
     });
   };
 
-  console.log(solNfts);
 
   const getAllData = async () => {
     setLoading(true);

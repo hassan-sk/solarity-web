@@ -16,7 +16,6 @@ const SelectDisplayNftView = () => {
     profileData.username,
     profileData.solanaAddress
   );
-  console.log(nfts);
   const [loading, setLoading] = useState<Boolean>(false);
   const [selected, setSelected] = useState<string>();
   const [imageUrl, setImageUrl] = useState<string>();
@@ -96,6 +95,7 @@ const SelectDisplayNftView = () => {
               <NftCardSelect
                 uri={uri}
                 name={name}
+                mint={mint}
                 key={index}
                 selected={mint == selected}
                 onClick={(mint: any, uri: any) => {
