@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import {
   Button,
   Container,
@@ -15,22 +15,17 @@ import {
   AiOutlineLoading3Quarters,
 } from "react-icons/ai";
 import { apiCaller, getErrorMessage } from "utils/fetcher";
+import { toast } from "react-toastify";
 
 const UsernameInput: FC<{
   sharedProps: any;
   setFieldError: Function;
-  setLoading: (loading: Boolean) => void;
+  setLoading: (loading: boolean) => void;
 }> = ({ sharedProps, setFieldError, setLoading }) => {
-  // status:
-  // 1 - Checked
-  // 2 - Checking
-  // 3 - Error
   const [status, setStatus] = useState<1 | 2 | 3>(1);
 
   const checkUsernameAvailability = () => {
     const { username } = sharedProps.values;
-    setLoading(true);
-    setStatus(2);
     apiCaller
       .get(`profile/usernameAvailability/${username}`)
       .then(() => {
@@ -51,6 +46,11 @@ const UsernameInput: FC<{
     <FormikInput
       name="username"
       {...sharedProps}
+      onChange={(e) => {
+        setLoading(true);
+        setStatus(2);
+        sharedProps.onChange(e);
+      }}
       onStopTypingInterval={800}
       onStopTyping={checkUsernameAvailability}
       absoluteElement={
@@ -66,42 +66,16 @@ const UsernameInput: FC<{
   );
 };
 
-export const ProfileFields: FC<{
-  sharedProps: any;
-  setFieldError: Function;
-  setStatus: Function;
-  ignoreBio?: Boolean;
-}> = ({ sharedProps, setFieldError, setStatus, ignoreBio = false }) => {
-  return (
-    <>
-      <UsernameInput
-        sharedProps={sharedProps}
-        setFieldError={setFieldError}
-        setLoading={(loading) =>
-          setStatus(loading ? "checkingUsername" : undefined)
-        }
-      />
-      <FormikInput name="twitterUsername" {...sharedProps} />
-      <FormikInput name="discordHandle" {...sharedProps} />
-      <FormikInput name="githubUsername" {...sharedProps} />
-      {!ignoreBio && <FormikTextArea name="bio" {...sharedProps} />}
-    </>
-  );
-};
-
 const Form = () => {
   const dispatch = useDispatch();
+  1;
   const profileData = useSelector(
     (state: RootStateOrAny) => state.profile.data
   );
-  const { username, bio, githubUsername, twitterUsername, discordHandle } =
-    profileData;
+  const { username, bio } = profileData;
   const initialValues = {
     username,
     bio,
-    githubUsername,
-    twitterUsername,
-    discordHandle,
   };
 
   return (
@@ -116,8 +90,12 @@ const Form = () => {
         dispatch(
           updateProfileInfo({
             data,
-            successFunction: () => {},
-            errorFunction: () => {},
+            successFunction: () => {
+              toast.success("Profile info updated");
+            },
+            errorFunction: () => {
+              toast.error("Unable to update profile info");
+            },
             finalFunction: () => {
               setSubmitting(false);
             },
@@ -143,20 +121,18 @@ const Form = () => {
           values,
           errors,
         };
+
         return (
           <Container onSubmit={handleSubmit}>
             <Stack spacing={3}>
-              <ProfileFields
+              <UsernameInput
                 sharedProps={sharedProps}
                 setFieldError={setFieldError}
-                setStatus={setStatus}
+                setLoading={(loading) => {
+                  setStatus(loading ? "checkingUsername" : undefined);
+                }}
               />
-
-              {/* <Error
-                onClick={() => setTopLevelError("")}
-                show={Boolean(topLevelError)}
-                description={topLevelError}
-              /> */}
+              <FormikTextArea name="bio" {...sharedProps} />
               <Stack direction="row" spacing={3} className="pt-5 ml-auto">
                 <Button
                   type="submit"

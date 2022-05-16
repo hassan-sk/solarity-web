@@ -41,10 +41,13 @@ export const Button: FC<ButtonProps> = ({
   }
   ${outline && "btn-outline"}
   ${wide && "btn-wide"}
-  ${(disabled || (disableOnLoading && loading)) && "btn-disabled"}`;
+  ${
+    (disabled || (disableOnLoading && loading)) &&
+    "btn-disabled bg-gray-800 border-none cursor-not-allowed"
+  }`;
   const button = (
     <button type={type} className={className} onClick={onClick}>
-      {children}
+      <>{children}</>
     </button>
   );
   if (wrap) return <div>{button}</div>;

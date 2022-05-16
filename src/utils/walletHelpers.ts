@@ -47,3 +47,21 @@ export const getCoinBalance = async (type: "sol" | "eth", address: string) => {
   } catch (err) {}
   return balance;
 };
+
+export const connectWallet = async (type: "sol" | "eth", wallet: string) => {
+  if (type == "sol") {
+    if (!("solana" in window)) {
+      throw false;
+    }
+    const _window = window as unknown as { solana: any };
+    const solana = _window.solana;
+    if (wallet === "phantom" && solana.isPhantom) {
+      return solana;
+    }
+
+    return false;
+  } else {
+    // implement ethereum later
+    throw false;
+  }
+};

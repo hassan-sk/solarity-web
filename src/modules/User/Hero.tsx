@@ -101,9 +101,9 @@ const Hero: FC<HeroProps> = ({ user }) => {
       <div className="flex justify-end">
         {logged &&
           (self ? (
-            <Button onClick={() => router.push("/profile")}>
-              Update Profile
-            </Button>
+            <Link className="" href="/profile">
+              <Button>Update Profile</Button>
+            </Link>
           ) : (
             <FollowButton
               username={profile.username}

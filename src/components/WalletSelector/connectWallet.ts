@@ -42,10 +42,10 @@ const getProvider = async (walletId: string, type: string) => {
     let wallet: any;
     switch (walletId) {
       case "phantom":
-        wallet = new PhantomWalletAdapter();
+        wallet = window.phantom.solana;
         break;
       case "solflare":
-        wallet = new SolflareWalletAdapter();
+        wallet = window.solflare;
         break;
     }
     return wallet;

@@ -1,29 +1,27 @@
-import React, { useEffect } from "react";
-import { Button, Input, Stack } from "components/FormComponents";
+import React from "react";
 import { FC } from "react";
-import { useState } from "react";
 import UpdateInfoView from "./UpdateInfoView";
 import UpdateProfilePicView from "./UpdateProfilePicView";
 import SelectDisplayNftView from "./SelectDisplayNftView";
 import LinkAccounts from "./LinkAccounts";
-import { useRouter } from "next/router";
+import { useQueryRouter } from "hooks";
 
-const PROFILE_TABS = [
+const VIEWS = [
   {
-    label: "Update Info",
     id: "info",
+    label: "Update Info",
   },
   {
-    label: "Update Profile Pic",
     id: "profile_pic",
+    label: "Update Profile Pic",
   },
   {
-    label: "Select NFTs to Display in Room",
     id: "nft_selection",
+    label: "Select NFTs to Display in Room",
   },
   {
-    label: "Link Accounts",
     id: "link_accounts",
+    label: "Link Accounts",
   },
 ];
 
@@ -33,7 +31,7 @@ const Menu: FC<{ active: number; onClick: (index: number) => void }> = ({
 }) => {
   return (
     <ul className="menu menu-compact menu-vertical lg:menu-horizontal bg-darkcharcoal rounded-box mb-5">
-      {PROFILE_TABS.map((val, index) => (
+      {VIEWS.map((val, index) => (
         <li key={index}>
           <a
             onClick={() => onClick(index)}
@@ -48,62 +46,21 @@ const Menu: FC<{ active: number; onClick: (index: number) => void }> = ({
 };
 
 export const ProfileView = () => {
-  const [activeTab, setActiveTab] = useState(0);
-  const router = useRouter();
-
-  const updateUrl = (index: number) => {
-    const view = PROFILE_TABS[index].id;
-    router.push(
-      {
-        pathname: "/profile",
-        query: { view },
-      },
-      undefined,
-      { shallow: true }
-    );
-  };
-
-  useEffect(() => {
-    let { view } = router.query;
-    const defaultId = PROFILE_TABS[0].id;
-    const viewIds = PROFILE_TABS.map(({ id }) => id);
-    let reset = false;
-    if (view) {
-      if (!viewIds.includes(String(view))) {
-        reset = true;
-      }
-    } else {
-      reset = true;
-    }
-    if (reset) {
-      router.push(
-        {
-          pathname: "/profile",
-          query: { view: defaultId },
-        },
-        undefined,
-        { shallow: true }
-      );
-      view = defaultId;
-    }
-    const index = viewIds.findIndex((i) => i == view);
-    setActiveTab(index);
-  }, []);
+  const { setView, view } = useQueryRouter(VIEWS);
 
   return (
     <>
       <Menu
-        active={activeTab}
+        active={view}
         onClick={(index) => {
-          setActiveTab(index);
-          updateUrl(index);
+          setView(index);
         }}
       />
       <div className="flex flex-col gap-4 p-10 mb-10 border border-brandblack rounded-3xl">
-        {activeTab == 0 && <UpdateInfoView />}
-        {activeTab == 1 && <UpdateProfilePicView />}
-        {activeTab == 2 && <SelectDisplayNftView />}
-        {activeTab == 3 && <LinkAccounts resetUrl={() => updateUrl(3)} />}
+        {view == 0 && <UpdateInfoView />}
+        {view == 1 && <UpdateProfilePicView />}
+        {view == 2 && <SelectDisplayNftView />}
+        {view == 3 && <LinkAccounts resetUrl={() => setView(3)} />}
       </div>
     </>
   );

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React, { FC, useEffect, useState } from "react";
+
 import {
   SystemProgram,
   Transaction,
@@ -8,8 +9,7 @@ import {
   Connection,
   clusterApiUrl,
 } from "@solana/web3.js";
-import { WalletNotConnectedError } from "@solana/wallet-adapter-base";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+
 import { toast } from "react-toastify";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
 import { Button } from "components/FormComponents";
@@ -20,6 +20,7 @@ import { GalleryItem } from "modal/Gallery";
 import ErrorMessage from "components/ErrorMessage";
 import { placeBid } from "redux/slices/profileSlice";
 import { RootStateOrAny, useSelector } from "react-redux";
+import WalletSelector from "components/WalletSelector";
 
 export interface HeroProps {}
 
@@ -29,14 +30,13 @@ const SelectedAsset: FC<HeroProps> = ({}) => {
   const [error, setError] = useState<Boolean>(false);
   const [loadingButton, setLoadingButton] = useState<Boolean>(false);
   const [loading, setLoading] = useState<Boolean>(false);
-
+  const [showWallets, setShowWallets] = useState(false);
   const profile = useSelector((state: RootStateOrAny) => state.profile.data);
   const solanaAddress = profile && profile.solanaAddress;
 
   const { selectedTagIndex, selectedIndex, assets } = useAppSelector(
     (state) => state.marketplace
   );
-  const { sendTransaction, publicKey, wallet } = useWallet();
   const connection = new Connection(clusterApiUrl("testnet"));
   const dispatch = useAppDispatch();
 
@@ -47,30 +47,36 @@ const SelectedAsset: FC<HeroProps> = ({}) => {
     setError(false);
   }, [selectedIndex]);
 
-  const placeBidAction = async () => {
-    if (!solanaAddress) {
-      toast.error("connect wallet please", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-      return;
+  const placeBidAction = async (provider: any) => {
+    await provider.connect();
+    const { publicKey } = provider;
+    if (!solanaAddress || solanaAddress !== publicKey.toString()) {
+      return toast.error(
+        "Please connect/use the wallet with the registered address",
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      );
     }
-    var transaction;
+    let transaction;
     try {
-      transaction= new Transaction().add(
+      transaction = new Transaction().add(
         SystemProgram.transfer({
-          fromPubkey: new PublicKey(solanaAddress),
-          toPubkey: new PublicKey("6BnAzdBGmUdgcRaTaFGBvMAiAgC2cELiU5q12hBYb8YN"),
-          lamports: LAMPORTS_PER_SOL * selectedAsset.currentBid,
+          fromPubkey: publicKey,
+          toPubkey: new PublicKey(
+            "6BnAzdBGmUdgcRaTaFGBvMAiAgC2cELiU5q12hBYb8YN"
+          ),
+          lamports: selectedAsset.currentBid * LAMPORTS_PER_SOL, //Investing 1 SOL. Remember 1 Lamport = 10^-9 SOL.
         })
       );
-    } catch (error: any) {
-      toast.error(error.msg, {
+    } catch (error) {
+      return toast.error(error.msg, {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -88,7 +94,7 @@ const SelectedAsset: FC<HeroProps> = ({}) => {
           selectedIndex,
           transaction,
           connection,
-          sendTransaction,
+          provider,
         },
         successFunction: () => {
           toast.success(
@@ -123,6 +129,16 @@ const SelectedAsset: FC<HeroProps> = ({}) => {
 
   return (
     <div>
+      <WalletSelector
+        type="solana"
+        title="Pay using Solana"
+        subtitle="Select a wallet from the list to pay with"
+        open={showWallets}
+        onClose={() => setShowWallets(false)}
+        onSelect={(address, type, provider) => {
+          placeBidAction(provider);
+        }}
+      />
       <div className="relative w-full h-[314px] rounded-2xl -mt-5">
         {selectedIndex == 0 ? (
           <AframeComp1 />
@@ -184,7 +200,7 @@ const SelectedAsset: FC<HeroProps> = ({}) => {
               className="rounded-full btn btn-xl btn-secondary float-right"
               disableOnLoading
               loading={loadingButton}
-              onClick={placeBidAction}
+              onClick={() => setShowWallets(true)}
             >
               Buy Now
             </Button>

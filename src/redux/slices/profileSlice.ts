@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import ACTIONS from "config/actions";
-import Router from "next/router";
 import { showErrorToast, showSuccessToast } from "utils";
 import { apiCaller, getErrorMessage } from "utils/fetcher";
 import socket from "utils/socket-client";
-import store from "redux/store";
-import { setModel } from "./chatSlice";
+import { sendAndConfirmTransaction, PublicKey } from "@solana/web3.js";
+import { connectWallet } from "utils/walletHelpers";
+import { connect } from "socket.io-client";
 
 const initialState = {
   data: {},
@@ -63,7 +63,7 @@ export const placeBid = createAsyncThunk(
         selectedIndex,
         transaction,
         connection,
-        sendTransaction,
+        provider,
       } = data;
 
       const {
@@ -71,14 +71,17 @@ export const placeBid = createAsyncThunk(
       } = await apiCaller.post("/profile/checkRoom", {
         roomNo: selectedIndex,
       });
+
       if (state == true) {
         // uncomment below
         errorFunction("This room is already available.");
         return;
       }
       try {
-        const signature = await sendTransaction(transaction, connection);
-        await connection.confirmTransaction(signature, 'processed');
+        transaction.feePayer = await provider.publicKey;
+        let blockhashObj = await connection.getRecentBlockhash();
+        transaction.recentBlockhash = await blockhashObj.blockhash;
+        await provider.signAndSendTransaction(transaction);
       } catch (error: any) {
         errorFunction(error.message);
         return;
